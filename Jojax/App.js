@@ -15,7 +15,7 @@ const TabOptions = createBottomTabNavigator({
     navigationOptions: {
       tabBarLabel: 'EXPLORE',
       tabBarIcon: ({tintColor}) => (
-        <FontAwesome name='wpexplorer' color={tintColor} size={28}>
+        <FontAwesome name='wpexplorer' color={tintColor} size={32}>
         </FontAwesome>
       )
     }
@@ -25,7 +25,7 @@ const TabOptions = createBottomTabNavigator({
     navigationOptions: {
       tabBarLabel: 'DRINKS',
       tabBarIcon: ({tintColor}) => (
-        <Entypo name='drink' color={tintColor} size={28}>
+        <Entypo name='drink' color={tintColor} size={32}>
         </Entypo>
       )
     }
@@ -35,7 +35,7 @@ const TabOptions = createBottomTabNavigator({
     navigationOptions: {
       tabBarLabel: 'MYPAGE',
       tabBarIcon: ({tintColor}) => (
-        <FontAwesome name='user-circle-o' color={tintColor} size={28}>
+        <FontAwesome name='user-circle-o' color={tintColor} size={32}>
         </FontAwesome>
       )
     }
@@ -45,13 +45,34 @@ const TabOptions = createBottomTabNavigator({
     navigationOptions: {
       tabBarLabel: 'MORE',
       tabBarIcon: ({tintColor}) => (
-        <Ionicons name='md-more' color={tintColor} size={28}>
+        <Ionicons name='md-more' color={tintColor} size={32}>
         </Ionicons>
       )
     }
-  }
+  }},
+{
+  tabBarOptions: {
+ activeTintColor:'red',
+ inactiveTintColor:'grey',
+ labelStyle:{
+   fontSize: 13,
 
-})
+ } ,
+ style: {
+        borderTopWidth: 1,
+        height: 64,
+
+      }
+}
+}
+)
+
+// const TabBarOptions1 = {
+//   tabBarOptions: {
+//     activeTintColor:'red',
+//     inactiveTintColor:'grey'
+//   }
+
 
 const AppContainer = createAppContainer(TabOptions);
 export default AppContainer;
