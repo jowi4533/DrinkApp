@@ -1,34 +1,54 @@
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
 
+import React from 'react';
+import { Ionicons,FontAwesome,Entypo } from '@expo/vector-icons';
+import { StyleSheet, Text, View } from 'react-native';
 import { createAppContainer, createBottomTabNavigator } from 'react-navigation'
 import Drinks from './screens/Drinks'
 import Explore from './screens/Explore'
 import More from './screens/More'
 import MyPage from './screens/MyPage'
 
-// export default class App extends React.Component {
-//   render() {
-//     return (
-//       <View style={styles.container}>
-//         <Text>Open up App.js to start working on your app!</Text>
-//           <Text>hej kevin</Text>
-//       </View>
-//     );
-//   }
-// }
+
 const TabOptions = createBottomTabNavigator({
   Explore:{
-    screen: Explore
+    screen: Explore,
+    navigationOptions: {
+      tabBarLabel: 'EXPLORE',
+      tabBarIcon: ({tintColor}) => (
+        <FontAwesome name='wpexplorer' color={tintColor} size={28}>
+        </FontAwesome>
+      )
+    }
   },
   Drinks:{
-    screen: Drinks
+    screen: Drinks,
+    navigationOptions: {
+      tabBarLabel: 'DRINKS',
+      tabBarIcon: ({tintColor}) => (
+        <Entypo name='drink' color={tintColor} size={28}>
+        </Entypo>
+      )
+    }
   },
   MyPage:{
-    screen: MyPage
+    screen: MyPage,
+    navigationOptions: {
+      tabBarLabel: 'MYPAGE',
+      tabBarIcon: ({tintColor}) => (
+        <FontAwesome name='user-circle-o' color={tintColor} size={28}>
+        </FontAwesome>
+      )
+    }
   },
   More:{
-    screen: More
+    screen: More,
+    navigationOptions: {
+      tabBarLabel: 'MORE',
+      tabBarIcon: ({tintColor}) => (
+        <Ionicons name='md-more' color={tintColor} size={28}>
+        </Ionicons>
+      )
+    }
   }
 
 })
