@@ -2,15 +2,18 @@ import React, { Component} from "react";
 import {
   View,
   Text,
-  StyleSheet
+  StyleSheet,
+  SafeAreaView,
+  TextInput
 } from "react-native";
 
 class Explore extends Component {
   render(){
     return (
       <View style={styles.container}>
-        <Text> Explore </Text>
+        <Text> Drinks </Text>
       </View>
+
     );
   }
 }
@@ -22,4 +25,5 @@ const styles = StyleSheet.create({
     alignItems:'center',
     justifyContent:'center'
   }
+
 });
