@@ -1,5 +1,4 @@
-
-import React from 'react';
+import React, { Component} from "react";
 import { Ionicons,FontAwesome,Entypo } from '@expo/vector-icons';
 import { StyleSheet, Text, View } from 'react-native';
 import { createAppContainer, createBottomTabNavigator } from 'react-navigation'
@@ -61,22 +60,23 @@ const TabOptions = createBottomTabNavigator({
  style: {
         borderTopWidth: 1,
         height: 64,
-
       }
 }
 }
 )
 
-// const TabBarOptions1 = {
-//   tabBarOptions: {
-//     activeTintColor:'red',
-//     inactiveTintColor:'grey'
-//   }
 
-
+//export default AppContainer;
 const AppContainer = createAppContainer(TabOptions);
-export default AppContainer;
-
+class App extends Component {
+  render(){
+    return (
+      <AppContainer>
+      </AppContainer>
+    );
+  }
+}
+export default App;
 
 const styles = StyleSheet.create({
   container: {
@@ -85,4 +85,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  headline: {
+   textAlign: 'center', // <-- the magic
+   fontWeight: 'bold',
+   fontSize: 32,
+   backgroundColor: 'white',
+ }
 });
