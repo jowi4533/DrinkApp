@@ -11,9 +11,8 @@ class Explore extends Component {
   render(){
     return (
       <View style={styles.container}>
-        <Text> Drinks </Text>
+        <Text> Explore</Text>
       </View>
-
     );
   }
 }
