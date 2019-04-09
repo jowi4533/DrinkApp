@@ -2,11 +2,12 @@
 import React from 'react';
 import { Ionicons,FontAwesome,Entypo } from '@expo/vector-icons';
 import { StyleSheet, Text, View } from 'react-native';
-import { createAppContainer, createBottomTabNavigator } from 'react-navigation'
+import { createStackNavigator, createAppContainer, createBottomTabNavigator } from 'react-navigation'
 import Drinks from './screens/Drinks'
 import Explore from './screens/Explore'
 import More from './screens/More'
 import MyPage from './screens/MyPage'
+import  { Font } from 'expo'
 
 
 const TabOptions = createBottomTabNavigator({
@@ -76,6 +77,12 @@ const TabOptions = createBottomTabNavigator({
 
 const AppContainer = createAppContainer(TabOptions);
 export default AppContainer;
+
+const AppNavigator = createStackNavigator({
+  Home: {
+    screen: Explore
+  }
+});
 
 
 const styles = StyleSheet.create({
