@@ -1,16 +1,30 @@
 import React, { Component} from "react";
 import { Ionicons,FontAwesome,Entypo } from '@expo/vector-icons';
 import { StyleSheet, Text, View, SafeAreaView } from 'react-native';
-import { createAppContainer, createBottomTabNavigator } from 'react-navigation'
-import Drinks from './screens/Drinks'
-import Explore from './screens/Explore'
-import More from './screens/More'
-import MyPage from './screens/MyPage'
+import { createAppContainer, createBottomTabNavigator, createStackNavigator } from 'react-navigation'
+import Drinkscreen from './screens/Drinkscreen'
+import Explorescreen from './screens/Explorescreen'
+import Morescreen from './screens/Morescreen'
 
+import MyPagescreen from './screens/MyPagescreen'
+import MyBarscreen from './screens/MyBarscreen'
+import MyFavoriteDrinksscreen from './screens/MyFavoriteDrinksscreen'
+import MyNotesscreen from './screens/MyNotesscreen'
+import Registerscreen from './screens/Registerscreen'
+
+const MyPageStack = createStackNavigator({
+  MyPage: MyPagescreen,
+  MyBar: MyBarscreen,
+  MyFavoriteDrinks: MyFavoriteDrinksscreen,
+  MyNotes: MyNotesscreen,
+  Register: Registerscreen
+
+
+});
 
 const TabOptions = createBottomTabNavigator({
   Explore:{
-    screen: Explore,
+    screen: Explorescreen,
     navigationOptions: {
       tabBarLabel: 'EXPLORE',
       tabBarIcon: ({tintColor}) => (
@@ -20,7 +34,7 @@ const TabOptions = createBottomTabNavigator({
     }
   },
   Drinks:{
-    screen: Drinks,
+    screen: Drinkscreen,
     navigationOptions: {
       tabBarLabel: 'DRINKS',
       tabBarIcon: ({tintColor}) => (
@@ -29,8 +43,8 @@ const TabOptions = createBottomTabNavigator({
       )
     }
   },
-  MyPage:{
-    screen: MyPage,
+  MyPageStack:{
+    screen: MyPageStack,
     navigationOptions: {
       tabBarLabel: 'MYPAGE',
       tabBarIcon: ({tintColor}) => (
@@ -40,7 +54,7 @@ const TabOptions = createBottomTabNavigator({
     }
   },
   More:{
-    screen: More,
+    screen: Morescreen,
     navigationOptions: {
       tabBarLabel: 'MORE',
       tabBarIcon: ({tintColor}) => (
@@ -67,20 +81,8 @@ const AppContainer = createAppContainer(TabOptions);
 class App extends Component {
   render(){
     return (
-      <View style={{flex:1}}>
-      <SafeAreaView>
-        <View style={styles.headerbox}>
-            <Text style={styles.headline}>       
-            </Text>
-          </View>
-        </SafeAreaView>
         <AppContainer>
         </AppContainer>
-
-
-        </View>
-
-
     );
   }
 }
@@ -92,19 +94,5 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center'
-  },
-  headline: {
-    marginTop: 10,
-    textAlign: 'center', // <-- the magic
-    fontWeight: 'bold',
-    fontSize: 25,
-
- },
- headerbox:{
-   backgroundColor: 'white',
-   height: 70,
-   borderBottomWidth: 1,
-   borderBottomColor: '#dddddd'
-
- }
+  }
 });
