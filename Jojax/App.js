@@ -1,17 +1,33 @@
 import React, { Component} from 'react';
 import { Ionicons,FontAwesome,Entypo } from '@expo/vector-icons';
 import { StyleSheet, Text, View, SafeAreaView } from 'react-native';
-import { createAppContainer, createBottomTabNavigator } from 'react-navigation'
-import Drinks from './screens/Drinks'
-import Explore from './screens/Explore'
-import More from './screens/More'
-import MyPage from './screens/MyPage'
+import { createAppContainer, createBottomTabNavigator, createStackNavigator } from 'react-navigation'
+import Drinkscreen from './screens/Drinkscreen'
+import Explorescreen from './screens/Explorescreen'
+import Morescreen from './screens/Morescreen'
 import  { Asset, Font } from 'expo';
 
+import MyPagescreen from './screens/MyPagescreen'
+import MyBarscreen from './screens/MyBarscreen'
+import MyFavoriteDrinksscreen from './screens/MyFavoriteDrinksscreen'
+import MyNotesscreen from './screens/MyNotesscreen'
+import Registerscreen from './screens/Registerscreen'
+import Loginscreen from './screens/Loginscreen'
+
+const MyPageStack = createStackNavigator({
+  MyPage: MyPagescreen,
+  MyBar: MyBarscreen,
+  MyFavoriteDrinks: MyFavoriteDrinksscreen,
+  MyNotes: MyNotesscreen,
+  Register: Registerscreen,
+  Login: Loginscreen,
+
+
+});
 
 const TabOptions = createBottomTabNavigator({
   Explore:{
-    screen: Explore,
+    screen: Explorescreen,
     navigationOptions: {
       tabBarLabel: 'EXPLORE',
       tabBarIcon: ({tintColor}) => (
@@ -21,7 +37,7 @@ const TabOptions = createBottomTabNavigator({
     }
   },
   Drinks:{
-    screen: Drinks,
+    screen: Drinkscreen,
     navigationOptions: {
       tabBarLabel: 'DRINKS',
       tabBarIcon: ({tintColor}) => (
@@ -30,8 +46,8 @@ const TabOptions = createBottomTabNavigator({
       )
     }
   },
-  MyPage:{
-    screen: MyPage,
+  MyPageStack:{
+    screen: MyPageStack,
     navigationOptions: {
       tabBarLabel: 'MYPAGE',
       tabBarIcon: ({tintColor}) => (
@@ -41,7 +57,7 @@ const TabOptions = createBottomTabNavigator({
     }
   },
   More:{
-    screen: More,
+    screen: Morescreen,
     navigationOptions: {
       tabBarLabel: 'MORE',
       tabBarIcon: ({tintColor}) => (
@@ -65,34 +81,11 @@ const TabOptions = createBottomTabNavigator({
   }
 )
 const AppContainer = createAppContainer(TabOptions);
-
-export default class App extends React.Component {
-
-  constructor(props) {
-    super(props);
-    this.state= {
-      fontLoaded: false
-    }
-  }
-
-  async componentDidMount() {
-    await Font.loadAsync({
-      'Amazonas': require('./assets/fonts/Amazonas.ttf')
-    }).then(() => {
-      this.setState({fontLoaded: true})
-    })
-
-  }
-
+class App extends Component {
   render(){
     return (
-      <View style={{flex: 1}}>
-      { this.state.fontLoaded == true ? (
-        <Text style={{textAlign: 'center', marginTop: 100}}> bajbajbajsbjasdb </Text>
-      ) : (<Text> Loading... </Text>)
-      }
-
-      </View>
+        <AppContainer>
+        </AppContainer>
     );
   }
 }
@@ -103,29 +96,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'white',
     alignItems: 'center',
-    justifyContent: 'center',
-    fontFamily: 'Amazonas',
-  },
-  headline: {
-    marginTop: 10,
-    textAlign: 'center', // <-- the magic
-    fontWeight: 'bold',
-    fontSize: 25,
-
-  },
-  headerbox:{
-    backgroundColor: 'white',
-    height: 70,
-    borderBottomWidth: 1,
-    borderBottomColor: '#dddddd'
-
-  },
-  loadingText:{
-    margin: 24,
-    fontSize: 16,
-    textAlign: 'center',
-    color: '#34495e'
-
-
+    justifyContent: 'center'
   }
 });
