@@ -21,12 +21,17 @@ class Registerscreen extends Component {
             <Text style = {styles.loginText}>
               Login or Register
             </Text>
+            <View style ={styles.descText}>
+            <Text>
+              Login or register an account to sync and save your bar, notes and favorite recipes between devices
+            </Text>
+            </View>
           </View>
           <View>
           <TextInput
           style={styles.input}
           placeholder = {'Email'}
-          placeholderTextColor = {'rgba(255,255,0.7)'}
+          placeholderTextColor = {'rgba(0,0,0,0.5)'}
           underlineColorAndroid = 'transparent'
           />
           </View>
@@ -56,7 +61,7 @@ const styles = StyleSheet.create({
    fontSize: 16,
    paddingLeft: 45,
    backgroundColor: 'white',
-   color: 'rgba(255,255,0.7)',
+   color: 'rgba(0,0,0,0.9)',
    marginHorizontal: 25,
  },
  textContainer: {
@@ -64,7 +69,14 @@ const styles = StyleSheet.create({
  },
  loginText:{
    color: 'rgba(0,0,0,0.7)',
-   fontSize: 25,
+   fontSize: 20,
+   fontWeight: 'bold',
+ },
+ descText:{
+   paddingVertical: 20,
+ },
+ boldText:{
+   fontWeight: 'bold'
  }
 
 });

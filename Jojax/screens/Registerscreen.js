@@ -24,7 +24,7 @@ class Registerscreen extends Component {
               Registerscreen
               </Text>
             </View>
-            <TextInput    
+            <TextInput
             style={styles.input}
             placeholder = {'Email'}
             placeholderTextColor = {'rgba(255,255,0.7)'}
