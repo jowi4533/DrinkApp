@@ -1,4 +1,4 @@
-import React, { Component} from "react";
+import React, { Component} from 'react';
 import { Ionicons,FontAwesome,Entypo } from '@expo/vector-icons';
 import { StyleSheet, Text, View, SafeAreaView } from 'react-native';
 import { createAppContainer, createBottomTabNavigator } from 'react-navigation'
@@ -6,7 +6,7 @@ import Drinks from './screens/Drinks'
 import Explore from './screens/Explore'
 import More from './screens/More'
 import MyPage from './screens/MyPage'
-import  { Font } from 'expo'
+import  { Asset, Font } from 'expo';
 
 
 const TabOptions = createBottomTabNavigator({
@@ -50,49 +50,61 @@ const TabOptions = createBottomTabNavigator({
       )
     }
   }},
-{
-  tabBarOptions: {
- activeTintColor:'red',
- inactiveTintColor:'grey',
- labelStyle:{
-   fontSize: 13,
- } ,
- style: {
+  {
+    tabBarOptions: {
+      activeTintColor:'red',
+      inactiveTintColor:'grey',
+      labelStyle:{
+        fontSize: 13,
+      } ,
+      style: {
         borderTopWidth: 1,
         height: 64,
       }
-}
-}
+    }
+  }
 )
 const AppContainer = createAppContainer(TabOptions);
-class App extends Component {
+
+export default class App extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.state= {
+      fontLoaded: false
+    }
+  }
+
+  async componentDidMount() {
+    await Font.loadAsync({
+      'Amazonas': require('./assets/fonts/Amazonas.ttf')
+    }).then(() => {
+      this.setState({fontLoaded: true})
+    })
+
+  }
+
   render(){
     return (
-      <View style={{flex:1}}>
-      <SafeAreaView>
-        <View style={styles.headerbox}>
-            <Text style={styles.headline}>
-            </Text>
-          </View>
-        </SafeAreaView>
-        <AppContainer>
-        </AppContainer>
+      <View style={{flex: 1}}>
+      { this.state.fontLoaded == true ? (
+        <Text style={{textAlign: 'center', marginTop: 100}}> bajbajbajsbjasdb </Text>
+      ) : (<Text> Loading... </Text>)
+      }
 
-
-        </View>
-
-
+      </View>
     );
   }
 }
-export default App;
+
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'white',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    fontFamily: 'Amazonas',
   },
   headline: {
     marginTop: 10,
@@ -100,12 +112,20 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 25,
 
- },
- headerbox:{
-   backgroundColor: 'white',
-   height: 70,
-   borderBottomWidth: 1,
-   borderBottomColor: '#dddddd'
+  },
+  headerbox:{
+    backgroundColor: 'white',
+    height: 70,
+    borderBottomWidth: 1,
+    borderBottomColor: '#dddddd'
 
- }
+  },
+  loadingText:{
+    margin: 24,
+    fontSize: 16,
+    textAlign: 'center',
+    color: '#34495e'
+
+
+  }
 });
