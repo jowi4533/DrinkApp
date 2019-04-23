@@ -11,13 +11,15 @@ import MyBarscreen from './screens/MyBarscreen'
 import MyFavoriteDrinksscreen from './screens/MyFavoriteDrinksscreen'
 import MyNotesscreen from './screens/MyNotesscreen'
 import Registerscreen from './screens/Registerscreen'
+import Loginscreen from './screens/Loginscreen'
 
 const MyPageStack = createStackNavigator({
   MyPage: MyPagescreen,
   MyBar: MyBarscreen,
   MyFavoriteDrinks: MyFavoriteDrinksscreen,
   MyNotes: MyNotesscreen,
-  Register: Registerscreen
+  Register: Registerscreen,
+  Login: Loginscreen,
 
 
 });
