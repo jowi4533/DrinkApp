@@ -20,7 +20,7 @@ class MyPagescreen extends Component {
               MyPage
               </Text>
             </View>
-            <Button title="Login / Register"
+            <Button title="Go to log in"
             onPress={() => this.props.navigation.navigate('Login')}
             />
           </View>

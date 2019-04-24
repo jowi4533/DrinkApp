@@ -22,7 +22,6 @@ const MyPageStack = createStackNavigator({
   Register: Registerscreen,
   Login: Loginscreen,
 
-
 });
 
 const TabOptions = createBottomTabNavigator({

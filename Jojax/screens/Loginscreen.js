@@ -7,7 +7,8 @@ import {
   Button,
   ImageBackground,
   TextInput,
-  Dimensions
+  Dimensions,
+  TouchableOpacity
 } from "react-native";
 import bgImage from '../pictures/236.jpg'
 
@@ -19,17 +20,42 @@ class Registerscreen extends Component {
       <ImageBackground source={bgImage} style={styles.backgroundContainer}>
           <View style = {styles.textContainer}>
             <Text style = {styles.loginText}>
-              Login or Register
+              LOGIN OR REGISTER
             </Text>
+            <View style ={styles.descText}>
+            <Text>
+              Login or register an account to sync and save your bar, notes and favorite recipes between devices
+            </Text>
+            </View>
           </View>
           <View>
           <TextInput
           style={styles.input}
           placeholder = {'Email'}
-          placeholderTextColor = {'rgba(0,0,0,0.7)'}
+          placeholderTextColor = {'rgba(0,0,0,0.5)'}
           underlineColorAndroid = 'transparent'
           />
           </View>
+          <View style= {styles.input2}>
+          <TextInput
+          style={styles.input}
+          placeholder = {'Password'}
+          secureTextEntry= {true}
+          placeholderTextColor = {'rgba(0,0,0,0.5)'}
+          underlineColorAndroid = 'transparent'
+          />
+          </View>
+          <TouchableOpacity style={styles.loginButton}>
+          <Text style = {styles.textLoginButton}>SIGN IN</Text>
+          </TouchableOpacity>
+
+          <View style ={ styles.newaccountContainer}>
+          <Text> Don't have an account?</Text>
+          </View>
+          <TouchableOpacity style = {styles.buttonRegisterHere} onPress={() => this.props.navigation.navigate('Register')}>
+          <Text style ={ styles.textRegisterHere}> Register Here! </Text>
+          </TouchableOpacity>
+
       </ImageBackground>
     );
   }
@@ -59,12 +85,50 @@ const styles = StyleSheet.create({
    color: 'rgba(0,0,0,0.9)',
    marginHorizontal: 25,
  },
+ input2:{
+   marginTop:10,
+ },
  textContainer: {
    alignItems: 'center'
  },
  loginText:{
-   color: 'rgba(0,0,0,0.9)',
-   fontSize: 25,
- }
+   color: 'rgba(0,0,0,0.7)',
+   fontSize: 20,
+   fontWeight: 'bold',
+ },
+ descText:{
+   paddingVertical: 20,
+ },
+ boldText:{
+   fontWeight: 'bold'
+ },
+ loginButton:{
+   width: WIDTH -55,
+   height: 40,
+   borderRadius: 25,
+   marginTop: 35,
+   justifyContent: 'center',
+   backgroundColor: '#07757D',
+ },
+ textLoginButton:{
+   color: 'rgba(255,255,255,0.9)',
+   fontSize: 16,
+   textAlign: 'center'
+ },
+ newaccountContainer:{
+   marginTop: 30
+ },
+ textRegisterHere:{
+   textAlign: 'center',
+   justifyContent: 'center',
+   color:'rgba(249, 105, 14, 1)'
+ },
+ buttonRegisterHere:{
+   justifyContent:'center',
+   width: 100,
+   height: 20,
+   borderRadius: 25,
+ },
+
 
 });
