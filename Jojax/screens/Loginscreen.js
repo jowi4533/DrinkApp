@@ -26,7 +26,7 @@ class Registerscreen extends Component {
           <TextInput
           style={styles.input}
           placeholder = {'Email'}
-          placeholderTextColor = {'rgba(255,255,0.7)'}
+          placeholderTextColor = {'rgba(0,0,0,0.7)'}
           underlineColorAndroid = 'transparent'
           />
           </View>
@@ -56,14 +56,14 @@ const styles = StyleSheet.create({
    fontSize: 16,
    paddingLeft: 45,
    backgroundColor: 'white',
-   color: 'rgba(255,255,0.7)',
+   color: 'rgba(0,0,0,0.9)',
    marginHorizontal: 25,
  },
  textContainer: {
    alignItems: 'center'
  },
  loginText:{
-   color: 'rgba(0,0,0,0.7)',
+   color: 'rgba(0,0,0,0.9)',
    fontSize: 25,
  }
 
