@@ -17,7 +17,7 @@ class MyPagescreen extends Component {
               MyPage
               </Text>
             </View>
-            <Button title="Go to My Bar"
+            <Button title="Go to log in"
             onPress={() => this.props.navigation.navigate('Login')}
             />
           </View>

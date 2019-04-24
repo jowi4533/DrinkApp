@@ -1,4 +1,5 @@
 import React, { Component} from "react";
+import { Ionicons,FontAwesome,Entypo } from '@expo/vector-icons';
 import {
   View,
   Text,
@@ -10,17 +11,16 @@ import {
 class Drinkscreen extends Component {
   render(){
     return (
-      <SafeAreaView style={{ flex: 1 }}>
-          <View style={{flex:1}}>
-            <View style={styles.headerbox}>
-              <Text style={styles.headline}>
-              Drinks
-              </Text>
-            </View>
-            <Text style={{textAlign: 'center',marginTop:55}}>
-            test
-            </Text>
+      <SafeAreaView style={styles.container}>
+          <View style ={styles.headerBox}>
+          <Text style = {styles.textHeader}> Drinks </Text>
           </View>
+
+          <View style = {styles.searchBox}>
+            <View>
+          </View>
+          </View>
+
       </SafeAreaView>
     );
   }
@@ -29,22 +29,29 @@ export default Drinkscreen;
 
 const styles = StyleSheet.create({
   container: {
-    flex:1,
-    alignItems:'center',
-    justifyContent:'center'
+    flex:1
   },
-  headline: {
-    marginTop: 10,
+  textHeader: {
+    marginTop: 2.5,
     textAlign: 'center', // <-- the magic
     fontWeight: 'bold',
     fontSize: 25,
 
  },
- headerbox:{
+ headerBox:{
    backgroundColor: 'white',
-   height: 70,
+   height: 45,
    borderBottomWidth: 1,
    borderBottomColor: '#dddddd'
+ },
+ searchBox:{
+   height:70,
+   borderBottomWidth:1
+ },
+ innerSearchBox:{
+   height: 40,
+   flexDirection:'row',
+   backgroundColor: 'white'
 
  }
 });
