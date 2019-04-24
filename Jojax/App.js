@@ -1,10 +1,11 @@
-import React, { Component} from "react";
+import React, { Component} from 'react';
 import { Ionicons,FontAwesome,Entypo } from '@expo/vector-icons';
 import { StyleSheet, Text, View, SafeAreaView } from 'react-native';
 import { createAppContainer, createBottomTabNavigator, createStackNavigator } from 'react-navigation'
 import Drinkscreen from './screens/Drinkscreen'
 import Explorescreen from './screens/Explorescreen'
 import Morescreen from './screens/Morescreen'
+import  { Asset, Font } from 'expo';
 
 import MyPagescreen from './screens/MyPagescreen'
 import MyBarscreen from './screens/MyBarscreen'
@@ -64,19 +65,19 @@ const TabOptions = createBottomTabNavigator({
       )
     }
   }},
-{
-  tabBarOptions: {
- activeTintColor:'red',
- inactiveTintColor:'grey',
- labelStyle:{
-   fontSize: 13,
- } ,
- style: {
+  {
+    tabBarOptions: {
+      activeTintColor:'red',
+      inactiveTintColor:'grey',
+      labelStyle:{
+        fontSize: 13,
+      } ,
+      style: {
         borderTopWidth: 1,
         height: 64,
       }
-}
-}
+    }
+  }
 )
 const AppContainer = createAppContainer(TabOptions);
 class App extends Component {
@@ -92,7 +93,7 @@ export default App;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: 'white',
     alignItems: 'center',
     justifyContent: 'center'
   }
