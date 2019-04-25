@@ -13,11 +13,11 @@ class MyFavoriteDrinksscreen extends Component {
           <View style={{flex:1}}>
             <View style={styles.headerbox}>
               <Text style={styles.headline}>
-              MyBar
+              MyFavoriteDrinks
               </Text>
             </View>
             <Text style={{textAlign: 'center',marginTop:55}}>
-            MyBar
+            MyFavoriteDrinks
             </Text>
           </View>
       </SafeAreaView>
