@@ -12,7 +12,7 @@ import {
 } from "react-native";
 import bgImage from '../pictures/236.jpg'
 
-const {width:WIDTH} = Dimensions.get('window')
+const { width:WIDTH, height:HEIGHT } = Dimensions.get('window');
 
 class Registerscreen extends Component {
   render(){
@@ -23,7 +23,7 @@ class Registerscreen extends Component {
               LOGIN OR REGISTER
             </Text>
             <View style ={styles.descText}>
-            <Text>
+            <Text style = {{marginHorizontal:12}}>
               Login or register an account to sync and save your bar, notes and favorite recipes between devices
             </Text>
             </View>

@@ -1,12 +1,16 @@
 import React, { Component} from "react";
-import { Ionicons,FontAwesome,Entypo } from '@expo/vector-icons';
+import { Ionicons,FontAwesome,Entypo,EvilIcons } from '@expo/vector-icons';
 import {
   View,
   Text,
   StyleSheet,
-  SafeAreaView
+  SafeAreaView,
+  Dimensions,
+  TextInput,
+  TouchableOpacity
 
 } from "react-native";
+const { width:WIDTH, height:HEIGHT } = Dimensions.get('window');
 
 class Drinkscreen extends Component {
   render(){
@@ -15,10 +19,17 @@ class Drinkscreen extends Component {
           <View style ={styles.headerBox}>
           <Text style = {styles.textHeader}> Drinks </Text>
           </View>
-
           <View style = {styles.searchBox}>
-            <View>
-          </View>
+            <View style = {styles.innerSearchBox}>
+              <EvilIcons name= 'search' size={30}>
+              </EvilIcons>
+              <TextInput placeholder = 'Search' style={styles.searchInput}>
+              </TextInput>
+              <TouchableOpacity style={styles.buttonFilter}>
+              <Text style = {styles.textFilterButton}>Filter</Text>
+              </TouchableOpacity>
+
+            </View>
           </View>
 
       </SafeAreaView>
@@ -46,12 +57,40 @@ const styles = StyleSheet.create({
  },
  searchBox:{
    height:70,
-   borderBottomWidth:1
+   borderBottomWidth:1,
+   borderBottomColor:'#dddddd',
+   backgroundColor: 'rgba(236, 236, 236, 1)',
+   justifyContent: 'center'
  },
  innerSearchBox:{
-   height: 40,
-   flexDirection:'row',
-   backgroundColor: 'white'
+   height:40,
+   backgroundColor: 'white',
+   alignItems: 'center',
+   marginLeft:10,
+   paddingLeft: 5,
+   flexDirection: 'row',
+   marginRight: WIDTH/5
+ },
+  searchInput:{
+    backgroundColor:'white',
+    width: WIDTH-(WIDTH/2.9),
+    fontSize:24,
+    marginLeft:10,
+  },
+  buttonFilter:{
+  marginLeft: 20,
+  backgroundColor: 'white',
+  height:40,
+  justifyContent: 'center',
+  padding:10,
+  borderRadius: 5,
 
- }
+},
+textFilterButton:{
+  color: 'rgba(0,0,0,0.9)',
+  fontSize: 14,
+  textAlign: 'center'
+}
+
+
 });
