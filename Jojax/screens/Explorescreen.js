@@ -22,7 +22,7 @@ class Explorescreen extends Component {
               </Text>
             </View>
             <Text style={{textAlign: 'center',marginTop:55}}>
-            Jonas är bäast
+            TESTING 123 JONS TESTING
             </Text>
           </View>
       </SafeAreaView>
