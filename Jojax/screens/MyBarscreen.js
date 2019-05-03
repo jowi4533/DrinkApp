@@ -8,13 +8,22 @@ import {
   Image,
   Button,
   TouchableOpacity,
+  TouchableHighlight,
+  FlatList,
 } from "react-native";
 import bgImage from '../pictures/236.jpg'
 import ginBottle from '../pictures/ginBottle.jpg'
 class MyBarscreen extends Component {
+  onPress = () => {
+    this.markSelected({})
+  }
+
   render(){
     return (
+
+
     <ImageBackground source={bgImage} style={styles.backgroundContainer}>
+
 
       <SafeAreaView style={{ flex: 1 }}>
           <View style={{flex:1}}>
@@ -24,28 +33,34 @@ class MyBarscreen extends Component {
               </Text>
             </View>
 
+            <FlatList style={styles.scrollContainer}>
 
             <View style={styles.buttonContainer}>
 
-               <TouchableOpacity style={styles.ginButton}>
-              <ImageBackground source={ginBottle} style={styles.ginBottle} imageStyle= {{borderRadius: 25}} blurRadius={1}>
+              <TouchableHighlight style={styles.ginButton}>
+              <ImageBackground source={require('../pictures/ginBottle.jpg')} style={styles.ginBottle} imageStyle= {{borderRadius: 25}} blurRadius={1}>
               <Text style = {styles.textMyBarButton}>Gin</Text>
               </ImageBackground>
-              </TouchableOpacity>
+              </TouchableHighlight>
 
-              <TouchableOpacity style={styles.myFavoritesButton} onPress={() => this.props.navigation.navigate('MyFavoriteDrinks')}>
+              <TouchableHighlight style={styles.myFavoritesButton}>
               <Text style = {styles.textMyFavoritesButton}>Whiskey</Text>
-              </TouchableOpacity>
+              </TouchableHighlight>
 
-              <TouchableOpacity style={styles.myNotesButton} onPress={() => this.props.navigation.navigate('MyNotes')}>
+              <TouchableHighlight style={styles.myNotesButton} >
               <Text style = {styles.textMyNotesButton}>Vodka</Text>
-              </TouchableOpacity>
+              </TouchableHighlight>
 
             </View>
 
+          </FlatList>
+
           </View>
       </SafeAreaView>
+
     </ImageBackground>
+
+
     );
   }
 }
@@ -71,6 +86,11 @@ const styles = StyleSheet.create({
 
  },
 
+ scrollContainer:{
+   scrollEventThrottle: 50,
+
+ },
+
  buttonContainer:{
    flexWrap: 'wrap',
    flexDirection: 'row',
@@ -87,12 +107,13 @@ const styles = StyleSheet.create({
  },
 
  ginButton: {
+   underlayColor: 'red',
    width: '45%',
    height: '50%',
    borderRadius: 25,
    backgroundColor: '#07757D',
    justifyContent: 'center',
-   marginTop: 25,
+   marginTop: 10,
  },
 
  textMyBarButton: {
@@ -108,7 +129,7 @@ const styles = StyleSheet.create({
    borderRadius: 25,
    backgroundColor: '#07757D',
    justifyContent: 'center',
-   marginTop: 25,
+   marginTop: 10,
  },
 
  textMyFavoritesButton: {
@@ -124,7 +145,7 @@ const styles = StyleSheet.create({
    borderRadius: 25,
    backgroundColor: '#07757D',
    justifyContent: 'center',
-   marginTop: 25,
+   marginTop: 10,
  },
 
  textMyNotesButton: {

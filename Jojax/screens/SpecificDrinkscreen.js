@@ -13,7 +13,7 @@ import {
   ImageBackground
 
 } from "react-native";
-import drImage from '../pictures/gin_drink.jpg'
+import drImage from '../pictures/gin_drink_v2.jpg'
 const { width:WIDTH, height:HEIGHT } = Dimensions.get('window');
 
 class Drinkscreen extends Component {
@@ -46,9 +46,7 @@ const styles = StyleSheet.create({
   },
 
   imageDrink: {
-  flex: 1,
-   width: null,
-   height: null,
+    flex:1,
    resizeMode: 'contain'
 
   }
