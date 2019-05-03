@@ -10,7 +10,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import bgImage from '../pictures/236.jpg'
-import ginBottle from '../pictures/ginBottle.jpg'
+//import ginBottle from '../pictures/ginBottle.jpg'
 class MyBarscreen extends Component {
   render(){
     return (
@@ -27,7 +27,7 @@ class MyBarscreen extends Component {
 
             <View style={styles.buttonContainer}>
 
-              <TouchableOpacity style={styles.ginButton}>
+               <TouchableOpacity style={styles.ginButton}>
               <ImageBackground source={ginBottle} style={styles.ginBottle} imageStyle= {{borderRadius: 25}} blurRadius={1}>
               <Text style = {styles.textMyBarButton}>Gin</Text>
               </ImageBackground>
