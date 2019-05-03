@@ -10,7 +10,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import bgImage from '../pictures/236.jpg'
-//import ginBottle from '../pictures/ginBottle.jpg'
+import ginBottle from '../pictures/ginBottle.jpg'
 class MyBarscreen extends Component {
   render(){
     return (

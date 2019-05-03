@@ -13,6 +13,7 @@ import MyFavoriteDrinksscreen from './screens/MyFavoriteDrinksscreen'
 import MyNotesscreen from './screens/MyNotesscreen'
 import Registerscreen from './screens/Registerscreen'
 import Loginscreen from './screens/Loginscreen'
+import SpecificDrinkscreen from './screens/SpecificDrinkscreen'
 
 const MyPageStack = createStackNavigator({
   MyPage: MyPagescreen,
@@ -22,6 +23,10 @@ const MyPageStack = createStackNavigator({
   Register: Registerscreen,
   Login: Loginscreen,
 
+});
+const DrinkStack = createStackNavigator({
+AllDrinks : Drinkscreen,
+SpecDrinks : SpecificDrinkscreen
 });
 
 const TabOptions = createBottomTabNavigator({
@@ -36,7 +41,7 @@ const TabOptions = createBottomTabNavigator({
     }
   },
   Drinks:{
-    screen: Drinkscreen,
+    screen: DrinkStack,
     navigationOptions: {
       tabBarLabel: 'DRINKS',
       tabBarIcon: ({tintColor}) => (
