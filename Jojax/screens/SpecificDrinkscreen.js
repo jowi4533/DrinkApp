@@ -41,14 +41,16 @@ const styles = StyleSheet.create({
     flex:1
   },
   imageDrinkContainer: {
-    flex: 1,
     height: HEIGHT * 0.35,
-    backgroundColor: 'grey'
+    backgroundColor: 'grey',
   },
 
   imageDrink: {
-    //flex : 1,
-    resizeMode:  ''
+  flex: 1,
+   width: null,
+   height: null,
+   resizeMode: 'contain'
+
   }
 
 
