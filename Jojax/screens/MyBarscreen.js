@@ -98,7 +98,7 @@ const styles = StyleSheet.create({
  textMyBarButton: {
    color: 'black',
    fontSize: 32,
-   fontWeight: 'bolder',
+   fontWeight: 'bold',
    textAlign: 'center',
  },
 
@@ -114,7 +114,7 @@ const styles = StyleSheet.create({
  textMyFavoritesButton: {
    color: 'black',
    fontSize: 32,
-   fontWeight: 'bolder',
+   fontWeight: 'bold',
    textAlign: 'center',
  },
 

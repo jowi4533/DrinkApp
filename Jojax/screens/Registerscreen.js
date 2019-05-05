@@ -1,4 +1,6 @@
 import React, { Component} from "react";
+import {usersDB} from '../App';
+import {Alert} from 'react-native'
 import {
   View,
   Text,
@@ -15,51 +17,92 @@ import bgImage from '../pictures/236.jpg'
 const { width:WIDTH, height:HEIGHT } = Dimensions.get('window');
 
 class Registerscreen extends Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      email: 'Email',
+      password: 'Password',
+      repeatPassword: 'Repeat Password',
+      users: props.users
+    }
+  }
+
+  readValues(){
+    console.log(this.state.users)
+    if(this.state.password === this.state.repeatPassword){
+      if(this.checkIfUserExist() === false){
+        this.createNewUser();
+      }
+    }
+    else{
+      Alert.alert("Passwords do not coincide")
+    }
+  }
+
+  createNewUser(){
+    const data = {
+      email: this.state.email,
+      password: this.state.password
+    }
+    usersDB.push(data);
+  }
+
+
+
   render(){
     return (
       <ImageBackground source={bgImage} style={styles.backgroundContainer}>
-        <View style= {styles.textContainer}>
-          <Text style = {styles.textRegister}>
-            REGISTER NEW ACCOUNT
-          </Text>
-        </View>
-        <View>
-        <TextInput
-        style={styles.input}
-        placeholder = {'Email'}
-        placeholderTextColor = {'rgba(0,0,0,0.5)'}
-        underlineColorAndroid = 'transparent'
-        />
-        </View>
-        <View style= {styles.input2}>
-        <TextInput
-        style={styles.input}
-        placeholder = {'Password'}
-        secureTextEntry= {true}
-        placeholderTextColor = {'rgba(0,0,0,0.5)'}
-        underlineColorAndroid = 'transparent'
-        />
-        </View>
-        <View style= {styles.input2}>
-        <TextInput
-        style={styles.input}
-        placeholder = {'Password'}
-        secureTextEntry= {true}
-        placeholderTextColor = {'rgba(0,0,0,0.5)'}
-        underlineColorAndroid = 'transparent'
-        />
-        </View>
-        <View style ={styles.termsContainer}>
-        <Text style ={styles.textTerms}>
-        By tapping "Register New Account" you agree to the terms & conditions
-        </Text>
-        </View>
-        <TouchableOpacity style={styles.registerButton}>
-        <Text style = {styles.textRegisterButton}>REGISTER NEW ACCOUNT</Text>
-        </TouchableOpacity>
+      <View style= {styles.textContainer}>
+      <Text style = {styles.textRegister}>
+      REGISTER NEW ACCOUNT
+      </Text>
+      </View>
+      <View>
+      <TextInput
+      style={styles.input}
+      placeholder = {'Email'}
+      placeholderTextColor = {'rgba(0,0,0,0.5)'}
+      underlineColorAndroid = 'transparent'
+      onChangeText = {email => this.setState({email})}
+      />
+      </View>
+      <View style= {styles.input2}>
+      <TextInput
+      style={styles.input}
+      placeholder = {"Password"}
+      secureTextEntry= {true}
+      placeholderTextColor = {'rgba(0,0,0,0.5)'}
+      underlineColorAndroid = 'transparent'
+      onChangeText = {password => this.setState({password})}
+      />
+      </View>
+      <View style= {styles.input2}>
+      <TextInput
+      style={styles.input}
+      placeholder = {"Repeat Password"}
+      secureTextEntry= {true}
+      placeholderTextColor = {'rgba(0,0,0,0.5)'}
+      underlineColorAndroid = 'transparent'
+      onChangeText = {repeatPassword => this.setState({repeatPassword})}
+      />
+      </View>
+      <View style ={styles.termsContainer}>
+      <Text style ={styles.textTerms}>
+      By tapping "Register New Account" you agree to the terms & conditions
+      </Text>
+      </View>
+
+      <TouchableOpacity
+      onPress={this.readValues.bind(this)}
+      style={styles.registerButton}>
+      <Text style = {styles.textRegisterButton}>REGISTER NEW ACCOUNT</Text>
+      </TouchableOpacity>
       </ImageBackground>
     );
   }
+
+
+
 }
 export default Registerscreen;
 

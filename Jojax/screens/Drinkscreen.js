@@ -148,7 +148,7 @@ const styles = StyleSheet.create({
   },
   drinkContainer:{
     height:105,
-    Width: WIDTH,
+    width: WIDTH,
     borderBottomWidth:1,
     borderBottomColor:'#dddddd',
     flexDirection: 'row',
