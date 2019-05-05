@@ -14,6 +14,7 @@ import {
 
 } from "react-native";
 import drImage from '../pictures/vodka_drink.jpg'
+import bgImage from '../pictures/236.jpg'
 const { width:WIDTH, height:HEIGHT } = Dimensions.get('window');
 
 
@@ -35,10 +36,17 @@ class Drinkscreen extends Component {
        </View>
       </View>
 
-      <View style = {{flex:60}}>
-      <TouchableOpacity style = {{width:50,height:50}} onPress={() => this.testIT()}>
-      </TouchableOpacity>
+      <View style = {styles.ingredientsContainer}>
+      <ImageBackground source={bgImage} style= {styles.backgroundContainer}>
+      <View style = {styles.ingredientSheet}>
 
+      </View>
+
+      <View style ={styles.preparationSheet}>
+
+      </View>
+
+      </ImageBackground>
       </View>
 
 
@@ -64,7 +72,24 @@ const styles = StyleSheet.create({
     width: undefined,
     height: undefined,
     resizeMode: 'contain'
-
+  },
+  ingredientsContainer:{
+    flex:60
+  },
+  backgroundContainer:{
+    flex:1,
+    width: null,
+    height: null,
+    alignItems:'center'
+  },
+  ingredientSheet:{
+    backgroundColor:'white',
+    height:HEIGHT/2,
+    width:WIDTH -20,
+    margin:10,
+    border: 2
+  },
+  preparationSheet:{
 
   }
 
