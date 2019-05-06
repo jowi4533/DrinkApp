@@ -10,34 +10,39 @@ import {
   TouchableOpacity,
   TouchableHighlight,
   FlatList,
+  ScrollView,
 } from "react-native";
 import bgImage from '../pictures/236.jpg'
 import ginBottle from '../pictures/ginBottle.jpg'
 class MyBarscreen extends Component {
+  constructor(props) {
+    super(props)
+    this.state = { count: 0}
+  }
   onPress = () => {
-    this.markSelected({})
+    this.setState({
+      count: this.state.count+1
+    })
   }
 
   render(){
     return (
 
-
     <ImageBackground source={bgImage} style={styles.backgroundContainer}>
 
-
       <SafeAreaView style={{ flex: 1 }}>
-          <View style={{flex:1}}>
             <View style={styles.headerbox}>
               <Text style={styles.headline}>
               MyBar
               </Text>
             </View>
 
-            <FlatList style={styles.scrollContainer}>
-
             <View style={styles.buttonContainer}>
+            <ScrollView contentContainerStyle={{flexGrow: 1}} style={styles.scrollBox} >
 
-              <TouchableHighlight style={styles.ginButton}>
+
+
+              <TouchableHighlight style={styles.ginButton} onPress={this.onPress}>
               <ImageBackground source={require('../pictures/ginBottle.jpg')} style={styles.ginBottle} imageStyle= {{borderRadius: 25}} blurRadius={1}>
               <Text style = {styles.textMyBarButton}>Gin</Text>
               </ImageBackground>
@@ -51,11 +56,70 @@ class MyBarscreen extends Component {
               <Text style = {styles.textMyNotesButton}>Vodka</Text>
               </TouchableHighlight>
 
+              <TouchableHighlight style={styles.myNotesButton} >
+              <Text style = {styles.textMyNotesButton}>Vodka</Text>
+              </TouchableHighlight>
+
+              <TouchableHighlight style={styles.myNotesButton} >
+              <Text style = {styles.textMyNotesButton}>Vodka</Text>
+              </TouchableHighlight>
+
+              <TouchableHighlight style={styles.myNotesButton} >
+              <Text style = {styles.textMyNotesButton}>Vodka</Text>
+              </TouchableHighlight>
+
+              <TouchableHighlight style={styles.myNotesButton} >
+              <Text style = {styles.textMyNotesButton}>Vodka</Text>
+              </TouchableHighlight>
+
+              <TouchableHighlight style={styles.myNotesButton} >
+              <Text style = {styles.textMyNotesButton}>Vodka</Text>
+              </TouchableHighlight>
+
+              <TouchableHighlight style={styles.myNotesButton} >
+              <Text style = {styles.textMyNotesButton}>Vodka</Text>
+              </TouchableHighlight>
+
+              <TouchableHighlight style={styles.myNotesButton} >
+              <Text style = {styles.textMyNotesButton}>Vodka</Text>
+              </TouchableHighlight>
+
+              <TouchableHighlight style={styles.myNotesButton} >
+              <Text style = {styles.textMyNotesButton}>Vodka</Text>
+              </TouchableHighlight>
+
+              <TouchableHighlight style={styles.myNotesButton} >
+              <Text style = {styles.textMyNotesButton}>Vodka</Text>
+              </TouchableHighlight>
+
+              <TouchableHighlight style={styles.myNotesButton} >
+              <Text style = {styles.textMyNotesButton}>Vodka</Text>
+              </TouchableHighlight>
+
+              <TouchableHighlight style={styles.myNotesButton} >
+              <Text style = {styles.textMyNotesButton}>Vodka</Text>
+              </TouchableHighlight>
+
+              <TouchableHighlight style={styles.myNotesButton} >
+              <Text style = {styles.textMyNotesButton}>Vodka</Text>
+              </TouchableHighlight>
+
+              <TouchableHighlight style={styles.myNotesButton} >
+              <Text style = {styles.textMyNotesButton}>Vodka</Text>
+              </TouchableHighlight>
+
+              <TouchableHighlight style={styles.myNotesButton} >
+              <Text style = {styles.textMyNotesButton}>Vodka</Text>
+              </TouchableHighlight>
+
+              <TouchableHighlight style={styles.myNotesButton} >
+              <Text style = {styles.textMyNotesButton}>Vodka</Text>
+              </TouchableHighlight>
+
+
+            </ScrollView>
             </View>
 
-          </FlatList>
-
-          </View>
       </SafeAreaView>
 
     </ImageBackground>
@@ -70,7 +134,7 @@ const styles = StyleSheet.create({
   backgroundContainer: {
     flex:1,
     alignItems:'center',
-    justifyContent:'center'
+    justifyContent:'center',
   },
   headline: {
     marginTop: 10,
@@ -78,24 +142,39 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 25,
  },
- headerbox:{
-   backgroundColor: 'white',
+ headerbox: {
    height: 70,
    borderBottomWidth: 1,
-   borderBottomColor: '#dddddd'
-
- },
-
- scrollContainer:{
-   scrollEventThrottle: 50,
+   borderBottomColor: '#dddddd',
 
  },
 
  buttonContainer:{
+   width: '100%',
+   height: '100%',
+   flex: 1,
+   // backgroundColor: 'green',
    flexWrap: 'wrap',
    flexDirection: 'row',
    justifyContent: 'space-around',
-   marginBottom: 10,
+   borderColor: 'green',
+   borderWidth: 8,
+ },
+
+ scrollBox: {
+
+   // width: '100%',
+   // height: '100%',
+   // flex: 1,
+
+   // backgroundColor: 'green',
+   flexWrap: 'wrap',
+   flexDirection: 'row',
+   justifyContent: 'space-around',
+
+   borderBottomColor: 'red',
+   borderBottomWidth: 8,
+
  },
 
  ginBottle: {
@@ -107,10 +186,11 @@ const styles = StyleSheet.create({
  },
 
  ginButton: {
-   underlayColor: 'red',
-   width: '45%',
-   height: '50%',
-   borderRadius: 25,
+   underlayColor: 'white',
+   activeOpacity: 0.5,
+   width: '30%',
+   height: '25%',
+   borderRadius: 10,
    backgroundColor: '#07757D',
    justifyContent: 'center',
    marginTop: 10,
@@ -118,15 +198,15 @@ const styles = StyleSheet.create({
 
  textMyBarButton: {
    color: 'black',
-   fontSize: 32,
-   fontWeight: 'bolder',
+   fontSize: 22,
+   fontWeight: 'bold',
    textAlign: 'center',
  },
 
  myFavoritesButton: {
-   width: '45%',
-   height: '50%',
-   borderRadius: 25,
+   width: '30%',
+   height: '25%',
+   borderRadius: 10,
    backgroundColor: '#07757D',
    justifyContent: 'center',
    marginTop: 10,
@@ -134,24 +214,33 @@ const styles = StyleSheet.create({
 
  textMyFavoritesButton: {
    color: 'black',
-   fontSize: 32,
-   fontWeight: 'bolder',
+   fontSize: 22,
+   fontWeight: 'bold',
    textAlign: 'center',
  },
 
  myNotesButton: {
-   width: '45%',
-   height: '50%',
-   borderRadius: 25,
+   width: '30%',
+   height: '25%',
+   borderRadius: 10,
    backgroundColor: '#07757D',
    justifyContent: 'center',
    marginTop: 10,
  },
 
  textMyNotesButton: {
-   color: 'rgba(255,255,255,0.9)',
-   fontSize: 16,
-   textAlign: 'center'
+   color: 'black',
+   fontSize: 22,
+   fontWeight: 'bold',
+   textAlign: 'center',
  },
+
+ countContainer: {
+    alignItems: 'center',
+    padding: 10
+  },
+  countText: {
+    color: '#FF00FF'
+  }
 
 });

@@ -13,6 +13,7 @@ import MyFavoriteDrinksscreen from './screens/MyFavoriteDrinksscreen'
 import MyNotesscreen from './screens/MyNotesscreen'
 import Registerscreen from './screens/Registerscreen'
 import Loginscreen from './screens/Loginscreen'
+
 import SpecificDrinkscreen from './screens/SpecificDrinkscreen'
 
 const MyPageStack = createStackNavigator({
