@@ -1,6 +1,7 @@
 import React, { Component} from "react";
 import {usersDB} from '../App';
 import {Alert} from 'react-native'
+import App from '../App'
 import {
   View,
   Text,
@@ -19,11 +20,11 @@ const { width:WIDTH, height:HEIGHT } = Dimensions.get('window');
 class Registerscreen extends Component {
   constructor(props){
     super(props);
+    console.log(props.navigation.state.key);
     this.state = {
       email: 'Email',
       password: 'Password',
       repeatPassword: 'Repeat Password',
-      users: props.users
     }
   }
 

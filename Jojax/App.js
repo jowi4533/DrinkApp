@@ -32,17 +32,19 @@ const database = firebase.database();
 const usersDB = database.ref('Users');
 export {usersDB};
 
-const MyPageStack = createStackNavigator({
-  MyPage: MyPagescreen,
-  MyBar: MyBarscreen,
-  MyFavoriteDrinks: MyFavoriteDrinksscreen,
-  MyNotes: MyNotesscreen,
-  Register: Registerscreen,
-  Login: Loginscreen,
 
-});
+const MyPageStack = createStackNavigator(
+  {
+  MyPage: {screen: MyPagescreen},
+  MyBar: {screen: MyBarscreen},
+  MyFavoriteDrinks: {screen: MyFavoriteDrinksscreen},
+  MyNotes: {screen: MyNotesscreen},
+  Register: {screen: Registerscreen},
+  Login: {screen: Loginscreen},
+  }
+);
 
-const TabOptions = createBottomTabNavigator({
+const TabNavigator = createBottomTabNavigator({
   Explore:{
     screen: Explorescreen,
     navigationOptions: {
@@ -97,10 +99,10 @@ const TabOptions = createBottomTabNavigator({
     }
   }
 )
-const AppContainer = createAppContainer(TabOptions);
+const AppContainer = createAppContainer(TabNavigator);
 class App extends Component {
-  constructor(){
-    super()
+  constructor(props){
+    super(props)
     this.state = {
       addUserListener: this.initailizeListener(),
       keys: null
@@ -124,7 +126,7 @@ class App extends Component {
 
   render(){
     return (
-      <AppContainer users={this.state.keys}>
+      <AppContainer users = {this.state.keys}>
       </AppContainer>
     );
   }
