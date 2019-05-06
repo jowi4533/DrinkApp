@@ -13,7 +13,11 @@ import MyFavoriteDrinksscreen from './screens/MyFavoriteDrinksscreen'
 import MyNotesscreen from './screens/MyNotesscreen'
 import Registerscreen from './screens/Registerscreen'
 import Loginscreen from './screens/Loginscreen'
+<<<<<<< HEAD
 import firebase from 'firebase'
+=======
+import SpecificDrinkscreen from './screens/SpecificDrinkscreen'
+>>>>>>> 06566adddca3eea8dfc526e388a45b94e6c2ff59
 
 const config = {
   apiKey: "AIzaSyA5TqttcjP9G88qkAEenf1rfDe0B1E9v3E",
@@ -56,7 +60,7 @@ const TabNavigator = createBottomTabNavigator({
     }
   },
   Drinks:{
-    screen: Drinkscreen,
+    screen: DrinkStack,
     navigationOptions: {
       tabBarLabel: 'DRINKS',
       tabBarIcon: ({tintColor}) => (

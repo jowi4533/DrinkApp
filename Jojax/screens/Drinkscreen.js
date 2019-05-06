@@ -62,11 +62,10 @@ class Drinkscreen extends Component {
       </TouchableOpacity>
       </View>
       </View>
+
       <ScrollView scrollEventThrottle = {16}>
-
-
       <View style = {styles.drinkContainer}>
-      <TouchableOpacity style = {styles.buttonDrink}>
+      <TouchableOpacity style = {styles.buttonDrink} onPress={() => this.props.navigation.navigate('SpecDrinks')}>
       <View>
       <Image source = {{ uri: 'https://www.ica.se//assets.icanet.se/q_auto,f_auto/imagevaultfiles/id_63385/cf_6901/vodkadrink_med_bj-rnb-r_och_citron-715242.jpg'
  }} style = {styles.imageDrink}/>
@@ -81,9 +80,6 @@ class Drinkscreen extends Component {
       </View>
       </TouchableOpacity>
       </View>
-
-
-
       </ScrollView>
 
 
