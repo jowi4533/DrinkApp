@@ -16,14 +16,6 @@ import {
 import bgImage from "../pictures/236.jpg";
 import ginBottle from "../pictures/ginBottle.jpg";
 
-const data = [
-  {key: 'Gin', selected: false}, {key: 'Vodka', selected: false}, {key: 'Whiskey', selected: false}, {key: 'White Rum', selected: false}, {key: 'Dark Rum', selected: false}, {key: 'Tequila', selected: false},
-  {key: 'White Wine', selected: false}, {key: 'Red Wine', selected: false}, {key: 'Blue Wine', selected: false}, {key: 'Schnaps', selected: false},
-  {key: 'Absinthe', selected: false},
-  {key: 'Rose Wine', selected: false},
-];
-
-const numColumns = 3;
 
 // const formatData = (data, numColumns) => {
 //   const numberOfFullRows = Math.floor(data.length / numColumns);
@@ -37,12 +29,24 @@ const numColumns = 3;
 //   return data;
 // };
 
+const numColumns = 3;
 
 class MyBarscreen extends Component {
+  instance() {
+    const data = [
+      {name: 'Gin', selected: false}, {name: 'Vodka', selected: false}, {name: 'Whisname', selected: false}, {name: 'White Rum', selected: false}, {name: 'Dark Rum', selected: false}, {name: 'Tequila', selected: false},
+      {name: 'White Wine', selected: false}, {name: 'Red Wine', selected: false}, {name: 'Blue Wine', selected: false}, {name: 'Schnaps', selected: false},
+      {name: 'Absinthe', selected: false},
+      {name: 'Rose Wine', selected: false},
+    ];
+
+
+    return data;
+  }
 
   onBtnClickSelect(item) {
     console.log('inside method')
-    this.selected === true;
+    instance(item).selected === true;
     console.log('after item.selected == true')
     console.log(item.selected)
   };
@@ -55,7 +59,7 @@ class MyBarscreen extends Component {
     return (
       <TouchableHighlight style={styles.item} onPress={ () => { this.onBtnClickSelect(this.item) }}
       >
-        <Text style={styles.itemText}> {item.key} </Text>
+        <Text style={styles.itemText}> {item.name} </Text>
       </TouchableHighlight>
     );
   };
@@ -68,7 +72,7 @@ class MyBarscreen extends Component {
           </View>
 
           <FlatList
-            data={data}
+            data={this.instance()}
             style={styles.container}
             renderItem={this.renderItem}
             numColumns={numColumns}
