@@ -13,23 +13,48 @@ import MyFavoriteDrinksscreen from './screens/MyFavoriteDrinksscreen'
 import MyNotesscreen from './screens/MyNotesscreen'
 import Registerscreen from './screens/Registerscreen'
 import Loginscreen from './screens/Loginscreen'
+
+import firebase from 'firebase'
+
 import SpecificDrinkscreen from './screens/SpecificDrinkscreen'
 
-const MyPageStack = createStackNavigator({
-  MyPage: MyPagescreen,
-  MyBar: MyBarscreen,
-  MyFavoriteDrinks: MyFavoriteDrinksscreen,
-  MyNotes: MyNotesscreen,
-  Register: Registerscreen,
-  Login: Loginscreen,
 
-});
-const DrinkStack = createStackNavigator({
-AllDrinks : Drinkscreen,
-SpecDrinks : SpecificDrinkscreen
-});
+const config = {
+  apiKey: "AIzaSyA5TqttcjP9G88qkAEenf1rfDe0B1E9v3E",
+  authDomain: "drinknic-e6779.firebaseapp.com",
+  databaseURL: "https://drinknic-e6779.firebaseio.com",
+  projectId: "drinknic-e6779",
+  storageBucket: "drinknic-e6779.appspot.com",
+  messagingSenderId: "210609393019"
+};
 
-const TabOptions = createBottomTabNavigator({
+if(!firebase.apps.length){
+    firebase.initializeApp(config);
+}
+
+const database = firebase.database();
+const usersDB = database.ref('Users');
+export {usersDB};
+
+
+const MyPageStack = createStackNavigator(
+  {
+  MyPage: {screen: MyPagescreen},
+  MyBar: {screen: MyBarscreen},
+  MyFavoriteDrinks: {screen: MyFavoriteDrinksscreen},
+  MyNotes: {screen: MyNotesscreen},
+  Register: {screen: Registerscreen},
+  Login: {screen: Loginscreen},
+  }
+);
+const DrinkStack = createStackNavigator(
+  {
+    Drink: {screen:Drinkscreen},
+    SpecDrinks: {screen:SpecificDrinkscreen }
+}
+);
+
+const TabNavigator = createBottomTabNavigator({
   Explore:{
     screen: Explorescreen,
     navigationOptions: {
@@ -84,12 +109,35 @@ const TabOptions = createBottomTabNavigator({
     }
   }
 )
-const AppContainer = createAppContainer(TabOptions);
+const AppContainer = createAppContainer(TabNavigator);
 class App extends Component {
+  constructor(props){
+    super(props)
+    this.state = {
+      addUserListener: this.initailizeListener(),
+      keys: null
+    }
+  }
+
+  initailizeListener = () => {
+    usersDB.on("value", this.retrieveUserKeys, this.errData);
+  }
+
+  retrieveUserKeys = (data) => {
+    this.setState({keys: Object.keys(data.val())});
+    console.log(this.state.keys);
+    console.log("hej hora")
+  }
+
+  errData = (err) =>{
+    console.log('Error!');
+    console.log(err);
+  }
+
   render(){
     return (
-        <AppContainer>
-        </AppContainer>
+      <AppContainer users = {this.state.keys}>
+      </AppContainer>
     );
   }
 }
