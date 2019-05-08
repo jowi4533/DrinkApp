@@ -87,7 +87,6 @@ const styles = StyleSheet.create({
  },
 
  scrollContainer:{
-   scrollEventThrottle: 50,
 
  },
 
@@ -107,7 +106,6 @@ const styles = StyleSheet.create({
  },
 
  ginButton: {
-   underlayColor: 'red',
    width: '45%',
    height: '50%',
    borderRadius: 25,

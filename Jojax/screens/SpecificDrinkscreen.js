@@ -48,7 +48,6 @@ const styles = StyleSheet.create({
 
   imageDrink: {
     //flex : 1,
-    resizeMode:  ''
   }
 
 

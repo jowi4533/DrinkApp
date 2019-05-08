@@ -13,11 +13,9 @@ import MyFavoriteDrinksscreen from './screens/MyFavoriteDrinksscreen'
 import MyNotesscreen from './screens/MyNotesscreen'
 import Registerscreen from './screens/Registerscreen'
 import Loginscreen from './screens/Loginscreen'
-<<<<<<< HEAD
+
 import firebase from 'firebase'
-=======
 import SpecificDrinkscreen from './screens/SpecificDrinkscreen'
->>>>>>> 06566adddca3eea8dfc526e388a45b94e6c2ff59
 
 const config = {
   apiKey: "AIzaSyA5TqttcjP9G88qkAEenf1rfDe0B1E9v3E",
@@ -33,8 +31,10 @@ if(!firebase.apps.length){
 }
 
 const database = firebase.database();
+var firebaseStorage = firebase.storage();
 const usersDB = database.ref('Users');
 export {usersDB};
+export {firebaseStorage};
 
 
 const MyPageStack = createStackNavigator(
@@ -47,6 +47,11 @@ const MyPageStack = createStackNavigator(
   Login: {screen: Loginscreen},
   }
 );
+
+const DrinkStack = createStackNavigator({
+  AllDrinks: Drinkscreen,
+  specDrinks: SpecificDrinkscreen
+});
 
 const TabNavigator = createBottomTabNavigator({
   Explore:{

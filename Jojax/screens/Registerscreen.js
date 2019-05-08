@@ -20,7 +20,6 @@ const { width:WIDTH, height:HEIGHT } = Dimensions.get('window');
 class Registerscreen extends Component {
   constructor(props){
     super(props);
-    console.log(props.navigation.state.key);
     this.state = {
       email: 'Email',
       password: 'Password',
@@ -29,7 +28,7 @@ class Registerscreen extends Component {
   }
 
   readValues(){
-    console.log(this.state.users)
+    console.log(usersDB)
     if(this.state.password === this.state.repeatPassword){
       if(this.checkIfUserExist() === false){
         this.createNewUser();
