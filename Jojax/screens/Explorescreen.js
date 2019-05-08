@@ -4,12 +4,14 @@ import {
   Text,
   StyleSheet,
   SafeAreaView,
+  Dimensions
 } from "react-native";
 
 const numbers = [1, 2, 3, 4, 5];
 const listItems = numbers.map((number) =>
   <li>{number}</li>
 );
+const { width: WIDTH, height: HEIGHT } = Dimensions.get("window");
 
 class Explorescreen extends Component {
   render(){
@@ -21,8 +23,8 @@ class Explorescreen extends Component {
               Explore
               </Text>
             </View>
-            <Text style={{textAlign: 'center',marginTop:55}}>
-            TESTING 123 JONS TESTING
+            <Text style={{textAlign: 'center',marginTop:HEIGHT/2.5}}>
+            EXPLORE SCREEN
             </Text>
           </View>
       </SafeAreaView>
