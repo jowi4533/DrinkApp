@@ -14,8 +14,9 @@ import MyNotesscreen from './screens/MyNotesscreen'
 import Registerscreen from './screens/Registerscreen'
 import Loginscreen from './screens/Loginscreen'
 
-import firebase from 'firebase'
 import SpecificDrinkscreen from './screens/SpecificDrinkscreen'
+import firebase from 'firebase'
+
 
 const config = {
   apiKey: "AIzaSyA5TqttcjP9G88qkAEenf1rfDe0B1E9v3E",
@@ -46,6 +47,12 @@ const MyPageStack = createStackNavigator(
   Register: {screen: Registerscreen},
   Login: {screen: Loginscreen},
   }
+);
+const DrinkStack = createStackNavigator(
+  {
+    Drink: {screen:Drinkscreen},
+    SpecDrinks: {screen:SpecificDrinkscreen }
+}
 );
 
 const DrinkStack = createStackNavigator({
