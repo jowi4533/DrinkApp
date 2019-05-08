@@ -41,10 +41,7 @@ class MyPagescreen extends Component {
               style={styles.myBarButton}
               onPress={() => this.props.navigation.navigate("MyBar")}
             >
-              <Image
-                source={require("../pictures/myBarImage.jpg")}
-                styles={styles.myBarIcon}
-              />
+
               <Text style={styles.textMyBarButton}>My Bar</Text>
             </TouchableOpacity>
 
@@ -100,7 +97,7 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     marginTop: 35,
     justifyContent: "center",
-    backgroundColor: "#07757D"
+    backgroundColor: "rgba(245, 171, 53, 1)"
   },
 
   textLoginButton: {
@@ -140,10 +137,10 @@ const styles = StyleSheet.create({
     width: WIDTH - 55,
     height: 60,
     borderRadius: 25,
-    backgroundColor: "#aa3517",
+    backgroundColor: "#07757D",
     justifyContent: "center",
     marginTop: 20,
-    flexDirection: "row"
+    // flexDirection: "row"
   },
 
   textMyBarButton: {
@@ -165,7 +162,7 @@ const styles = StyleSheet.create({
     width: WIDTH - 55,
     height: 60,
     borderRadius: 25,
-    backgroundColor: "#aa3517",
+    backgroundColor: "#07757D",
     justifyContent: "center",
     marginTop: 20
   },
@@ -180,7 +177,7 @@ const styles = StyleSheet.create({
     width: WIDTH - 55,
     height: 60,
     borderRadius: 25,
-    backgroundColor: "#aa3517",
+    backgroundColor: "#07757D",
     justifyContent: "center",
     marginTop: 20
   },

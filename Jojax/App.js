@@ -15,6 +15,7 @@ import Registerscreen from './screens/Registerscreen'
 import Loginscreen from './screens/Loginscreen'
 
 import SpecificDrinkscreen from './screens/SpecificDrinkscreen'
+import firebase from 'firebase'
 
 
 const config = {
