@@ -195,7 +195,6 @@ const styles = StyleSheet.create({
     paddingBottom: 12
   },
   ingredientInnerContainer: {
-    margintop: 5,
     marginBottom:10,
     //marginLeft: 15,
     //borderBottomWidth: 3,

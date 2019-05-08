@@ -48,12 +48,7 @@ const MyPageStack = createStackNavigator(
   Login: {screen: Loginscreen},
   }
 );
-const DrinkStack = createStackNavigator(
-  {
-    Drink: {screen:Drinkscreen},
-    SpecDrinks: {screen:SpecificDrinkscreen }
-}
-);
+
 
 const DrinkStack = createStackNavigator({
   AllDrinks: Drinkscreen,
