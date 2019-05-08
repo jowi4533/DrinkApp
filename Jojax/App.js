@@ -17,6 +17,7 @@ import Loginscreen from './screens/Loginscreen'
 import SpecificDrinkscreen from './screens/SpecificDrinkscreen'
 import firebase from 'firebase'
 
+
 const config = {
   apiKey: "AIzaSyA5TqttcjP9G88qkAEenf1rfDe0B1E9v3E",
   authDomain: "drinknic-e6779.firebaseapp.com",

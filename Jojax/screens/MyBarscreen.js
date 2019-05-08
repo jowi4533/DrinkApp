@@ -34,7 +34,7 @@ const numColumns = 3;
 class MyBarscreen extends Component {
   instance() {
     const data = [
-      {name: 'Gin', selected: false}, {name: 'Vodka', selected: false}, {name: 'Whisname', selected: false}, {name: 'White Rum', selected: false}, {name: 'Dark Rum', selected: false}, {name: 'Tequila', selected: false},
+      {name: 'Gin', selected: false}, {name: 'Vodka', selected: false}, {name: 'Whiskey', selected: false}, {name: 'White Rum', selected: false}, {name: 'Dark Rum', selected: false}, {name: 'Tequila', selected: false},
       {name: 'White Wine', selected: false}, {name: 'Red Wine', selected: false}, {name: 'Blue Wine', selected: false}, {name: 'Schnaps', selected: false},
       {name: 'Absinthe', selected: false},
       {name: 'Rose Wine', selected: false},
@@ -111,11 +111,11 @@ const styles = StyleSheet.create({
     underlayColor: 'rgba(253, 227, 167, 1)',
     activeOpacity: 0.75,
     borderRadius: 10,
-    backgroundColor: 'rgba(250, 190, 88, 1)',
+    backgroundColor: '#07757D',
     alignItems: 'center',
     justifyContent: 'center',
     flex: 1,
-    margin: 1,
+    margin: 5,
     height: Dimensions.get('window').width / numColumns,
   },
 
