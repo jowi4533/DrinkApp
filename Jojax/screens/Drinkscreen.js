@@ -1,5 +1,6 @@
 import React, { Component} from "react";
 import { Ionicons,FontAwesome,Entypo,EvilIcons } from '@expo/vector-icons';
+import {firebaseStorage} from '../App'
 import {
   View,
   Text,
@@ -18,7 +19,8 @@ class Drinkscreen extends Component {
   constructor(){
     super()
     this.state ={
-      dataSource: []
+      dataSource: [],
+      vodkaIMG: ""
     }
   }
 
@@ -38,13 +40,26 @@ class Drinkscreen extends Component {
       this.setState({
         dataSource: responseJson.book_array
       })
-
-
     })
     .catch((error) => {
       console.log(error)
     })
+
+    var storageRef = firebaseStorage.ref();
+    var imagesRef = storageRef.child('Drinkpictures')
+    var vodkaRef = firebaseStorage.ref('Drinkpictures/Vodka.jpg')
+    vodkaRef.getDownloadURL().then((url) =>
+    {
+      this.state.vodkaIMG = url;
+    })
+
+    setTimeout(() => {
+      console.log(this.state.vodkaIMG);
+    }, 1000);
   }
+
+
+
   render(){
     return (
       <SafeAreaView style={styles.container}>
@@ -67,8 +82,7 @@ class Drinkscreen extends Component {
       <View style = {styles.drinkContainer}>
       <TouchableOpacity style = {styles.buttonDrink} onPress={() => this.props.navigation.navigate('SpecDrinks')}>
       <View>
-      <Image source = {{ uri: 'https://www.ica.se//assets.icanet.se/q_auto,f_auto/imagevaultfiles/id_63385/cf_6901/vodkadrink_med_bj-rnb-r_och_citron-715242.jpg'
- }} style = {styles.imageDrink}/>
+      <Image source = {{ uri: this.state.vodkaIMG}} style = {styles.imageDrink}/>
       </View>
       <View style = {styles.textBoxContainer}>
       <Text style= {styles.textDrinkName}>

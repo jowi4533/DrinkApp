@@ -12,6 +12,10 @@ const listItems = numbers.map((number) =>
 );
 
 class Explorescreen extends Component {
+  constructor(props){
+    super(props)
+
+  }
   render(){
     return (
       <SafeAreaView style={{ flex: 1 }}>

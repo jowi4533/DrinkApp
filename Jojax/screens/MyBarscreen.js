@@ -1,4 +1,4 @@
-import React, { Component} from "react";
+import React, { Component } from "react";
 import {
   View,
   Text,
@@ -10,148 +10,129 @@ import {
   TouchableOpacity,
   TouchableHighlight,
   FlatList,
+  ScrollView,
+  Dimensions
 } from "react-native";
-import bgImage from '../pictures/236.jpg'
-import ginBottle from '../pictures/ginBottle.jpg'
+import bgImage from "../pictures/236.jpg";
+import ginBottle from "../pictures/ginBottle.jpg";
+
+
+// const formatData = (data, numColumns) => {
+//   const numberOfFullRows = Math.floor(data.length / numColumns);
+//
+//   let numberOfElementsLastRow = data.length - (numberOfFullRows * numColumns);
+//   while (numberOfElementsLastRow !== numColumns &&  numberOfElementsLastRow !== 0) {
+//     data.push({ key: `blank-${numberOfElementsLastRow}`, empty: true });
+//     numberOfElementsLastRow = numberOfElementsLastRow + 1;
+//   }
+//
+//   return data;
+// };
+
+const numColumns = 3;
+
 class MyBarscreen extends Component {
-  onPress = () => {
-    this.markSelected({})
+  instance() {
+    const data = [
+      {name: 'Gin', selected: false}, {name: 'Vodka', selected: false}, {name: 'Whiskey', selected: false}, {name: 'White Rum', selected: false}, {name: 'Dark Rum', selected: false}, {name: 'Tequila', selected: false},
+      {name: 'White Wine', selected: false}, {name: 'Red Wine', selected: false}, {name: 'Blue Wine', selected: false}, {name: 'Schnaps', selected: false},
+      {name: 'Absinthe', selected: false},
+      {name: 'Rose Wine', selected: false},
+    ];
+
+
+    return data;
   }
 
-  render(){
+  onBtnClickSelect(item) {
+    console.log('inside method')
+    instance(item).selected === true;
+    console.log('after item.selected == true')
+    console.log(item.selected)
+  };
+
+  renderItem = ({ item, index }) => {
+    if (item.selected === true) {
+      return <TouchableHighlight style={styles.item, styles.itemSelected}>
+      </TouchableHighlight>;
+    }
     return (
+      <TouchableHighlight style={styles.item} onPress={ () => { this.onBtnClickSelect(this.item) }}
+      >
+        <Text style={styles.itemText}> {item.name} </Text>
+      </TouchableHighlight>
+    );
+  };
 
-
-    <ImageBackground source={bgImage} style={styles.backgroundContainer}>
-
-
-      <SafeAreaView style={{ flex: 1 }}>
-          <View style={{flex:1}}>
-            <View style={styles.headerbox}>
-              <Text style={styles.headline}>
-              MyBar
-              </Text>
-            </View>
-
-            <FlatList style={styles.scrollContainer}>
-
-            <View style={styles.buttonContainer}>
-
-              <TouchableHighlight style={styles.ginButton}>
-              <ImageBackground source={require('../pictures/ginBottle.jpg')} style={styles.ginBottle} imageStyle= {{borderRadius: 25}} blurRadius={1}>
-              <Text style = {styles.textMyBarButton}>Gin</Text>
-              </ImageBackground>
-              </TouchableHighlight>
-
-              <TouchableHighlight style={styles.myFavoritesButton}>
-              <Text style = {styles.textMyFavoritesButton}>Whiskey</Text>
-              </TouchableHighlight>
-
-              <TouchableHighlight style={styles.myNotesButton} >
-              <Text style = {styles.textMyNotesButton}>Vodka</Text>
-              </TouchableHighlight>
-
-            </View>
-
-          </FlatList>
-
+  render() {
+    return (
+      <ImageBackground source={bgImage} style={styles.backgroundContainer}>
+          <View style={styles.headerbox}>
+            <Text style={styles.headline}>MyBar</Text>
           </View>
-      </SafeAreaView>
 
-    </ImageBackground>
+          <FlatList
+            data={this.instance()}
+            style={styles.container}
+            renderItem={this.renderItem}
+            numColumns={numColumns}
+          >
+        </FlatList>
 
-
+      </ImageBackground>
     );
   }
 }
+
 export default MyBarscreen;
 
 const styles = StyleSheet.create({
   backgroundContainer: {
-    flex:1,
-    alignItems:'center',
-    justifyContent:'center'
+    flex: 1,
   },
   headline: {
-    marginTop: 10,
-    textAlign: 'center', // <-- the magic
-    fontWeight: 'bold',
-    fontSize: 25,
- },
- headerbox:{
-   backgroundColor: 'white',
-   height: 70,
-   borderBottomWidth: 1,
-   borderBottomColor: '#dddddd'
+    textAlign: "center", // <-- the magic
+    fontWeight: "bold",
+    fontSize: 25
+  },
+  headerbox: {
+    height: 70,
+    borderBottomWidth: 1,
+    borderBottomColor: "#dddddd"
+  },
 
- },
+  container: {
+    flex: 1,
+    marginVertical: 1,
+  },
 
- scrollContainer:{
-   scrollEventThrottle: 50,
+  item: {
+    borderRadius: 10,
+    backgroundColor: '#07757D',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flex: 1,
+    margin: 5,
+    height: Dimensions.get('window').width / numColumns,
+  },
 
- },
+  itemText: {
+    fontSize: 18,
+    color: 'black',
+  },
 
- buttonContainer:{
-   flexWrap: 'wrap',
-   flexDirection: 'row',
-   justifyContent: 'space-around',
-   marginBottom: 10,
- },
+  itemSelected: {
+    borderRadius: 10,
+    backgroundColor: 'rgba(250, 190, 88, 1)',
 
- ginBottle: {
-   justifyContent: 'center',
-   alignItems: 'center',
-   width: '100%',
-   height: '100%',
-   opacity: 0.6,
- },
+    opacity: 0.8,
+    borderWidth: 2,
+    borderColor: 'rgba(240, 52, 52, 1)',
 
- ginButton: {
-   underlayColor: 'red',
-   width: '45%',
-   height: '50%',
-   borderRadius: 25,
-   backgroundColor: '#07757D',
-   justifyContent: 'center',
-   marginTop: 10,
- },
-
- textMyBarButton: {
-   color: 'black',
-   fontSize: 32,
-   fontWeight: 'bold',
-   textAlign: 'center',
- },
-
- myFavoritesButton: {
-   width: '45%',
-   height: '50%',
-   borderRadius: 25,
-   backgroundColor: '#07757D',
-   justifyContent: 'center',
-   marginTop: 10,
- },
-
- textMyFavoritesButton: {
-   color: 'black',
-   fontSize: 32,
-   fontWeight: 'bold',
-   textAlign: 'center',
- },
-
- myNotesButton: {
-   width: '45%',
-   height: '50%',
-   borderRadius: 25,
-   backgroundColor: '#07757D',
-   justifyContent: 'center',
-   marginTop: 10,
- },
-
- textMyNotesButton: {
-   color: 'rgba(255,255,255,0.9)',
-   fontSize: 16,
-   textAlign: 'center'
- },
-
+    alignItems: 'center',
+    justifyContent: 'center',
+    flex: 1,
+    margin: 1,
+    height: Dimensions.get('window').width / numColumns,
+  },
 });

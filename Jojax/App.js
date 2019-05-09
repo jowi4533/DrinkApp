@@ -13,8 +13,10 @@ import MyFavoriteDrinksscreen from './screens/MyFavoriteDrinksscreen'
 import MyNotesscreen from './screens/MyNotesscreen'
 import Registerscreen from './screens/Registerscreen'
 import Loginscreen from './screens/Loginscreen'
-import firebase from 'firebase'
+
 import SpecificDrinkscreen from './screens/SpecificDrinkscreen'
+import firebase from 'firebase'
+
 
 const config = {
   apiKey: "AIzaSyA5TqttcjP9G88qkAEenf1rfDe0B1E9v3E",
@@ -30,6 +32,7 @@ if(!firebase.apps.length){
 }
 
 const database = firebase.database();
+var firebaseStorage = firebase.storage();
 const usersDB = database.ref('Users');
 const firebaseStorage = firebase.storage();
 
@@ -40,6 +43,7 @@ firebaseStorage.ref('DrinkImages/vodka.jpg').getDownloadURL().then(function(url)
 })
 
 export {usersDB};
+export {firebaseStorage};
 
 
 const MyPageStack = createStackNavigator(
@@ -52,6 +56,12 @@ const MyPageStack = createStackNavigator(
   Login: {screen: Loginscreen},
   }
 );
+
+
+const DrinkStack = createStackNavigator({
+  AllDrinks: Drinkscreen,
+  specDrinks: SpecificDrinkscreen
+});
 
 const TabNavigator = createBottomTabNavigator({
   Explore:{
