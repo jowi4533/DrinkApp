@@ -58,6 +58,11 @@ class MyPagescreen extends Component {
             >
               <Text style={styles.textMyNotesButton}>My Notes</Text>
             </TouchableOpacity>
+            <View>
+              <Text style = {{fontSize:20}}>
+                user unknown
+              </Text>
+            </View>
           </View>
         </SafeAreaView>
       </ImageBackground>
