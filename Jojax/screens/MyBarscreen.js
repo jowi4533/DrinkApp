@@ -91,7 +91,6 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   headline: {
-    marginTop: 10,
     textAlign: "center", // <-- the magic
     fontWeight: "bold",
     fontSize: 25
@@ -108,8 +107,6 @@ const styles = StyleSheet.create({
   },
 
   item: {
-    underlayColor: 'rgba(253, 227, 167, 1)',
-    activeOpacity: 0.75,
     borderRadius: 10,
     backgroundColor: '#07757D',
     alignItems: 'center',
@@ -125,8 +122,6 @@ const styles = StyleSheet.create({
   },
 
   itemSelected: {
-    underlayColor: 'rgba(253, 227, 167, 1)',
-    activeOpacity: 0.75,
     borderRadius: 10,
     backgroundColor: 'rgba(250, 190, 88, 1)',
 

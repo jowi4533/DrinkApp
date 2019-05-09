@@ -32,8 +32,10 @@ if(!firebase.apps.length){
 }
 
 const database = firebase.database();
+var firebaseStorage = firebase.storage();
 const usersDB = database.ref('Users');
 export {usersDB};
+export {firebaseStorage};
 
 
 const MyPageStack = createStackNavigator(
@@ -46,12 +48,12 @@ const MyPageStack = createStackNavigator(
   Login: {screen: Loginscreen},
   }
 );
-const DrinkStack = createStackNavigator(
-  {
-    Drink: {screen:Drinkscreen},
-    SpecDrinks: {screen:SpecificDrinkscreen }
-}
-);
+
+
+const DrinkStack = createStackNavigator({
+  AllDrinks: Drinkscreen,
+  specDrinks: SpecificDrinkscreen
+});
 
 const TabNavigator = createBottomTabNavigator({
   Explore:{
