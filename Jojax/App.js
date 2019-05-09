@@ -13,11 +13,8 @@ import MyFavoriteDrinksscreen from './screens/MyFavoriteDrinksscreen'
 import MyNotesscreen from './screens/MyNotesscreen'
 import Registerscreen from './screens/Registerscreen'
 import Loginscreen from './screens/Loginscreen'
-<<<<<<< HEAD
 import firebase from 'firebase'
-=======
 import SpecificDrinkscreen from './screens/SpecificDrinkscreen'
->>>>>>> 06566adddca3eea8dfc526e388a45b94e6c2ff59
 
 const config = {
   apiKey: "AIzaSyA5TqttcjP9G88qkAEenf1rfDe0B1E9v3E",
@@ -34,6 +31,14 @@ if(!firebase.apps.length){
 
 const database = firebase.database();
 const usersDB = database.ref('Users');
+const firebaseStorage = firebase.storage();
+
+firebaseStorage.ref('DrinkImages/vodka.jpg').getDownloadURL().then(function(url) {
+  console.log(url)
+
+  //Here i can reach the URL outside we cant
+})
+
 export {usersDB};
 
 
@@ -120,7 +125,6 @@ class App extends Component {
   retrieveUserKeys = (data) => {
     this.setState({keys: Object.keys(data.val())});
     console.log(this.state.keys);
-    console.log("hej hora")
   }
 
   errData = (err) =>{
