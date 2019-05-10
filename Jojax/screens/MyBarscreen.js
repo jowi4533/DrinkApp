@@ -11,7 +11,9 @@ import {
   TouchableHighlight,
   FlatList,
   ScrollView,
-  Dimensions
+  Dimensions,
+  Switch,
+  NativeModules
 } from "react-native";
 import bgImage from "../pictures/236.jpg";
 import ginBottle from "../pictures/ginBottle.jpg";
@@ -29,38 +31,50 @@ import ginBottle from "../pictures/ginBottle.jpg";
 //   return data;
 // };
 
+
 const numColumns = 3;
 
 class MyBarscreen extends Component {
-  instance() {
-    const data = [
+  // constructor(props) {
+  //   super(props)
+  //   this.state = {
+  //     data: data,
+  //
+  //   }
+  //
+  //   console.log(this.state.data)
+  //   //console.log(this.item)
+  //   console.log(item.selected)
+  //
+  // }
+
+  state={
+    data: [
       {name: 'Gin', selected: false}, {name: 'Vodka', selected: false}, {name: 'Whiskey', selected: false}, {name: 'White Rum', selected: false}, {name: 'Dark Rum', selected: false}, {name: 'Tequila', selected: false},
       {name: 'White Wine', selected: false}, {name: 'Red Wine', selected: false}, {name: 'Blue Wine', selected: false}, {name: 'Schnaps', selected: false},
       {name: 'Absinthe', selected: false},
-      {name: 'Rose Wine', selected: false},
-    ];
-
-
-    return data;
+      {name: 'Rose Wine', selected: false}
+    ],
+    isHighlighted: [],
   }
 
-  onBtnClickSelect(item) {
-    console.log('inside method')
-    instance(item).selected === true;
-    console.log('after item.selected == true')
-    console.log(item.selected)
-  };
+_keyExtractor = (item, index) => item.name;
+
+
+  // onBtnClickSelect(item, index) {
+  //   item.selected = true;
+  //   this.setState({})
+  //   console.log(item.selected)
+  // };
 
   renderItem = ({ item, index }) => {
-    if (item.selected === true) {
-      return <TouchableHighlight style={styles.item, styles.itemSelected}>
-      </TouchableHighlight>;
-    }
     return (
-      <TouchableHighlight style={styles.item} onPress={ () => { this.onBtnClickSelect(this.item) }}
+
+      <TouchableHighlight style={styles.item} onPress={ () => { this.setState({ this.state.data[index].selected: true}) ) } }
       >
         <Text style={styles.itemText}> {item.name} </Text>
       </TouchableHighlight>
+      </Switch>
     );
   };
 
@@ -72,9 +86,11 @@ class MyBarscreen extends Component {
           </View>
 
           <FlatList
-            data={this.instance()}
+            data={this.state.data}
+            extraData={this.state.isHighlighted}
             style={styles.container}
             renderItem={this.renderItem}
+            keyExtractor={this._keyExtractor}
             numColumns={numColumns}
           >
         </FlatList>
