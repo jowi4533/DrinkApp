@@ -121,7 +121,7 @@ class App extends Component {
   }
 
   initailizeListener = () => {
-    usersDB.on("value", this.retrieveUserKeys, this.errData);
+    usersDB.once("value", this.retrieveUserKeys, this.errData);
   }
 
   retrieveUserKeys = (data) => {

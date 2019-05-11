@@ -20,7 +20,8 @@ class Drinkscreen extends Component {
     super()
     this.state ={
       dataSource: [],
-      vodkaIMG: ""
+      vodkaIMG: "",
+      dataLoaded: false,
     }
   }
 
@@ -32,7 +33,7 @@ class Drinkscreen extends Component {
     </TouchableOpacity>
     </View>
   }
-  componentDidMount(){
+  async componentDidMount(){
     const url =''
     fetch(url)
     .then((response) => response.json())
@@ -48,17 +49,55 @@ class Drinkscreen extends Component {
     var storageRef = firebaseStorage.ref();
     var imagesRef = storageRef.child('Drinkpictures')
     var vodkaRef = firebaseStorage.ref('Drinkpictures/Vodka.jpg')
-    vodkaRef.getDownloadURL().then((url) =>
+    await vodkaRef.getDownloadURL().then((url) =>
     {
-      this.state.vodkaIMG = url;
+      this.setState({vodkaIMG : url})
     })
-
-    setTimeout(() => {
-      console.log(this.state.vodkaIMG);
-    }, 1000);
+    this.setState({dataloaded : true})
+    console.log(this.state.vodkaIMG)
+    this.forceUpdate()
   }
 
+  pageContent() {
+    return(
+      <SafeAreaView style={styles.container}>
+      <View style ={styles.headerBox}>
+      <Text style = {styles.textHeader}> Drinks </Text>
+      </View>
+      <View style = {styles.searchBox}>
+      <View style = {styles.innerSearchBox}>
+      <EvilIcons name= 'search' size={30}>
+      </EvilIcons>
+      <TextInput placeholder = 'Search' style={styles.searchInput}>
+      </TextInput>
+      <TouchableOpacity style={styles.buttonFilter}>
+      <Text style = {styles.textFilterButton}>Filter</Text>
+      </TouchableOpacity>
+      </View>
+      </View>
 
+      <ScrollView scrollEventThrottle = {16}>
+      <View style = {styles.drinkContainer}>
+      <TouchableOpacity style = {styles.buttonDrink} onPress={() => this.props.navigation.navigate('SpecDrinks')}>
+      <View>
+      <Image source = {{ uri: this.state.vodkaIMG}} style = {styles.imageDrink}/>
+      </View>
+      <View style = {styles.textBoxContainer}>
+      <Text style= {styles.textDrinkName}>
+       Long Island Ice Tea
+      </Text>
+      <Text style = {styles.textDrinkIngredients}>
+      Gin, White Rum, Tequila, Triple Sec, Vodka, Syrup, Lemon Juice, Cola, Ice
+      </Text>
+      </View>
+      </TouchableOpacity>
+      </View>
+      </ScrollView>
+
+
+      </SafeAreaView>
+    )
+  }
 
   render(){
     return (
