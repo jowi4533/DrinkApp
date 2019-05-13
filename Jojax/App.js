@@ -13,8 +13,9 @@ import MyFavoriteDrinksscreen from './screens/MyFavoriteDrinksscreen'
 import MyNotesscreen from './screens/MyNotesscreen'
 import Registerscreen from './screens/Registerscreen'
 import Loginscreen from './screens/Loginscreen'
-
 import SpecificDrinkscreen from './screens/SpecificDrinkscreen'
+import DrinkCategoryScreen from './screens/DrinkCategoryScreen'
+
 import firebase from 'firebase'
 //-------------------------------//
 //Firebase stuff
@@ -53,16 +54,19 @@ const MyPageStack = createStackNavigator(
   Login: {screen: Loginscreen},
   }
 );
-
-
 const DrinkStack = createStackNavigator({
-  AllDrinks: Drinkscreen,
-  specDrinks: SpecificDrinkscreen
+  AllDrinks: {screen: Drinkscreen},
+  SpecDrinks: {screen: SpecificDrinkscreen}
+});
+const ExploreStack = createStackNavigator({
+  Explore: {screen: Explorescreen},
+  SpecDrinks: {screen: SpecificDrinkscreen},
+  DrinkCategory: {screen:DrinkCategoryScreen}
 });
 
 const TabNavigator = createBottomTabNavigator({
   Explore:{
-    screen: Explorescreen,
+    screen: ExploreStack,
     navigationOptions: {
       tabBarLabel: 'EXPLORE',
       tabBarIcon: ({tintColor}) => (
@@ -136,6 +140,11 @@ class App extends Component {
 
   retrieveUserKeys = (data) => {
     this.setState({keys: Object.keys(data.val())});
+<<<<<<< HEAD
+=======
+    console.log(this.state.keys);
+    console.log("testingkeys")
+>>>>>>> b39ad8dd9a1c9712b4dafea8f90401644d54953e
   }
 
   errData = (err) =>{
