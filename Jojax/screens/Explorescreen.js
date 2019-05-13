@@ -31,7 +31,6 @@ const data = [
 class Explorescreen extends Component {
   constructor(props){
     super(props)
-
   }
 
   renderItem1 = ({ item, index }) => {

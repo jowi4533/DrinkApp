@@ -1,6 +1,5 @@
 import React, { Component} from "react";
 import { Ionicons,FontAwesome,Entypo,EvilIcons } from '@expo/vector-icons';
-import {firebaseStorage} from '../App'
 import {
   View,
   Text,
@@ -16,12 +15,17 @@ import {
 const { width:WIDTH, height:HEIGHT } = Dimensions.get('window');
 
 class Drinkscreen extends Component {
-  constructor(){
-    super()
+  constructor(props){
+    super(props)
     this.state ={
       dataSource: [],
-      vodkaIMG: "",
       dataLoaded: false,
+
+      //reference to the drinkImages in the storage
+      drinkImages: props.screenProps.drinkImages,
+
+      //Images later to be loaded
+      vodkaIMG: "",
     }
   }
 
@@ -29,11 +33,11 @@ class Drinkscreen extends Component {
     <View style = {styles.drinkContainer}>
     <TouchableOpacity style = {styles.buttonDrink}>
     <Image source = {{ uri: item.image }} style = {styles.imageDrink}/>
-
     </TouchableOpacity>
     </View>
   }
-  async componentDidMount(){
+  
+  componentDidMount(){
     const url =''
     fetch(url)
     .then((response) => response.json())
@@ -46,16 +50,30 @@ class Drinkscreen extends Component {
       console.log(error)
     })
 
-    var storageRef = firebaseStorage.ref();
-    var imagesRef = storageRef.child('Drinkpictures')
-    var vodkaRef = firebaseStorage.ref('Drinkpictures/Vodka.jpg')
-    await vodkaRef.getDownloadURL().then((url) =>
+    this.loadImages()
+
+    this.forceUpdate()
+  }
+
+  async loadImages() {
+    let referencesArray = [];
+
+    //Here u create all the images you need for the page
+    //Name of the picture is found in the firebase Storage on the website
+    //Give the images simple names when uploading to storage!
+    let vodkaRef = this.state.drinkImages.child('Vodka.jpg')
+
+    //Load these into imagesArray
+    referencesArray = [vodkaRef]
+
+    //Fetch the URL of the images
+     await vodkaRef.getDownloadURL().then((url) =>
     {
       this.setState({vodkaIMG : url})
     })
+
+    //When all data is loaded proceed to next step in componentDidMount
     this.setState({dataloaded : true})
-    console.log(this.state.vodkaIMG)
-    this.forceUpdate()
   }
 
   pageContent() {
