@@ -37,7 +37,27 @@ const data2 = [
     id: 4,
     name: "Very Merry Bourbon Alexander",
     category: "Winter",
-    image: require("../pictures/very_merry_bourbon_alexander.png") }
+    image: require("../pictures/very_merry_bourbon_alexander.png") },
+    {
+      id: 5,
+      name: "Pear Mojito",
+      category: "Summer",
+      image: require("../pictures/pear_mojito.png") },
+    {
+      id: 6,
+      name: "Very Merry Bourbon Alexander",
+      category: "Winter",
+      image: require("../pictures/very_merry_bourbon_alexander.png") },
+      {
+        id: 7,
+        name: "Cranberry Sangria",
+        category: "Fall",
+        image: require("../pictures/cranberry_sangria.png") },
+      {
+        id: 8,
+        name: "Lavender Lemonade Mojito",
+        category: "Spring",
+        image: require("../pictures/lavendel_2.png") }
 ];
 
 class Drinkscreen extends Component {
@@ -64,18 +84,17 @@ class Drinkscreen extends Component {
   render() {
     const { columns } = this.state;
     return (
-      <View>
-        <View style={styles.headerbox}>
-          <Text style={styles.headline}>{data2[0].category}</Text>
-        </View>
-        <ScrollView style={styles.scrollview}>
+      <View style={{paddingBottom:40}}>
+          <View style={styles.headerbox}>
+            <Text style={styles.headline}>{data2[0].category}</Text>
+          </View>
           <FlatList
             data={data2}
             renderItem={this.renderItem1}
             keyExtractor={item => item.id}
             numColumns={columns}
           />
-        </ScrollView>
+
         <ImageBackground
           style={[styles.fixed, styles.containter, {zIndex: -1}]}
           source={bgImage}

@@ -90,7 +90,7 @@ class Explorescreen extends Component {
 
   renderItem1 = ({ item, index }) => {
     return (
-      <View style={{ paddingRight: 5 }}>
+      <View style= {styles.discoverWeeklyBox}>
         <Image style={styles.drinkImage} source={item.image} />
         <View style={styles.drinkNameTextContainer}>
           <Text style={styles.drinkNameText}>{item.name}</Text>
@@ -118,10 +118,14 @@ class Explorescreen extends Component {
     return (
 
         <ImageBackground source={bgImage} style={styles.backgroundContainer}>
-          <ScrollView>
-            <View style={styles.headerBox}>
-              <Text style={styles.headline}>Explore</Text>
-            </View>
+          <View style={styles.headerBox}>
+            <Text style={styles.headline}>
+              Explore
+            </Text>
+          </View>
+          <ScrollView
+            contentContainerStyle= {styles.contentContainer}
+            >
             <View style={styles.discoverWeeklyContainer}>
               <View>
                 <Text style={styles.discoverWeeklyText}>Discover Weekly</Text>
@@ -161,18 +165,22 @@ export default Explorescreen;
 
 const styles = StyleSheet.create({
   headline: {
-    marginTop: 10,
     textAlign: "center", // <-- the magic
     fontWeight: "bold",
     fontSize: 25
   },
   headerBox: {
-    height: 50,
+    height: 40,
     width: WIDTH,
     borderBottomWidth: 1,
     borderBottomColor: "#dddddd"
   },
   discoverWeeklyContainer: {},
+  discoverWeeklyBox:{
+     backgroundColor:'white',
+     marginHorizontal:5,
+     borderRadius:5
+  },
   discoverWeeklyText: {
     fontSize: 25,
     fontWeight: "bold",
@@ -182,7 +190,8 @@ const styles = StyleSheet.create({
   },
   drinkImage: {
     height: WIDTH / 2.6,
-    width: WIDTH / 2.6
+    width: WIDTH / 2.6,
+    margin: 5
   },
   drinkNameText: {
     fontSize: 16,
@@ -222,6 +231,9 @@ const styles = StyleSheet.create({
   seasonalBox: {
     backgroundColor: "white",
     margin: 5,
-
+    borderRadius:5
+  },
+  contentContainer:{
+    paddingBottom: 40
   }
 });
