@@ -42,7 +42,7 @@ const data2 = [
 ];
 const data3 = {name: "Long Island Ice Tea"};
 
-class Drinkscreen extends Component {
+class SpecificDrinkscreen extends Component {
   modifyPreparations() {
     const data2 = [
       {
@@ -146,7 +146,7 @@ class Drinkscreen extends Component {
     );
   }
 }
-export default Drinkscreen;
+export default SpecificDrinkscreen;
 
 const styles = StyleSheet.create({
   container: {

@@ -60,7 +60,7 @@ const data2 = [
         image: require("../pictures/lavendel_2.png") }
 ];
 
-class Drinkscreen extends Component {
+class DrinkCategoryscreen extends Component {
 
   state = {
     columns: 2
@@ -104,7 +104,7 @@ class Drinkscreen extends Component {
     );
   }
 }
-export default Drinkscreen;
+export default DrinkCategoryscreen;
 
 const styles = StyleSheet.create({
   containter: {
