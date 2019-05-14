@@ -15,23 +15,30 @@ import {
 const { width: WIDTH, height: HEIGHT } = Dimensions.get("window");
 
 class Drinkscreen extends Component {
-  constructor() {
-    super();
-    this.state = {
+  constructor(props){
+    super(props)
+    this.state ={
       dataSource: [],
-      vodkaIMG: ""
-    };
+      dataLoaded: false,
+
+      //reference to the drinkImages in the storage
+      drinkImages: props.screenProps.drinkImages,
+
+      //Images later to be loaded
+      vodkaIMG: "",
+    }
   }
 
-  renderItem = item => {
-    <View style={styles.drinkContainer}>
-      <TouchableOpacity style={styles.buttonDrink}>
-        <Image source={{ uri: item.image }} style={styles.imageDrink} />
-      </TouchableOpacity>
-    </View>;
-  };
-  componentDidMount() {
-    const url = "";
+  renderItem = (item) => {
+    <View style = {styles.drinkContainer}>
+    <TouchableOpacity style = {styles.buttonDrink}>
+    <Image source = {{ uri: item.image }} style = {styles.imageDrink}/>
+    </TouchableOpacity>
+    </View>
+  }
+
+  componentDidMount(){
+    const url =''
     fetch(url)
       .then(response => response.json())
       .then(response => {
@@ -43,19 +50,74 @@ class Drinkscreen extends Component {
         console.log(error);
       });
 
-    var storageRef = firebaseStorage.ref();
-    var imagesRef = storageRef.child("Drinkpictures");
-    var vodkaRef = firebaseStorage.ref("Drinkpictures/Vodka.jpg");
-    vodkaRef.getDownloadURL().then(url => {
-      this.state.vodkaIMG = url;
-    });
+    this.loadImages()
 
-    setTimeout(() => {
-      console.log(this.state.vodkaIMG);
-    }, 1000);
+    this.forceUpdate()
   }
 
-  render() {
+  async loadImages() {
+    let referencesArray = [];
+
+    //Here u create all the images you need for the page
+    //Name of the picture is found in the firebase Storage on the website
+    //Give the images simple names when uploading to storage!
+    let vodkaRef = this.state.drinkImages.child('Vodka.jpg')
+
+    //Load these into imagesArray
+    referencesArray = [vodkaRef]
+
+    //Fetch the URL of the images
+     await vodkaRef.getDownloadURL().then((url) =>
+    {
+      this.setState({vodkaIMG : url})
+    })
+
+    //When all data is loaded proceed to next step in componentDidMount
+    this.setState({dataloaded : true})
+  }
+
+  pageContent() {
+    return(
+      <SafeAreaView style={styles.container}>
+      <View style ={styles.headerBox}>
+      <Text style = {styles.textHeader}> Drinks </Text>
+      </View>
+      <View style = {styles.searchBox}>
+      <View style = {styles.innerSearchBox}>
+      <EvilIcons name= 'search' size={30}>
+      </EvilIcons>
+      <TextInput placeholder = 'Search' style={styles.searchInput}>
+      </TextInput>
+      <TouchableOpacity style={styles.buttonFilter}>
+      <Text style = {styles.textFilterButton}>Filter</Text>
+      </TouchableOpacity>
+      </View>
+      </View>
+
+      <ScrollView scrollEventThrottle = {16}>
+      <View style = {styles.drinkContainer}>
+      <TouchableOpacity style = {styles.buttonDrink} onPress={() => this.props.navigation.navigate('SpecDrinks')}>
+      <View>
+      <Image source = {{ uri: this.state.vodkaIMG}} style = {styles.imageDrink}/>
+      </View>
+      <View style = {styles.textBoxContainer}>
+      <Text style= {styles.textDrinkName}>
+       Long Island Ice Tea
+      </Text>
+      <Text style = {styles.textDrinkIngredients}>
+      Gin, White Rum, Tequila, Triple Sec, Vodka, Syrup, Lemon Juice, Cola, Ice
+      </Text>
+      </View>
+      </TouchableOpacity>
+      </View>
+      </ScrollView>
+
+
+      </SafeAreaView>
+    )
+  }
+
+  render(){
     return (
       <SafeAreaView style={styles.container}>
         <View style={styles.headerBox}>

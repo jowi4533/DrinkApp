@@ -84,13 +84,15 @@ const data2 = [
 ];
 
 class Explorescreen extends Component {
-  state = {
-    columns: 2
-  };
 
   constructor(props) {
     super(props);
+
+    state = {
+      columns: 2
+    };
   }
+
 
   renderItem1 = ({ item, index }) => {
     return (

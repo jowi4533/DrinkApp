@@ -17,8 +17,8 @@ import SpecificDrinkscreen from './screens/SpecificDrinkscreen'
 import DrinkCategoryscreen from './screens/DrinkCategoryscreen'
 
 import firebase from 'firebase'
-
-
+//-------------------------------//
+//Firebase stuff
 const config = {
   apiKey: "AIzaSyA5TqttcjP9G88qkAEenf1rfDe0B1E9v3E",
   authDomain: "drinknic-e6779.firebaseapp.com",
@@ -32,12 +32,17 @@ if(!firebase.apps.length){
     firebase.initializeApp(config);
 }
 
-const database = firebase.database();
-var firebaseStorage = firebase.storage();
-const usersDB = database.ref('Users');
-export {usersDB};
-export {firebaseStorage};
+//Everything database related (text, passwords, users etc)
 
+let database = firebase.database();
+let usersDB = database.ref('Users');
+export {usersDB};
+//Everything Storage (Images) related
+
+let firebaseStorage = firebase.storage();
+let imagesRef = firebaseStorage.ref('Drinkpictures')
+
+//-------------------------------//
 
 const MyPageStack = createStackNavigator(
   {
@@ -120,19 +125,25 @@ class App extends Component {
   constructor(props){
     super(props)
     this.state = {
-      addUserListener: this.initailizeListener(),
-      keys: null
+      keys: null,
+      firebaseStorage: firebaseStorage,
+      drinkImages: imagesRef,
     }
   }
 
+  componentDidMount(){
+    this.initailizeListener()
+  }
+
   initailizeListener = () => {
-    usersDB.on("value", this.retrieveUserKeys, this.errData);
+    usersDB.once("value", this.retrieveUserKeys, this.errData);
   }
 
   retrieveUserKeys = (data) => {
     this.setState({keys: Object.keys(data.val())});
     console.log(this.state.keys);
     console.log("testingkeys")
+
   }
 
   errData = (err) =>{
@@ -142,7 +153,7 @@ class App extends Component {
 
   render(){
     return (
-      <AppContainer users = {this.state.keys}>
+      <AppContainer screenProps ={this.state}>
       </AppContainer>
     );
   }
