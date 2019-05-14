@@ -13,8 +13,9 @@ import MyFavoriteDrinksscreen from './screens/MyFavoriteDrinksscreen'
 import MyNotesscreen from './screens/MyNotesscreen'
 import Registerscreen from './screens/Registerscreen'
 import Loginscreen from './screens/Loginscreen'
-import SpecificDrinkscreen from './screens/SpecificDrinkscreen'
 import DrinkCategoryscreen from './screens/DrinkCategoryscreen'
+import SpecificDrinkscreen from './screens/SpecificDrinkscreen'
+
 
 import firebase from 'firebase'
 //-------------------------------//
@@ -141,14 +142,14 @@ class App extends Component {
 
   retrieveUserKeys = (data) => {
     this.setState({keys: Object.keys(data.val())});
-    console.log(this.state.keys);
-    console.log("testingkeys")
+    //console.log(this.state.keys);
+    //console.log("testingkeys")
 
   }
 
   errData = (err) =>{
-    console.log('Error!');
-    console.log(err);
+    //console.log('Error!');
+    //console.log(err);
   }
 
   render(){

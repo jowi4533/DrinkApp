@@ -51,23 +51,22 @@ class MyBarscreen extends Component {
 
   }
 
-_onButtonPress = item => {
-  this.setState(state => {
+  _onButtonPress = item => {
+      if (item.selected !== true) {
+        console.log('inuti item.selected !== true')
+        this.setState(state => {
         item.selected = true;
-        isHighlighted.concat(item);
-
-        console.log('item.name : ' + item.name)
-        console.log('item.selected : ' + item.selected)
-
-
-
-    return {
-      item,
-    };
-
-  } )
-
-}
+        return {item}
+      })
+      }
+      else {
+        console.log('inuti else, dvs om den är true')
+        this.setState(state => {
+        item.selected = false;
+        return {item}
+      })
+      }
+  }
 
 
 _keyExtractor = (item, index) => item.name;
@@ -81,9 +80,7 @@ _keyExtractor = (item, index) => item.name;
 
   renderItem = ({ item, index }) => {
     if (item.selected === true) {
-      console.log('efter if i renderItem: ' + item.selected)
-
-      return <TouchableHighlight style={styles.itemSelected}>
+      return <TouchableHighlight style={styles.itemSelected} onPress={ () => { this._onButtonPress(item) } }>
         <Text style={styles.itemText}> {item.name} </Text>
       </TouchableHighlight>;
     }
@@ -105,7 +102,7 @@ _keyExtractor = (item, index) => item.name;
 
           <FlatList
             data={this.state.data}
-            extraData={this.state.isHighlighted}
+            extraData={this.state}
             style={styles.container}
             renderItem={this.renderItem}
             keyExtractor={this._keyExtractor}
@@ -142,7 +139,7 @@ const styles = StyleSheet.create({
 
   item: {
     borderRadius: 10,
-    backgroundColor: '#07757D',
+    backgroundColor: 'rgba(68, 108, 179, 1)',
     alignItems: 'center',
     justifyContent: 'center',
     flex: 1,
@@ -157,16 +154,16 @@ const styles = StyleSheet.create({
 
   itemSelected: {
     borderRadius: 10,
-    backgroundColor: 'rgba(250, 190, 88, 1)',
+    backgroundColor: 'rgba(68, 108, 179, 1)',
 
-    opacity: 0.8,
+    opacity: 0.5,
     borderWidth: 2,
     borderColor: 'rgba(240, 52, 52, 1)',
 
     alignItems: 'center',
     justifyContent: 'center',
     flex: 1,
-    margin: 1,
+    margin: 5,
     height: Dimensions.get('window').width / numColumns,
   },
 });
