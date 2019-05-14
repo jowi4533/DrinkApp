@@ -55,6 +55,7 @@ class Registerscreen extends Component {
           <TouchableOpacity style = {styles.buttonRegisterHere} onPress={() => this.props.navigation.navigate('Register')}>
           <Text style ={ styles.textRegisterHere}> Register Here! </Text>
           </TouchableOpacity>
+        
 
       </ImageBackground>
     );

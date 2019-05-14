@@ -13,11 +13,12 @@ import MyFavoriteDrinksscreen from './screens/MyFavoriteDrinksscreen'
 import MyNotesscreen from './screens/MyNotesscreen'
 import Registerscreen from './screens/Registerscreen'
 import Loginscreen from './screens/Loginscreen'
-
 import SpecificDrinkscreen from './screens/SpecificDrinkscreen'
+import DrinkCategoryScreen from './screens/DrinkCategoryScreen'
+
 import firebase from 'firebase'
-
-
+//-------------------------------//
+//Firebase stuff
 const config = {
   apiKey: "AIzaSyA5TqttcjP9G88qkAEenf1rfDe0B1E9v3E",
   authDomain: "drinknic-e6779.firebaseapp.com",
@@ -31,10 +32,17 @@ if(!firebase.apps.length){
     firebase.initializeApp(config);
 }
 
-const database = firebase.database();
-const usersDB = database.ref('Users');
-export {usersDB};
+//Everything database related (text, passwords, users etc)
 
+let database = firebase.database();
+let usersDB = database.ref('Users');
+export {usersDB};
+//Everything Storage (Images) related
+
+let firebaseStorage = firebase.storage();
+let imagesRef = firebaseStorage.ref('Drinkpictures')
+
+//-------------------------------//
 
 const MyPageStack = createStackNavigator(
   {
@@ -46,16 +54,19 @@ const MyPageStack = createStackNavigator(
   Login: {screen: Loginscreen},
   }
 );
-const DrinkStack = createStackNavigator(
-  {
-    Drink: {screen:Drinkscreen},
-    SpecDrinks: {screen:SpecificDrinkscreen }
-}
-);
+const DrinkStack = createStackNavigator({
+  AllDrinks: {screen: Drinkscreen},
+  SpecDrinks: {screen: SpecificDrinkscreen}
+});
+const ExploreStack = createStackNavigator({
+  Explore: {screen: Explorescreen},
+  SpecDrinks: {screen: SpecificDrinkscreen},
+  DrinkCategory: {screen:DrinkCategoryScreen}
+});
 
 const TabNavigator = createBottomTabNavigator({
   Explore:{
-    screen: Explorescreen,
+    screen: ExploreStack,
     navigationOptions: {
       tabBarLabel: 'EXPLORE',
       tabBarIcon: ({tintColor}) => (
@@ -113,19 +124,27 @@ class App extends Component {
   constructor(props){
     super(props)
     this.state = {
-      addUserListener: this.initailizeListener(),
-      keys: null
+      keys: null,
+      firebaseStorage: firebaseStorage,
+      drinkImages: imagesRef,
     }
   }
 
+  componentDidMount(){
+    this.initailizeListener()
+  }
+
   initailizeListener = () => {
-    usersDB.on("value", this.retrieveUserKeys, this.errData);
+    usersDB.once("value", this.retrieveUserKeys, this.errData);
   }
 
   retrieveUserKeys = (data) => {
     this.setState({keys: Object.keys(data.val())});
+<<<<<<< HEAD
+=======
     console.log(this.state.keys);
-    console.log("hej hora")
+    console.log("testingkeys")
+>>>>>>> b39ad8dd9a1c9712b4dafea8f90401644d54953e
   }
 
   errData = (err) =>{
@@ -135,7 +154,7 @@ class App extends Component {
 
   render(){
     return (
-      <AppContainer users = {this.state.keys}>
+      <AppContainer screenProps ={this.state}>
       </AppContainer>
     );
   }

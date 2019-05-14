@@ -17,8 +17,8 @@ import {
 } from "react-native";
 import drImage from "../pictures/long_isle.png";
 import bgImage from "../pictures/236.jpg";
-const { width: WIDTH, height: HEIGHT } = Dimensions.get("window");
 
+const { width: WIDTH, height: HEIGHT } = Dimensions.get("window");
 
 const data = [
   { name: "Tequila", units: "4cl" },
@@ -58,14 +58,13 @@ class Drinkscreen extends Component {
     let sentence = "";
     const newPrep = [];
     for (var i = 0; i < data3.length; i++) {
-      if (data3[i] != ",") {
+      if (data3[i] !== ",") {
         sentence = sentence + data3[i];
       } else {
         newPrep.push({ inst: sentence });
         sentence = "";
       }
     }
-    console.log(WIDTH)
     console.log(newPrep);
     return newPrep;
   }
@@ -195,7 +194,6 @@ const styles = StyleSheet.create({
     paddingBottom: 12
   },
   ingredientInnerContainer: {
-    margintop: 5,
     marginBottom:10,
     //marginLeft: 15,
     //borderBottomWidth: 3,
