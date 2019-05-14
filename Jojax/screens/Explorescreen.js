@@ -116,7 +116,6 @@ class Explorescreen extends Component {
   };
 
   render() {
-    const { columns } = this.state.columns;
     return (
 
         <ImageBackground source={bgImage} style={styles.backgroundContainer}>
@@ -155,7 +154,7 @@ class Explorescreen extends Component {
                 data={data2}
                 renderItem={this.renderItem2}
                 keyExtractor={item => item.id}
-                numColumns={columns}
+                numColumns={this.state.columns}
               />
             </View>
           </ScrollView>

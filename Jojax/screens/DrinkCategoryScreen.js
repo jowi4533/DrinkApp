@@ -82,7 +82,6 @@ class Drinkscreen extends Component {
   };
 
   render() {
-    const { columns } = this.state;
     return (
       <View style={{paddingBottom:40}}>
           <View style={styles.headerbox}>
@@ -92,7 +91,7 @@ class Drinkscreen extends Component {
             data={data2}
             renderItem={this.renderItem1}
             keyExtractor={item => item.id}
-            numColumns={columns}
+            numColumns={this.state.columns}
           />
 
         <ImageBackground
