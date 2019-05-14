@@ -50,7 +50,7 @@ class Drinkscreen extends Component {
     var vodkaRef = firebaseStorage.ref('Drinkpictures/Vodka.jpg')
     vodkaRef.getDownloadURL().then((url) =>
     {
-      this.state.vodkaIMG = url;
+      this.setState({vodkaIMG: url})
     })
 
     setTimeout(() => {
@@ -58,7 +58,7 @@ class Drinkscreen extends Component {
     }, 1000);
   }
 
-
+  //asynchronus function
 
   render(){
     return (
