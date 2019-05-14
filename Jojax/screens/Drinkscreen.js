@@ -1,11 +1,7 @@
-<<<<<<< HEAD
-import React, { Component} from "react";
-import { Ionicons,FontAwesome,Entypo,EvilIcons } from '@expo/vector-icons';
-=======
+
 import React, { Component } from "react";
 import { Ionicons, FontAwesome, Entypo, EvilIcons } from "@expo/vector-icons";
 import { firebaseStorage } from "../App";
->>>>>>> b39ad8dd9a1c9712b4dafea8f90401644d54953e
 import {
   View,
   Text,
