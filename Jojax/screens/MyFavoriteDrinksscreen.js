@@ -30,30 +30,7 @@ class MyFavoriteDrinkscreen extends Component {
       </TouchableOpacity>
     </View>;
   };
-  componentDidMount() {
-    const url = "";
-    fetch(url)
-      .then(response => response.json())
-      .then(response => {
-        this.setState({
-          dataSource: responseJson.book_array
-        });
-      })
-      .catch(error => {
-        console.log(error);
-      });
-
-    var storageRef = firebaseStorage.ref();
-    var imagesRef = storageRef.child("Drinkpictures");
-    var vodkaRef = firebaseStorage.ref("Drinkpictures/Vodka.jpg");
-    vodkaRef.getDownloadURL().then(url => {
-      this.state.vodkaIMG = url;
-    });
-
-    setTimeout(() => {
-      console.log(this.state.vodkaIMG);
-    }, 1000);
-  }
+  
 
   render() {
     return (
