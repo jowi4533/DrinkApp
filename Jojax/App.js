@@ -13,11 +13,12 @@ import MyFavoriteDrinksscreen from './screens/MyFavoriteDrinksscreen'
 import MyNotesscreen from './screens/MyNotesscreen'
 import Registerscreen from './screens/Registerscreen'
 import Loginscreen from './screens/Loginscreen'
-
 import SpecificDrinkscreen from './screens/SpecificDrinkscreen'
+import DrinkCategoryscreen from './screens/DrinkCategoryscreen'
+
 import firebase from 'firebase'
-
-
+//-------------------------------//
+//Firebase stuff
 const config = {
   apiKey: "AIzaSyA5TqttcjP9G88qkAEenf1rfDe0B1E9v3E",
   authDomain: "drinknic-e6779.firebaseapp.com",
@@ -31,20 +32,17 @@ if(!firebase.apps.length){
     firebase.initializeApp(config);
 }
 
-const database = firebase.database();
-var firebaseStorage = firebase.storage();
-const usersDB = database.ref('Users');
-const firebaseStorage = firebase.storage();
+//Everything database related (text, passwords, users etc)
 
-firebaseStorage.ref('DrinkImages/vodka.jpg').getDownloadURL().then(function(url) {
-  console.log(url)
-
-  //Here i can reach the URL outside we cant
-})
-
+let database = firebase.database();
+let usersDB = database.ref('Users');
 export {usersDB};
-export {firebaseStorage};
+//Everything Storage (Images) related
 
+let firebaseStorage = firebase.storage();
+let imagesRef = firebaseStorage.ref('Drinkpictures')
+
+//-------------------------------//
 
 const MyPageStack = createStackNavigator(
   {
@@ -54,18 +52,22 @@ const MyPageStack = createStackNavigator(
   MyNotes: {screen: MyNotesscreen},
   Register: {screen: Registerscreen},
   Login: {screen: Loginscreen},
+  SpecDrinks: {screen: SpecificDrinkscreen}
   }
 );
-
-
 const DrinkStack = createStackNavigator({
-  AllDrinks: Drinkscreen,
-  specDrinks: SpecificDrinkscreen
+  AllDrinks: {screen: Drinkscreen},
+  SpecDrinks: {screen: SpecificDrinkscreen}
+});
+const ExploreStack = createStackNavigator({
+  Explore: {screen: Explorescreen},
+  SpecDrinks: {screen: SpecificDrinkscreen},
+  DrinkCategory: {screen:DrinkCategoryscreen}
 });
 
 const TabNavigator = createBottomTabNavigator({
   Explore:{
-    screen: Explorescreen,
+    screen: ExploreStack,
     navigationOptions: {
       tabBarLabel: 'EXPLORE',
       tabBarIcon: ({tintColor}) => (
@@ -123,13 +125,18 @@ class App extends Component {
   constructor(props){
     super(props)
     this.state = {
-      addUserListener: this.initailizeListener(),
-      keys: null
+      keys: null,
+      firebaseStorage: firebaseStorage,
+      drinkImages: imagesRef,
     }
   }
 
+  componentDidMount(){
+    this.initailizeListener()
+  }
+
   initailizeListener = () => {
-    usersDB.on("value", this.retrieveUserKeys, this.errData);
+    usersDB.once("value", this.retrieveUserKeys, this.errData);
   }
 
   retrieveUserKeys = (data) => {
@@ -142,10 +149,10 @@ class App extends Component {
     console.log(err);
   }
 
-  
+
   render(){
     return (
-      <AppContainer users = {this.state.keys}>
+      <AppContainer screenProps ={this.state}>
       </AppContainer>
     );
   }

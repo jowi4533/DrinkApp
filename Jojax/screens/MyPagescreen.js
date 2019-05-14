@@ -19,6 +19,10 @@ import myBarIcon from "../pictures/myBarImage.jpg";
 const { width: WIDTH, height: HEIGHT } = Dimensions.get("window");
 
 class MyPagescreen extends Component {
+  constructor(props){
+    super(props)
+    console.log(props)
+  }
   render() {
     return (
       <ImageBackground source={bgImage} style={styles.backgroundContainer}>
@@ -58,6 +62,11 @@ class MyPagescreen extends Component {
             >
               <Text style={styles.textMyNotesButton}>My Notes</Text>
             </TouchableOpacity>
+            <View>
+              <Text style = {{fontSize:20}}>
+                user unknown
+              </Text>
+            </View>
           </View>
         </SafeAreaView>
       </ImageBackground>
