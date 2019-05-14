@@ -88,9 +88,6 @@ class Explorescreen extends Component {
   constructor(props) {
     super(props);
 
-    state = {
-      columns: 2
-    };
   }
 
 
@@ -136,7 +133,6 @@ class Explorescreen extends Component {
   };
 
   render() {
-    const { columns } = this.state;
     return (
       <ImageBackground source={bgImage} style={styles.backgroundContainer}>
         <View style={styles.headerBox}>
@@ -167,7 +163,7 @@ class Explorescreen extends Component {
                 data={data2}
                 renderItem={this.renderItem2}
                 keyExtractor={item => item.id}
-                numColumns={columns}
+                numColumns= {2}
               />
             </View>
           </View>
@@ -195,7 +191,7 @@ class Explorescreen extends Component {
                 data={data2}
                 renderItem={this.renderItem3}
                 keyExtractor={item => item.id}
-                numColumns={columns}
+                numColumns={2}
               />
             </View>
           </View>

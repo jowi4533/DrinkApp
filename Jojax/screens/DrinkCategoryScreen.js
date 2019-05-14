@@ -62,9 +62,7 @@ const data2 = [
 
 class DrinkCategoryscreen extends Component {
 
-  state = {
-    columns: 2
-  };
+
 
   renderItem1 = ({ item, index }) => {
     return (
@@ -82,7 +80,6 @@ class DrinkCategoryscreen extends Component {
   };
 
   render() {
-    const { columns } = this.state;
     return (
       <View style={{paddingBottom:40}}>
           <View style={styles.headerbox}>
@@ -92,7 +89,7 @@ class DrinkCategoryscreen extends Component {
             data={data2}
             renderItem={this.renderItem1}
             keyExtractor={item => item.id}
-            numColumns={columns}
+            numColumns={2}
           />
 
         <ImageBackground
