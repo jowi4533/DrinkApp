@@ -35,28 +35,40 @@ import ginBottle from "../pictures/ginBottle.jpg";
 const numColumns = 3;
 
 class MyBarscreen extends Component {
-  // constructor(props) {
-  //   super(props)
-  //   this.state = {
-  //     data: data,
-  //
-  //   }
-  //
-  //   console.log(this.state.data)
-  //   //console.log(this.item)
-  //   console.log(item.selected)
-  //
-  // }
+  constructor(props) {
+    super(props)
 
-  state={
-    data: [
-      {name: 'Gin', selected: false}, {name: 'Vodka', selected: false}, {name: 'Whiskey', selected: false}, {name: 'White Rum', selected: false}, {name: 'Dark Rum', selected: false}, {name: 'Tequila', selected: false},
-      {name: 'White Wine', selected: false}, {name: 'Red Wine', selected: false}, {name: 'Blue Wine', selected: false}, {name: 'Schnaps', selected: false},
-      {name: 'Absinthe', selected: false},
-      {name: 'Rose Wine', selected: false}
-    ],
-    isHighlighted: [],
+    this.state = {
+      data: [
+        {name: 'Gin', selected: false}, {name: 'Vodka', selected: false}, {name: 'Whiskey', selected: false}, {name: 'White Rum', selected: false}, {name: 'Dark Rum', selected: false}, {name: 'Tequila', selected: false},
+        {name: 'White Wine', selected: false}, {name: 'Red Wine', selected: false}, {name: 'Blue Wine', selected: false}, {name: 'Schnaps', selected: false},
+        {name: 'Absinthe', selected: false},
+        {name: 'Rose Wine', selected: false}
+      ],
+      isHighlighted: false,
+
+    }
+
   }
+
+_onButtonPress = item => {
+  this.setState(state => {
+        item.selected = true;
+        isHighlighted.concat(item);
+
+        console.log('item.name : ' + item.name)
+        console.log('item.selected : ' + item.selected)
+
+
+
+    return {
+      item,
+    };
+
+  } )
+
+}
+
 
 _keyExtractor = (item, index) => item.name;
 
@@ -68,13 +80,19 @@ _keyExtractor = (item, index) => item.name;
   // };
 
   renderItem = ({ item, index }) => {
-    return (
+    if (item.selected === true) {
+      console.log('efter if i renderItem: ' + item.selected)
 
-      <TouchableHighlight style={styles.item} onPress={ () => { this.setState({ this.state.data[index].selected: true}) ) } }
+      return <TouchableHighlight style={styles.itemSelected}>
+        <Text style={styles.itemText}> {item.name} </Text>
+      </TouchableHighlight>;
+    }
+
+    return (
+      <TouchableHighlight style={styles.item} onPress={ () => { this._onButtonPress(item) } }
       >
         <Text style={styles.itemText}> {item.name} </Text>
       </TouchableHighlight>
-      </Switch>
     );
   };
 
