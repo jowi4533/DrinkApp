@@ -60,11 +60,9 @@ const data2 = [
         image: require("../pictures/lavendel_2.png") }
 ];
 
-class Drinkscreen extends Component {
+class DrinkCategoryscreen extends Component {
 
-  state = {
-    columns: 2
-  };
+
 
   renderItem1 = ({ item, index }) => {
     return (
@@ -91,7 +89,7 @@ class Drinkscreen extends Component {
             data={data2}
             renderItem={this.renderItem1}
             keyExtractor={item => item.id}
-            numColumns={this.state.columns}
+            numColumns={2}
           />
 
         <ImageBackground
@@ -103,7 +101,7 @@ class Drinkscreen extends Component {
     );
   }
 }
-export default Drinkscreen;
+export default DrinkCategoryscreen;
 
 const styles = StyleSheet.create({
   containter: {

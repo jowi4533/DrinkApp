@@ -1,4 +1,3 @@
-
 import React, { Component } from "react";
 import { Ionicons, FontAwesome, Entypo, EvilIcons } from "@expo/vector-icons";
 import { firebaseStorage } from "../App";
