@@ -54,28 +54,27 @@ class MyBarscreen extends Component {
   _onButtonPress = item => {
       if (item.selected !== true) {
         this._addToArray(item);
-
         this.setState(state => {
         item.selected = true;
         return {item}
         })
-        console.log(this.state.isHighlighted)
       }
       else {
         this._removeFromArray(item);
-
         this.setState(state => {
         item.selected = false;
         return {item}
       })
-      console.log(this.state.isHighlighted)
       }
   }
 
 _addToArray(item) {
-    this.setState(state => {
-    state.isHighlighted.push(item.name);
-    })
+  var array = this.state.isHighlighted;
+  array.push(item.name);
+  this.setState(state => {
+  state.isHighlighted = array;
+  })
+  console.log(this.state.isHighlighted)
 }
 
 _removeFromArray(item) {
@@ -91,24 +90,23 @@ _removeFromArray(item) {
   this.setState(state => {
   state.isHighlighted = array;
   })
+  console.log(this.state.isHighlighted)
 }
 
 
 
 _keyExtractor = (item, index) => item.name;
 
-
-  // onBtnClickSelect(item, index) {
-  //   item.selected = true;
-  //   this.setState({})
-  //   console.log(item.selected)
-  // };
-
   renderItem = ({ item, index }) => {
     if (item.selected === true) {
-      return <TouchableOpacity style={styles.itemSelected} onPress={ () => { this._onButtonPress(item) } }>
-        <Text style={styles.itemText}> {item.name} </Text>
-      </TouchableOpacity>;
+      return (
+        <TouchableOpacity style={styles.itemSelected} onPress={ () => { this._onButtonPress(item) } }>
+          <View style={styles.borderView}>
+            <Text style={styles.itemText}> {item.name} </Text>
+          </View>
+        </TouchableOpacity>
+
+      );
     }
 
     return (
@@ -170,7 +168,7 @@ const styles = StyleSheet.create({
     // underlayColor: 'transparent',
     // onHideUnderlay: 'transparent',
     // activeOpacity: 1,
-    backgroundColor: 'rgba(68, 108, 179, 1)',
+    backgroundColor: 'rgba(52, 152, 219, 1)',
     alignItems: 'center',
     justifyContent: 'center',
     flex: 1,
@@ -189,12 +187,12 @@ const styles = StyleSheet.create({
   },
 
   itemSelected: {
-    elevation: 5,
-    borderRadius: 10,
-    backgroundColor: 'rgba(68, 108, 179, 1)',
 
-    borderWidth: 1,
-    borderColor: 'rgba(240, 52, 52, 1)',
+    borderRadius: 10,
+    backgroundColor: 'rgba(107, 185, 240, 1)',
+
+    //borderWidth: 1,
+    //borderColor: 'rgba(240, 52, 52, 1)',
 
     alignItems: 'center',
     justifyContent: 'center',
@@ -202,4 +200,17 @@ const styles = StyleSheet.create({
     margin: 5,
     height: Dimensions.get('window').width / numColumns,
   },
+
+  borderView: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 10,
+    height:'99.5%',
+    width: '99.5%',
+    borderWidth: 2,
+    borderColor: 'rgba(240, 52, 52, 1)',
+    flex: 1,
+
+  },
+
 });
