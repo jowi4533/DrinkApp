@@ -21,7 +21,7 @@ const { width: WIDTH, height: HEIGHT } = Dimensions.get("window");
 class MyPagescreen extends Component {
   constructor(props){
     super(props)
-    console.log(props)
+    //console.log(props)
   }
   render() {
     return (

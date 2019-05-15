@@ -11,7 +11,9 @@ import {
   TouchableHighlight,
   FlatList,
   ScrollView,
-  Dimensions
+  Dimensions,
+  Switch,
+  NativeModules
 } from "react-native";
 import bgImage from "../pictures/236.jpg";
 import ginBottle from "../pictures/ginBottle.jpg";
@@ -29,35 +31,62 @@ import ginBottle from "../pictures/ginBottle.jpg";
 //   return data;
 // };
 
+
 const numColumns = 3;
 
 class MyBarscreen extends Component {
-  instance() {
-    const data = [
-      {name: 'Gin', selected: false}, {name: 'Vodka', selected: false}, {name: 'Whiskey', selected: false}, {name: 'White Rum', selected: false}, {name: 'Dark Rum', selected: false}, {name: 'Tequila', selected: false},
-      {name: 'White Wine', selected: false}, {name: 'Red Wine', selected: false}, {name: 'Blue Wine', selected: false}, {name: 'Schnaps', selected: false},
-      {name: 'Absinthe', selected: false},
-      {name: 'Rose Wine', selected: false},
-    ];
+  constructor(props) {
+    super(props)
 
+    this.state = {
+      data: [
+        {name: 'Gin', selected: false}, {name: 'Vodka', selected: false}, {name: 'Whiskey', selected: false}, {name: 'White Rum', selected: false}, {name: 'Dark Rum', selected: false}, {name: 'Tequila', selected: false},
+        {name: 'White Wine', selected: false}, {name: 'Red Wine', selected: false}, {name: 'Blue Wine', selected: false}, {name: 'Schnaps', selected: false},
+        {name: 'Absinthe', selected: false},
+        {name: 'Rose Wine', selected: false}
+      ],
+      isHighlighted: false,
 
-    return data;
+    }
+
   }
 
-  onBtnClickSelect(item) {
-    console.log('inside method')
-    instance(item).selected === true;
-    console.log('after item.selected == true')
-    console.log(item.selected)
-  };
+  _onButtonPress = item => {
+      if (item.selected !== true) {
+        console.log('inuti item.selected !== true')
+        this.setState(state => {
+        item.selected = true;
+        return {item}
+      })
+      }
+      else {
+        console.log('inuti else, dvs om den är true')
+        this.setState(state => {
+        item.selected = false;
+        return {item}
+      })
+      }
+  }
+
+
+_keyExtractor = (item, index) => item.name;
+
+
+  // onBtnClickSelect(item, index) {
+  //   item.selected = true;
+  //   this.setState({})
+  //   console.log(item.selected)
+  // };
 
   renderItem = ({ item, index }) => {
     if (item.selected === true) {
-      return <TouchableHighlight style={styles.item, styles.itemSelected}>
+      return <TouchableHighlight style={styles.itemSelected} onPress={ () => { this._onButtonPress(item) } }>
+        <Text style={styles.itemText}> {item.name} </Text>
       </TouchableHighlight>;
     }
+
     return (
-      <TouchableHighlight style={styles.item} onPress={ () => { this.onBtnClickSelect(this.item) }}
+      <TouchableHighlight style={styles.item} onPress={ () => { this._onButtonPress(item) } }
       >
         <Text style={styles.itemText}> {item.name} </Text>
       </TouchableHighlight>
@@ -72,9 +101,11 @@ class MyBarscreen extends Component {
           </View>
 
           <FlatList
-            data={this.instance()}
+            data={this.state.data}
+            extraData={this.state}
             style={styles.container}
             renderItem={this.renderItem}
+            keyExtractor={this._keyExtractor}
             numColumns={numColumns}
           >
         </FlatList>
@@ -108,7 +139,7 @@ const styles = StyleSheet.create({
 
   item: {
     borderRadius: 10,
-    backgroundColor: '#07757D',
+    backgroundColor: 'rgba(68, 108, 179, 1)',
     alignItems: 'center',
     justifyContent: 'center',
     flex: 1,
@@ -123,16 +154,16 @@ const styles = StyleSheet.create({
 
   itemSelected: {
     borderRadius: 10,
-    backgroundColor: 'rgba(250, 190, 88, 1)',
+    backgroundColor: 'rgba(68, 108, 179, 1)',
 
-    opacity: 0.8,
+    opacity: 0.5,
     borderWidth: 2,
     borderColor: 'rgba(240, 52, 52, 1)',
 
     alignItems: 'center',
     justifyContent: 'center',
     flex: 1,
-    margin: 1,
+    margin: 5,
     height: Dimensions.get('window').width / numColumns,
   },
 });
