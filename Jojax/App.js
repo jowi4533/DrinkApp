@@ -36,6 +36,8 @@ if(!firebase.apps.length){
 
 let database = firebase.database();
 let usersDB = database.ref('Users');
+let drinksDB = database.ref('Drinks');
+
 export {usersDB};
 //Everything Storage (Images) related
 
