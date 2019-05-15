@@ -45,7 +45,7 @@ class MyBarscreen extends Component {
         {name: 'Absinthe', selected: false},
         {name: 'Rose Wine', selected: false}
       ],
-      isHighlighted: false,
+      isHighlighted: [],
 
     }
 
@@ -53,20 +53,46 @@ class MyBarscreen extends Component {
 
   _onButtonPress = item => {
       if (item.selected !== true) {
-        console.log('inuti item.selected !== true')
+        this._addToArray(item);
+
         this.setState(state => {
         item.selected = true;
         return {item}
-      })
+        })
+        console.log(this.state.isHighlighted)
       }
       else {
-        console.log('inuti else, dvs om den är true')
+        this._removeFromArray(item);
+
         this.setState(state => {
         item.selected = false;
         return {item}
       })
+      console.log(this.state.isHighlighted)
       }
   }
+
+_addToArray(item) {
+    this.setState(state => {
+    state.isHighlighted.push(item.name);
+    })
+}
+
+_removeFromArray(item) {
+  var array = this.state.isHighlighted;
+  var search_term = item.name;
+
+  for (var i = array.length-1; i >= 0; i--) {
+    if (array[i] === search_term) {
+      array.splice(i, 1);
+    }
+  }
+
+  this.setState(state => {
+  state.isHighlighted = array;
+  })
+}
+
 
 
 _keyExtractor = (item, index) => item.name;
@@ -80,16 +106,17 @@ _keyExtractor = (item, index) => item.name;
 
   renderItem = ({ item, index }) => {
     if (item.selected === true) {
-      return <TouchableHighlight style={styles.itemSelected} onPress={ () => { this._onButtonPress(item) } }>
+      return <TouchableOpacity style={styles.itemSelected} onPress={ () => { this._onButtonPress(item) } }>
         <Text style={styles.itemText}> {item.name} </Text>
-      </TouchableHighlight>;
+      </TouchableOpacity>;
     }
 
     return (
-      <TouchableHighlight style={styles.item} onPress={ () => { this._onButtonPress(item) } }
-      >
-        <Text style={styles.itemText}> {item.name} </Text>
-      </TouchableHighlight>
+
+        <TouchableOpacity style={styles.item} onPress={ () => { this._onButtonPress(item) } }>
+          <Text style={styles.itemText}> {item.name} </Text>
+        </TouchableOpacity>
+
     );
   };
 
@@ -138,13 +165,22 @@ const styles = StyleSheet.create({
   },
 
   item: {
+    activeOpacity: 0,
     borderRadius: 10,
+    // underlayColor: 'transparent',
+    // onHideUnderlay: 'transparent',
+    // activeOpacity: 1,
     backgroundColor: 'rgba(68, 108, 179, 1)',
     alignItems: 'center',
     justifyContent: 'center',
     flex: 1,
     margin: 5,
+    opacity: 1,
     height: Dimensions.get('window').width / numColumns,
+  },
+
+  itemPicture: {
+
   },
 
   itemText: {
@@ -153,11 +189,11 @@ const styles = StyleSheet.create({
   },
 
   itemSelected: {
+    elevation: 5,
     borderRadius: 10,
     backgroundColor: 'rgba(68, 108, 179, 1)',
 
-    opacity: 0.5,
-    borderWidth: 2,
+    borderWidth: 1,
     borderColor: 'rgba(240, 52, 52, 1)',
 
     alignItems: 'center',
