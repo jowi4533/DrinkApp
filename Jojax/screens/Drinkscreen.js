@@ -9,8 +9,11 @@ import {
   Dimensions,
   TextInput,
   TouchableOpacity,
+  TouchableHighlight,
   ScrollView,
-  Image
+  Image,
+  Modal,
+  Alert,
 } from "react-native";
 const { width: WIDTH, height: HEIGHT } = Dimensions.get("window");
 
@@ -18,6 +21,7 @@ class Drinkscreen extends Component {
   constructor(props){
     super(props)
     this.state ={
+      modalVisible: false,
       dataSource: [],
       dataLoaded: false,
 
@@ -27,6 +31,10 @@ class Drinkscreen extends Component {
       //Images later to be loaded
       vodkaIMG: "",
     }
+  }
+
+  setModalVisible(visible) {
+    this.setState({modalVisible: visible});
   }
 
   renderItem = (item) => {
@@ -117,9 +125,16 @@ class Drinkscreen extends Component {
     )
   }
 
+  _onButtonPress() {
+    return (console.log('button pressed'))
+  }
+
   render(){
     return (
       <SafeAreaView style={styles.container}>
+
+
+
         <View style={styles.headerBox}>
           <Text style={styles.textHeader}> Drinks </Text>
         </View>
@@ -127,9 +142,9 @@ class Drinkscreen extends Component {
           <View style={styles.innerSearchBox}>
             <EvilIcons name="search" size={30} />
             <TextInput placeholder="Search" style={styles.searchInput} />
-            <TouchableOpacity style={styles.buttonFilter}>
+            <TouchableHighlight style={styles.buttonFilter} onPress={() => this.props.navigation.navigate("SpecDrinks")}>
               <Text style={styles.textFilterButton}>Filter</Text>
-            </TouchableOpacity>
+            </TouchableHighlight>
           </View>
         </View>
 
@@ -191,7 +206,8 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     paddingLeft: 5,
     flexDirection: "row",
-    marginRight: WIDTH / 5
+    marginRight: WIDTH / 5,
+    borderRadius: 5,
   },
   searchInput: {
     backgroundColor: "white",
