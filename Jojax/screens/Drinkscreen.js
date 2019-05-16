@@ -9,16 +9,20 @@ import {
   Dimensions,
   TextInput,
   TouchableOpacity,
+  TouchableHighlight,
   ScrollView,
-  Image
+  Image,
+  Modal,
+  Alert,
 } from "react-native";
 const { width: WIDTH, height: HEIGHT } = Dimensions.get("window");
 import SmallFavoriteButton from "../components/SmallFavoriteButton.js"
 
 class Drinkscreen extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
+  constructor(props){
+    super(props)
+    this.state ={
+      modalVisible: false,
       dataSource: [],
       dataLoaded: false,
 
@@ -30,13 +34,17 @@ class Drinkscreen extends Component {
     };
   }
 
-  renderItem = item => {
-    <View style={styles.drinkContainer}>
-      <TouchableOpacity style={styles.buttonDrink}>
-        <Image source={{ uri: item.image }} style={styles.imageDrink} />
-      </TouchableOpacity>
-    </View>;
-  };
+  setModalVisible(visible) {
+    this.setState({modalVisible: visible});
+  }
+
+  renderItem = (item) => {
+    <View style = {styles.drinkContainer}>
+    <TouchableOpacity style = {styles.buttonDrink}>
+    <Image source = {{ uri: item.image }} style = {styles.imageDrink}/>
+    </TouchableOpacity>
+    </View>
+  }
 
   componentDidMount() {
     const url = "";
@@ -48,7 +56,7 @@ class Drinkscreen extends Component {
         });
       })
       .catch(error => {
-        console.log(error);
+        //console.log(error);
       });
 
     this.loadImages();
@@ -119,9 +127,16 @@ class Drinkscreen extends Component {
     );
   }
 
-  render() {
+  _onButtonPress() {
+    return (console.log('button pressed'))
+  }
+
+  render(){
     return (
       <SafeAreaView style={styles.container}>
+
+
+
         <View style={styles.headerBox}>
           <Text style={styles.textHeader}> Drinks </Text>
         </View>
@@ -197,7 +212,8 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     paddingLeft: 5,
     flexDirection: "row",
-    marginRight: WIDTH / 5
+    marginRight: WIDTH / 5,
+    borderRadius: 5,
   },
   searchInput: {
     backgroundColor: "white",
