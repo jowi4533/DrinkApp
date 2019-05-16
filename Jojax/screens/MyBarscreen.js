@@ -100,9 +100,12 @@ _keyExtractor = (item, index) => item.name;
   renderItem = ({ item, index }) => {
     if (item.selected === true) {
       return (
+
         <TouchableOpacity style={styles.itemSelected} onPress={ () => { this._onButtonPress(item) } }>
           <View style={styles.borderView}>
-            <Text style={styles.itemText}> {item.name} </Text>
+            <ImageBackground source={ginBottle} style={styles.itemPicture}>
+              <Text style={styles.itemText}> {item.name} </Text>
+            </ImageBackground>
           </View>
         </TouchableOpacity>
 
@@ -112,7 +115,11 @@ _keyExtractor = (item, index) => item.name;
     return (
 
         <TouchableOpacity style={styles.item} onPress={ () => { this._onButtonPress(item) } }>
-          <Text style={styles.itemText}> {item.name} </Text>
+          <View style={styles.itemPictureContainer}>
+            <ImageBackground source={ginBottle} style={styles.itemPicture}>
+              <Text style={styles.itemText}> {item.name} </Text>
+            </ImageBackground>
+          </View>
         </TouchableOpacity>
 
     );
@@ -152,7 +159,7 @@ const styles = StyleSheet.create({
     fontSize: 25
   },
   headerbox: {
-    height: 70,
+    height: 60,
     borderBottomWidth: 1,
     borderBottomColor: "#dddddd"
   },
@@ -178,6 +185,11 @@ const styles = StyleSheet.create({
   },
 
   itemPicture: {
+    blurRadius: 25,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
+    height: '100%',
 
   },
 
@@ -210,6 +222,16 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: 'rgba(240, 52, 52, 1)',
     flex: 1,
+
+  },
+
+  itemPictureContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    flex: 1,
+    height: '100%',
+    width: '100%',
+
 
   },
 
