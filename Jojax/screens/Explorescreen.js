@@ -67,7 +67,7 @@ const data2 = [
     id: 2,
     name: "Lavender Lemonade Mojito",
     category: "Spring",
-    image: require("../pictures/lavendel_2.png")
+    image: require("../pictures/lavendel.png")
   },
   {
     id: 3,

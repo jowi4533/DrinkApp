@@ -13,6 +13,8 @@ import {
   Image
 } from "react-native";
 const { width: WIDTH, height: HEIGHT } = Dimensions.get("window");
+import FavoriteButton from "../components/FavoriteButton.js"
+import SmallFavoriteButton from "../components/SmallFavoriteButton.js"
 
 class MyFavoriteDrinkscreen extends Component {
   constructor() {
@@ -30,7 +32,7 @@ class MyFavoriteDrinkscreen extends Component {
       </TouchableOpacity>
     </View>;
   };
-  
+
 
   render() {
     return (
@@ -45,6 +47,10 @@ class MyFavoriteDrinkscreen extends Component {
               style={styles.buttonDrink}
               onPress={() => this.props.navigation.navigate("SpecDrinks")}
             >
+            <View style = {styles.addToFavoriteButton}>
+              <SmallFavoriteButton>
+              </SmallFavoriteButton>
+            </View>
               <View>
                 <Image
                   source={{ uri: this.state.vodkaIMG }}
@@ -112,5 +118,11 @@ const styles = StyleSheet.create({
   },
   textBoxContainer: {
     width: WIDTH - 105
+  },
+  addToFavoriteButton:{
+    position: 'absolute',
+    right:12,
+    top:7,
+    zIndex:2
   }
 });

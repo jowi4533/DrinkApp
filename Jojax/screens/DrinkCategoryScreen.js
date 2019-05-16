@@ -27,7 +27,7 @@ const data2 = [
     id: 2,
     name: "Lavender Lemonade Mojito",
     category: "Spring",
-    image: require("../pictures/lavendel_2.png") },
+    image: require("../pictures/lavendel.png") },
   {
     id: 3,
     name: "Pear Mojito",
@@ -57,7 +57,7 @@ const data2 = [
         id: 8,
         name: "Lavender Lemonade Mojito",
         category: "Spring",
-        image: require("../pictures/lavendel_2.png") }
+        image: require("../pictures/lavendel.png") }
 ];
 
 class DrinkCategoryscreen extends Component {

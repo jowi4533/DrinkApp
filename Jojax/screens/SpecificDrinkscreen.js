@@ -17,7 +17,7 @@ import {
 } from "react-native";
 import drImage from "../pictures/long_isle.png";
 import bgImage from "../pictures/236.jpg";
-
+import FavoriteButton from "../components/FavoriteButton.js"
 const { width: WIDTH, height: HEIGHT } = Dimensions.get("window");
 
 const data = [
@@ -30,6 +30,7 @@ const data = [
   { name: "Ice", units: "" },
   { name: "Lemon", units: "" }
 ];
+
 const data2 = [
   {
     instruc:
@@ -92,6 +93,10 @@ class SpecificDrinkscreen extends Component {
         <ScrollView>
         <View style={{ height:HEIGHT/2.6 }}>
           <View style={styles.drinkImageContainer}>
+            <View style = {styles.addToFavoriteButton}>
+              <FavoriteButton>
+              </FavoriteButton>
+            </View>
 
             <ImageBackground style={styles.drinkImage} source={drImage}>
               <View style ={styles.drinkNameContainer}>
@@ -263,7 +268,12 @@ const styles = StyleSheet.create({
   },
   drinkNameContainer:{
     backgroundColor: 'rgba(189, 195, 199, 0.5)',
-
+  },
+  addToFavoriteButton:{
+    position: 'absolute',
+    right:12,
+    top:7,
+    zIndex:2
 
   }
 });

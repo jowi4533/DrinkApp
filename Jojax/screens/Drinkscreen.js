@@ -13,11 +13,12 @@ import {
   Image
 } from "react-native";
 const { width: WIDTH, height: HEIGHT } = Dimensions.get("window");
+import SmallFavoriteButton from "../components/SmallFavoriteButton.js"
 
 class Drinkscreen extends Component {
-  constructor(props){
-    super(props)
-    this.state ={
+  constructor(props) {
+    super(props);
+    this.state = {
       dataSource: [],
       dataLoaded: false,
 
@@ -25,20 +26,20 @@ class Drinkscreen extends Component {
       drinkImages: props.screenProps.drinkImages,
 
       //Images later to be loaded
-      vodkaIMG: "",
-    }
+      vodkaIMG: ""
+    };
   }
 
-  renderItem = (item) => {
-    <View style = {styles.drinkContainer}>
-    <TouchableOpacity style = {styles.buttonDrink}>
-    <Image source = {{ uri: item.image }} style = {styles.imageDrink}/>
-    </TouchableOpacity>
-    </View>
-  }
+  renderItem = item => {
+    <View style={styles.drinkContainer}>
+      <TouchableOpacity style={styles.buttonDrink}>
+        <Image source={{ uri: item.image }} style={styles.imageDrink} />
+      </TouchableOpacity>
+    </View>;
+  };
 
-  componentDidMount(){
-    const url =''
+  componentDidMount() {
+    const url = "";
     fetch(url)
       .then(response => response.json())
       .then(response => {
@@ -50,9 +51,9 @@ class Drinkscreen extends Component {
         console.log(error);
       });
 
-    this.loadImages()
+    this.loadImages();
 
-    this.forceUpdate()
+    this.forceUpdate();
   }
 
   async loadImages() {
@@ -61,63 +62,21 @@ class Drinkscreen extends Component {
     //Here u create all the images you need for the page
     //Name of the picture is found in the firebase Storage on the website
     //Give the images simple names when uploading to storage!
-    let vodkaRef = this.state.drinkImages.child('Vodka.jpg')
+    let vodkaRef = this.state.drinkImages.child("Vodka.jpg");
 
     //Load these into imagesArray
-    referencesArray = [vodkaRef]
+    referencesArray = [vodkaRef];
 
     //Fetch the URL of the images
-     await vodkaRef.getDownloadURL().then((url) =>
-    {
-      this.setState({vodkaIMG : url})
-    })
-
+    await vodkaRef.getDownloadURL().then(url => {
+      this.setState({ vodkaIMG: url });
+    });
+    console.log(this.state.vodkaIMG);
     //When all data is loaded proceed to next step in componentDidMount
-    this.setState({dataloaded : true})
+    this.setState({ dataloaded: true });
   }
 
   pageContent() {
-    return(
-      <SafeAreaView style={styles.container}>
-      <View style ={styles.headerBox}>
-      <Text style = {styles.textHeader}> Drinks </Text>
-      </View>
-      <View style = {styles.searchBox}>
-      <View style = {styles.innerSearchBox}>
-      <EvilIcons name= 'search' size={30}>
-      </EvilIcons>
-      <TextInput placeholder = 'Search' style={styles.searchInput}>
-      </TextInput>
-      <TouchableOpacity style={styles.buttonFilter}>
-      <Text style = {styles.textFilterButton}>Filter</Text>
-      </TouchableOpacity>
-      </View>
-      </View>
-
-      <ScrollView scrollEventThrottle = {16}>
-      <View style = {styles.drinkContainer}>
-      <TouchableOpacity style = {styles.buttonDrink} onPress={() => this.props.navigation.navigate('SpecDrinks')}>
-      <View>
-      <Image source = {{ uri: this.state.vodkaIMG}} style = {styles.imageDrink}/>
-      </View>
-      <View style = {styles.textBoxContainer}>
-      <Text style= {styles.textDrinkName}>
-       Long Island Ice Tea
-      </Text>
-      <Text style = {styles.textDrinkIngredients}>
-      Gin, White Rum, Tequila, Triple Sec, Vodka, Syrup, Lemon Juice, Cola, Ice
-      </Text>
-      </View>
-      </TouchableOpacity>
-      </View>
-      </ScrollView>
-
-
-      </SafeAreaView>
-    )
-  }
-
-  render(){
     return (
       <SafeAreaView style={styles.container}>
         <View style={styles.headerBox}>
@@ -139,6 +98,53 @@ class Drinkscreen extends Component {
               style={styles.buttonDrink}
               onPress={() => this.props.navigation.navigate("SpecDrinks")}
             >
+
+              <View>
+                <Image
+                  source={{ uri: this.state.vodkaIMG }}
+                  style={styles.imageDrink}
+                />
+              </View>
+              <View style={styles.textBoxContainer}>
+                <Text style={styles.textDrinkName}>Long Island Ice Tea</Text>
+                <Text style={styles.textDrinkIngredients}>
+                  Gin, White Rum, Tequila, Triple Sec, Vodka, Syrup, Lemon
+                  Juice, Cola, Ice
+                </Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+        </ScrollView>
+      </SafeAreaView>
+    );
+  }
+
+  render() {
+    return (
+      <SafeAreaView style={styles.container}>
+        <View style={styles.headerBox}>
+          <Text style={styles.textHeader}> Drinks </Text>
+        </View>
+        <View style={styles.searchBox}>
+          <View style={styles.innerSearchBox}>
+            <EvilIcons name="search" size={30} />
+            <TextInput placeholder="Search" style={styles.searchInput} />
+            <TouchableOpacity style={styles.buttonFilter} onPress={() => this.props.navigation.navigate("SpecDrinks")}>
+              <Text style={styles.textFilterButton}>Filter</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+
+        <ScrollView scrollEventThrottle={16}>
+          <View style={styles.drinkContainer}>
+            <TouchableOpacity
+              style={styles.buttonDrink}
+              onPress={() => this.props.navigation.navigate("SpecDrinks")}
+            >
+            <View style={styles.addToFavoriteButton}>
+              <SmallFavoriteButton>
+              </SmallFavoriteButton>
+            </View>
               <View>
                 <Image
                   source={{ uri: this.state.vodkaIMG }}
@@ -244,5 +250,11 @@ const styles = StyleSheet.create({
   },
   textBoxContainer: {
     width: WIDTH - 105
+  },
+  addToFavoriteButton:{
+    position: 'absolute',
+    right:12,
+    top:7,
+    zIndex:2
   }
 });
