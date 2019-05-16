@@ -35,6 +35,7 @@ if(!firebase.apps.length){
 //Everything database related (text, passwords, users etc)
 
 let database = firebase.database();
+let drinksDB = database.ref('Drinks')
 let usersDB = database.ref('Users');
 export {usersDB};
 //Everything Storage (Images) related
@@ -140,11 +141,10 @@ class App extends Component {
 
   retrieveUserKeys = (data) => {
     this.setState({keys: Object.keys(data.val())});
-<<<<<<< HEAD
-=======
+
     console.log(this.state.keys);
     console.log("testingkeys")
->>>>>>> b39ad8dd9a1c9712b4dafea8f90401644d54953e
+
   }
 
   errData = (err) =>{
