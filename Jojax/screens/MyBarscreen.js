@@ -74,7 +74,7 @@ _addToArray(item) {
   this.setState(state => {
   state.isHighlighted = array;
   })
-  console.log(this.state.isHighlighted)
+  
 }
 
 _removeFromArray(item) {
@@ -90,7 +90,7 @@ _removeFromArray(item) {
   this.setState(state => {
   state.isHighlighted = array;
   })
-  console.log(this.state.isHighlighted)
+
 }
 
 
