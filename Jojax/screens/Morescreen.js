@@ -9,7 +9,6 @@ import {
 class Morescreen extends Component {
   render(){
     return (
-      <SafeAreaView style={{ flex: 1 }}>
           <View style={{flex:1}}>
             <View style={styles.headerbox}>
               <Text style={styles.headline}>
@@ -20,7 +19,6 @@ class Morescreen extends Component {
             test
             </Text>
           </View>
-      </SafeAreaView>
     );
   }
 }
@@ -40,6 +38,7 @@ const styles = StyleSheet.create({
 
  },
  headerbox:{
+   marginTop:25,
    backgroundColor: 'white',
    height: 70,
    borderBottomWidth: 1,

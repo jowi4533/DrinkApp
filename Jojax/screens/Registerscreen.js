@@ -24,6 +24,7 @@ class Registerscreen extends Component {
       email: 'Email',
       password: 'Password',
       repeatPassword: 'Repeat Password',
+
     }
   }
 

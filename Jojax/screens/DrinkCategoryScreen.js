@@ -27,7 +27,7 @@ const data2 = [
     id: 2,
     name: "Lavender Lemonade Mojito",
     category: "Spring",
-    image: require("../pictures/lavendel_2.png") },
+    image: require("../pictures/lavendel.png") },
   {
     id: 3,
     name: "Pear Mojito",
@@ -57,14 +57,12 @@ const data2 = [
         id: 8,
         name: "Lavender Lemonade Mojito",
         category: "Spring",
-        image: require("../pictures/lavendel_2.png") }
+        image: require("../pictures/lavendel.png") }
 ];
 
-class Drinkscreen extends Component {
+class DrinkCategoryscreen extends Component {
 
-  state = {
-    columns: 2
-  };
+
 
   renderItem1 = ({ item, index }) => {
     return (
@@ -82,7 +80,6 @@ class Drinkscreen extends Component {
   };
 
   render() {
-    const { columns } = this.state;
     return (
       <View style={{paddingBottom:40}}>
           <View style={styles.headerbox}>
@@ -92,7 +89,7 @@ class Drinkscreen extends Component {
             data={data2}
             renderItem={this.renderItem1}
             keyExtractor={item => item.id}
-            numColumns={columns}
+            numColumns={2}
           />
 
         <ImageBackground
@@ -104,7 +101,7 @@ class Drinkscreen extends Component {
     );
   }
 }
-export default Drinkscreen;
+export default DrinkCategoryscreen;
 
 const styles = StyleSheet.create({
   containter: {
