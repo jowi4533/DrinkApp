@@ -14,14 +14,59 @@ import {
   Image,
   Modal,
   Alert,
+  FlatList
 } from "react-native";
 const { width: WIDTH, height: HEIGHT } = Dimensions.get("window");
-import SmallFavoriteButton from "../components/SmallFavoriteButton.js"
+import SmallFavoriteButton from "../components/SmallFavoriteButton.js";
+
+const data1 = [
+  {
+    name: "Bloody Mary",
+    ingredients:
+      "Gin, White Rum, Tequila, Triple Sec, Vodka, Syrup, Lemon Juice, Cola, Ice"
+  },
+  {
+    name: "Long Isle Ice Tea",
+    ingredients:
+      "Gin, White Rum, Tequila, Triple Sec, Vodka, Syrup, Lemon Juice, Cola, Ice"
+  },
+  {
+    name: "Gin Tonic",
+    ingredients:
+      "Gin, White Rum, Tequila, Triple Sec, Vodka, Syrup, Lemon Juice, Cola, Ice"
+  },
+  {
+    name: "Dry Martini",
+    ingredients:
+      "Gin, White Rum, Tequila, Triple Sec, Vodka, Syrup, Lemon Juice, Cola, Ice"
+  },
+  {
+    name: "Sex On the Beach",
+    ingredients:
+      "Gin, White Rum, Tequila, Triple Sec, Vodka, Syrup, Lemon Juice, Cola, Ice"
+  },
+  {
+    name: "Mojito",
+    ingredients:
+      "Gin, White Rum, Tequila, Triple Sec, Vodka, Syrup, Lemon Juice, Cola, Ice"
+  },
+  {
+    name: "Pear Mojito",
+    ingredients:
+      "Gin, White Rum, Tequila, Triple Sec, Vodka, Syrup, Lemon Juice, Cola, Ice"
+  },
+  {
+    name: "Aperol Spritz",
+    ingredients:
+      "Gin, White Rum, Tequila, Triple Sec, Vodka, Syrup, Lemon Juice, Cola, Ice"
+  }
+];
+
 
 class Drinkscreen extends Component {
-  constructor(props){
-    super(props)
-    this.state ={
+  constructor(props) {
+    super(props);
+    this.state = {
       modalVisible: false,
       dataSource: [],
       dataLoaded: false,
@@ -35,15 +80,7 @@ class Drinkscreen extends Component {
   }
 
   setModalVisible(visible) {
-    this.setState({modalVisible: visible});
-  }
-
-  renderItem = (item) => {
-    <View style = {styles.drinkContainer}>
-    <TouchableOpacity style = {styles.buttonDrink}>
-    <Image source = {{ uri: item.image }} style = {styles.imageDrink}/>
-    </TouchableOpacity>
-    </View>
+    this.setState({ modalVisible: visible });
   }
 
   componentDidMount() {
@@ -106,7 +143,6 @@ class Drinkscreen extends Component {
               style={styles.buttonDrink}
               onPress={() => this.props.navigation.navigate("SpecDrinks")}
             >
-
               <View>
                 <Image
                   source={{ uri: this.state.vodkaIMG }}
@@ -128,15 +164,36 @@ class Drinkscreen extends Component {
   }
 
   _onButtonPress() {
-    return (console.log('button pressed'))
+    return console.log("button pressed");
   }
-
-  render(){
+  renderItem1 = ({item, index}) => {
     return (
-      <SafeAreaView style={styles.container}>
+      <View style={styles.drinkContainer}>
+        <TouchableOpacity
+          style={styles.buttonDrink}
+          onPress={() => this.props.navigation.navigate("SpecDrinks")}
+        >
+          <View style={styles.addToFavoriteButton}>
+            <SmallFavoriteButton />
+          </View>
+          <View>
+            <Image
+              source={{ uri: this.state.vodkaIMG }}
+              style={styles.imageDrink}
+            />
+          </View>
+          <View style={styles.textBoxContainer}>
+            <Text style={styles.textDrinkName}>{item.name}</Text>
+            <Text style={styles.textDrinkIngredients}>{item.ingredients}</Text>
+          </View>
+        </TouchableOpacity>
+      </View>
+    );
+  };
 
-
-
+  render() {
+    return (
+      <View style={styles.container}>
         <View style={styles.headerBox}>
           <Text style={styles.textHeader}> Drinks </Text>
         </View>
@@ -144,39 +201,22 @@ class Drinkscreen extends Component {
           <View style={styles.innerSearchBox}>
             <EvilIcons name="search" size={30} />
             <TextInput placeholder="Search" style={styles.searchInput} />
-            <TouchableOpacity style={styles.buttonFilter} onPress={() => this.props.navigation.navigate("SpecDrinks")}>
-              <Text style={styles.textFilterButton}>Filter</Text>
-            </TouchableOpacity>
           </View>
+          <TouchableOpacity
+            style={styles.buttonFilter}
+            onPress={() => this.props.navigation.navigate("SpecDrinks")}
+          >
+            <Text style={styles.textFilterButton}>Filter</Text>
+          </TouchableOpacity>
         </View>
-
-        <ScrollView scrollEventThrottle={16}>
-          <View style={styles.drinkContainer}>
-            <TouchableOpacity
-              style={styles.buttonDrink}
-              onPress={() => this.props.navigation.navigate("SpecDrinks")}
-            >
-            <View style={styles.addToFavoriteButton}>
-              <SmallFavoriteButton>
-              </SmallFavoriteButton>
-            </View>
-              <View>
-                <Image
-                  source={{ uri: this.state.vodkaIMG }}
-                  style={styles.imageDrink}
-                />
-              </View>
-              <View style={styles.textBoxContainer}>
-                <Text style={styles.textDrinkName}>Long Island Ice Tea</Text>
-                <Text style={styles.textDrinkIngredients}>
-                  Gin, White Rum, Tequila, Triple Sec, Vodka, Syrup, Lemon
-                  Juice, Cola, Ice
-                </Text>
-              </View>
-            </TouchableOpacity>
-          </View>
-        </ScrollView>
-      </SafeAreaView>
+        <View>
+          <FlatList
+            data={data1}
+            renderItem={this.renderItem1}
+            keyExtractor={item => item.name}
+          />
+        </View>
+      </View>
     );
   }
 }
@@ -203,17 +243,18 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: "#dddddd",
     backgroundColor: "rgba(236, 236, 236, 1)",
-    justifyContent: "center"
+    justifyContent: "center",
+    alignItems: 'center',
+    flexDirection : 'row'
   },
   innerSearchBox: {
     height: 40,
     backgroundColor: "white",
     alignItems: "center",
-    marginLeft: 10,
     paddingLeft: 5,
     flexDirection: "row",
-    marginRight: WIDTH / 5,
-    borderRadius: 5,
+    marginRight: '4%',
+    borderRadius: 5
   },
   searchInput: {
     backgroundColor: "white",
@@ -248,7 +289,7 @@ const styles = StyleSheet.create({
   },
   imageDrink: {
     height: 105,
-    width: 105
+    width: 105,
   },
   textDrinkName: {
     fontSize: 18,
@@ -267,10 +308,10 @@ const styles = StyleSheet.create({
   textBoxContainer: {
     width: WIDTH - 105
   },
-  addToFavoriteButton:{
-    position: 'absolute',
-    right:12,
-    top:7,
-    zIndex:2
+  addToFavoriteButton: {
+    position: "absolute",
+    right: 12,
+    top: 7,
+    zIndex: 2
   }
 });
