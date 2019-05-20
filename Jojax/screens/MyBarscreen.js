@@ -74,7 +74,7 @@ _addToArray(item) {
   this.setState(state => {
   state.isHighlighted = array;
   })
-  
+
 }
 
 _removeFromArray(item) {
@@ -170,7 +170,6 @@ const styles = StyleSheet.create({
   },
 
   item: {
-    activeOpacity: 0,
     borderRadius: 10,
     // underlayColor: 'transparent',
     // onHideUnderlay: 'transparent',
@@ -185,7 +184,6 @@ const styles = StyleSheet.create({
   },
 
   itemPicture: {
-    blurRadius: 25,
     justifyContent: 'center',
     alignItems: 'center',
     width: '100%',

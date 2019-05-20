@@ -17,6 +17,7 @@ import {
 } from "react-native";
 const { width: WIDTH, height: HEIGHT } = Dimensions.get("window");
 import SmallFavoriteButton from "../components/SmallFavoriteButton.js"
+import ginBottle from "../pictures/ginBottle.jpg";
 
 class Drinkscreen extends Component {
   constructor(props){
@@ -41,7 +42,7 @@ class Drinkscreen extends Component {
   renderItem = (item) => {
     <View style = {styles.drinkContainer}>
     <TouchableOpacity style = {styles.buttonDrink}>
-    <Image source = {{ uri: item.image }} style = {styles.imageDrink}/>
+    <Image source = {ginBottle} style = {styles.imageDrink}/>
     </TouchableOpacity>
     </View>
   }
@@ -109,7 +110,7 @@ class Drinkscreen extends Component {
 
               <View>
                 <Image
-                  source={{ uri: this.state.vodkaIMG }}
+                  source={ginBottle}
                   style={styles.imageDrink}
                 />
               </View>
@@ -127,13 +128,10 @@ class Drinkscreen extends Component {
     );
   }
 
-  _onButtonPress() {
-    return (console.log('button pressed'))
-  }
-
   render(){
     return (
       <SafeAreaView style={styles.container}>
+
 
 
 
@@ -144,10 +142,10 @@ class Drinkscreen extends Component {
           <View style={styles.innerSearchBox}>
             <EvilIcons name="search" size={30} />
             <TextInput placeholder="Search" style={styles.searchInput} />
-            <TouchableOpacity style={styles.buttonFilter} onPress={() => this.props.navigation.navigate("SpecDrinks")}>
-              <Text style={styles.textFilterButton}>Filter</Text>
-            </TouchableOpacity>
           </View>
+          <TouchableOpacity style={styles.buttonFilter} onPress={() => {this.setModalVisible(true);}}>
+            <Text style={styles.textFilterButton}>Filter</Text>
+          </TouchableOpacity>
         </View>
 
         <ScrollView scrollEventThrottle={16}>
@@ -162,7 +160,7 @@ class Drinkscreen extends Component {
             </View>
               <View>
                 <Image
-                  source={{ uri: this.state.vodkaIMG }}
+                  source={ginBottle}
                   style={styles.imageDrink}
                 />
               </View>
@@ -176,6 +174,31 @@ class Drinkscreen extends Component {
             </TouchableOpacity>
           </View>
         </ScrollView>
+
+
+        <View style={styles.modalContainer}>
+        <Modal
+          style={styles.modal}
+          animationType="slide"
+          transparent={false}
+          visible={this.state.modalVisible}
+          onRequestClose={() => {
+            Alert.alert('Modal has been closed.');
+          }}>
+
+          <View style={styles.modalContent}>
+              <Text>Hello World!</Text>
+
+              <TouchableHighlight style={styles.hideModalButton}
+                onPress={() => {
+                  this.setModalVisible(!this.state.modalVisible);
+                }}>
+                <Text>Hide Modal</Text>
+              </TouchableHighlight>
+          </View>
+        </Modal>
+        </View>
+
       </SafeAreaView>
     );
   }
@@ -203,16 +226,18 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: "#dddddd",
     backgroundColor: "rgba(236, 236, 236, 1)",
-    justifyContent: "center"
+    justifyContent: "center",
+    alignItems: 'center',
+    flexDirection: 'row',
   },
   innerSearchBox: {
     height: 40,
     backgroundColor: "white",
     alignItems: "center",
-    marginLeft: 10,
+    //marginLeft: 10,
     paddingLeft: 5,
     flexDirection: "row",
-    marginRight: WIDTH / 5,
+    marginRight: '4%',
     borderRadius: 5,
   },
   searchInput: {
@@ -222,12 +247,11 @@ const styles = StyleSheet.create({
     marginLeft: 10
   },
   buttonFilter: {
-    marginLeft: 20,
     backgroundColor: "white",
     height: 40,
     justifyContent: "center",
     padding: 10,
-    borderRadius: 5
+    borderRadius: 5,
   },
   textFilterButton: {
     color: "rgba(0,0,0,0.9)",
@@ -272,5 +296,36 @@ const styles = StyleSheet.create({
     right:12,
     top:7,
     zIndex:2
-  }
+  },
+
+  modalContainer: {
+    height: '40%',
+    width: '80%',
+    opacity: 0.6,
+    justifyContent: 'center',
+    alignItems: 'center',
+
+  },
+
+  modal: {
+    height: '40%',
+    width: '80%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 5,
+
+  },
+
+  modalContent: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+
+  hideModalButton: {
+    height: 60,
+    width: 60,
+    borderWidth: 1,
+    borderColor: 'red',
+    borderRadius: 5,
+  },
 });
