@@ -17,6 +17,14 @@ import FavoriteButton from "../components/FavoriteButton.js"
 import SmallFavoriteButton from "../components/SmallFavoriteButton.js"
 
 class MyFavoriteDrinkscreen extends Component {
+  static navigationOptions = {
+    title: 'My Favorite Drinks',
+    headerTitleStyle: {
+      width: '100%',
+      fontWeight: 'bold',
+      fontSize: 25
+    },
+  };
   constructor() {
     super();
     this.state = {
@@ -37,9 +45,6 @@ class MyFavoriteDrinkscreen extends Component {
   render() {
     return (
         <View>
-        <View style={styles.headerBox}>
-          <Text style={styles.headline}>My Favorites</Text>
-        </View>
 
           <ScrollView>
           <View style={styles.drinkContainer}>
@@ -75,17 +80,6 @@ export default MyFavoriteDrinkscreen;
 
 const styles = StyleSheet.create({
 
-  headline: {
-    textAlign: "center", // <-- the magic
-    fontWeight: "bold",
-    fontSize: 25
-  },
-  headerBox: {
-    height: 40,
-    width: WIDTH,
-    borderBottomWidth: 1,
-    borderBottomColor: "#dddddd"
-  },
   drinkContainer: {
     height: 105,
     width: WIDTH,

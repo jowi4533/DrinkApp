@@ -61,6 +61,14 @@ const data2 = [
 ];
 
 class DrinkCategoryscreen extends Component {
+  static navigationOptions = ({ navigation }) => ({
+   title: `${navigation.state.params.title}`,
+    headerTitleStyle: {
+      width: '100%',
+      fontWeight: 'bold',
+      fontSize: 25,
+    },
+  });
 
   renderItem1 = ({ item, index }) => {
     return (
@@ -80,9 +88,6 @@ class DrinkCategoryscreen extends Component {
   render() {
     return (
       <View style={{paddingBottom:40}}>
-          <View style={styles.headerbox}>
-            <Text style={styles.headline}>{data2[0].category}</Text>
-          </View>
           <FlatList
             data={data2}
             renderItem={this.renderItem1}

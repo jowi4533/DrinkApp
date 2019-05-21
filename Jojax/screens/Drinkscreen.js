@@ -16,7 +16,9 @@ import {
   FlatList
 } from "react-native";
 const { width: WIDTH, height: HEIGHT } = Dimensions.get("window");
+
 import SmallFavoriteButton from "../components/SmallFavoriteButton.js";
+import ginBottle from "../pictures/ginBottle.jpg";
 
 const data1 = [
   {
@@ -64,6 +66,14 @@ const data1 = [
 
 
 class Drinkscreen extends Component {
+  static navigationOptions = {
+    title: 'Drinks',
+    headerTitleStyle: {
+      width: '100%',
+      fontWeight: 'bold',
+      fontSize: 25
+    },
+  };
   constructor(props) {
     super(props);
     this.state = {
@@ -170,9 +180,6 @@ componentDidMount() {
     );
   }
 
-  _onButtonPress() {
-    return console.log("button pressed");
-  }
 
   renderItem1 = ({item, index}) => {
 
@@ -203,9 +210,6 @@ componentDidMount() {
   render() {
     return (
       <View style={styles.container}>
-        <View style={styles.headerBox}>
-          <Text style={styles.textHeader}> Drinks </Text>
-        </View>
         <View style={styles.searchBox}>
           <View style={styles.innerSearchBox}>
             <EvilIcons name="search" size={30} />
@@ -213,12 +217,12 @@ componentDidMount() {
           </View>
           <TouchableOpacity
             style={styles.buttonFilter}
-            onPress={() => this.props.navigation.navigate("SpecDrinks")}
+            onPress={() => { this.setModalVisible(true); }}
           >
             <Text style={styles.textFilterButton}>Filter</Text>
           </TouchableOpacity>
         </View>
-        <View>
+        <View style= {{paddingBottom: 70}}>
           <FlatList
             data={this.state.drinks}
             renderItem={this.renderItem1}
@@ -226,6 +230,30 @@ componentDidMount() {
             extraData={this.state}
           />
         </View>
+
+        <View style={styles.modalContainer}>
+        <Modal
+          style={styles.modal}
+          animationType="slide"
+          transparent={true}
+          visible={this.state.modalVisible}
+          onRequestClose={() => {
+            Alert.alert('Modal has been closed.');
+          }}>
+
+          <View style={styles.modalContent}>
+              <Text>Hello World!</Text>
+
+              <TouchableHighlight style={styles.hideModalButton}
+                onPress={() => {
+                  this.setModalVisible(!this.state.modalVisible);
+                }}>
+                <Text>Hide Modal</Text>
+              </TouchableHighlight>
+          </View>
+        </Modal>
+        </View>
+
       </View>
     );
   }
@@ -236,18 +264,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1
   },
-  textHeader: {
-    marginTop: 2.5,
-    textAlign: "center", // <-- the magic
-    fontWeight: "bold",
-    fontSize: 25
-  },
-  headerBox: {
-    backgroundColor: "white",
-    height: 45,
-    borderBottomWidth: 1,
-    borderBottomColor: "#dddddd"
-  },
   searchBox: {
     height: 70,
     borderBottomWidth: 1,
@@ -255,7 +271,7 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(236, 236, 236, 1)",
     justifyContent: "center",
     alignItems: 'center',
-    flexDirection : 'row'
+    flexDirection: 'row',
   },
   innerSearchBox: {
     height: 40,
@@ -264,7 +280,7 @@ const styles = StyleSheet.create({
     paddingLeft: 5,
     flexDirection: "row",
     marginRight: '4%',
-    borderRadius: 5
+    borderRadius: 5,
   },
   searchInput: {
     backgroundColor: "white",
@@ -273,12 +289,11 @@ const styles = StyleSheet.create({
     marginLeft: 10
   },
   buttonFilter: {
-    marginLeft: 20,
     backgroundColor: "white",
     height: 40,
     justifyContent: "center",
     padding: 10,
-    borderRadius: 5
+    borderRadius: 5,
   },
   textFilterButton: {
     color: "rgba(0,0,0,0.9)",
@@ -318,10 +333,48 @@ const styles = StyleSheet.create({
   textBoxContainer: {
     width: WIDTH - 105
   },
-  addToFavoriteButton: {
-    position: "absolute",
-    right: 12,
-    top: 7,
-    zIndex: 2
-  }
+  addToFavoriteButton:{
+    position: 'absolute',
+    right:12,
+    top:7,
+    zIndex:2
+  },
+
+  modalContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+
+  },
+
+  modal: {
+    alignSelf: 'center',
+    justifyContent: 'center',
+    alignItems: 'center',
+
+  },
+
+  modalContent: {
+    top: '20%',
+    elevation: 10,
+    alignSelf: 'center',
+    height: '60%',
+    width: '80%',
+    backgroundColor: 'white',
+    opacity: 0.95,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 10,
+    borderWidth: 2,
+    borderColor: 'black',
+  },
+
+  hideModalButton: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 60,
+    width: 60,
+    borderWidth: 1,
+    borderColor: 'red',
+    borderRadius: 5,
+  },
 });

@@ -35,6 +35,15 @@ import ginBottle from "../pictures/ginBottle.jpg";
 const numColumns = 3;
 
 class MyBarscreen extends Component {
+  static navigationOptions = {
+    title: 'My Bar',
+    headerLayoutPreset: 'center',
+    headerTitleStyle: {
+      width: '100%',
+      fontWeight: 'bold',
+      fontSize: 25
+    },
+  };
   constructor(props) {
     super(props)
 
@@ -128,9 +137,6 @@ _keyExtractor = (item, index) => item.name;
   render() {
     return (
       <ImageBackground source={bgImage} style={styles.backgroundContainer}>
-          <View style={styles.headerbox}>
-            <Text style={styles.headline}>MyBar</Text>
-          </View>
 
           <FlatList
             data={this.state.data}
@@ -153,17 +159,6 @@ const styles = StyleSheet.create({
   backgroundContainer: {
     flex: 1,
   },
-  headline: {
-    textAlign: "center", // <-- the magic
-    fontWeight: "bold",
-    fontSize: 25
-  },
-  headerbox: {
-    height: 60,
-    borderBottomWidth: 1,
-    borderBottomColor: "#dddddd"
-  },
-
   container: {
     flex: 1,
     marginVertical: 1,

@@ -57,17 +57,28 @@ const MyPageStack = createStackNavigator(
   Login: {screen: Loginscreen},
   SpecDrinks: {screen: SpecificDrinkscreen},
   NewNote: {screen: NewNotescreen}
+  },
+  {
+  headerLayoutPreset: 'center'
   }
 );
 const DrinkStack = createStackNavigator({
   AllDrinks: {screen: Drinkscreen},
-  SpecDrinks: {screen: SpecificDrinkscreen}
-});
+  SpecDrinks: {screen: SpecificDrinkscreen},
+  },
+  {
+    headerLayoutPreset: 'center'
+  }
+);
 const ExploreStack = createStackNavigator({
   Explore: {screen: Explorescreen},
   SpecDrinks: {screen: SpecificDrinkscreen},
   DrinkCategory: {screen:DrinkCategoryscreen}
-});
+  }, 
+  {
+    headerLayoutPreset: 'center'
+  }
+);
 
 const TabNavigator = createBottomTabNavigator({
   Explore:{
@@ -103,6 +114,7 @@ const TabNavigator = createBottomTabNavigator({
   More:{
     screen: Morescreen,
     navigationOptions: {
+      title: "More",
       tabBarLabel: 'MORE',
       tabBarIcon: ({tintColor}) => (
         <Ionicons name='md-more' color={tintColor} size={28}>

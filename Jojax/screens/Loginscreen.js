@@ -15,12 +15,21 @@ import bgImage from '../pictures/236.jpg'
 const { width:WIDTH, height:HEIGHT } = Dimensions.get('window');
 
 class Registerscreen extends Component {
+  static navigationOptions = {
+    title: 'Login',
+    headerTitleStyle: {
+      width: '100%',
+      fontWeight: 'bold',
+      fontSize: 25
+    },
+
+  };
   render(){
     return (
       <ImageBackground source={bgImage} style={styles.backgroundContainer}>
           <View style = {styles.textContainer}>
             <Text style = {styles.loginText}>
-              LOGIN OR REGISTER
+              LOGIN OR BAJS
             </Text>
             <View style ={styles.descText}>
             <Text style = {{marginHorizontal:12}}>
@@ -55,7 +64,7 @@ class Registerscreen extends Component {
           <TouchableOpacity style = {styles.buttonRegisterHere} onPress={() => this.props.navigation.navigate('Register')}>
           <Text style ={ styles.textRegisterHere}> Register Here! </Text>
           </TouchableOpacity>
-        
+
 
       </ImageBackground>
     );

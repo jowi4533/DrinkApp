@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { AntDesign, MaterialCommunityIcons } from "@expo/vector-icons";
+//npm install --save string-pixel-width
 import {
   View,
   Text,
@@ -13,9 +14,17 @@ import {
 const { width: WIDTH, height: HEIGHT } = Dimensions.get("window");
 
 class MyNotesscreen extends Component {
+  static navigationOptions = {
+    title: 'My Notes',
+    headerTitleStyle: {
+      width: '100%',
+      fontWeight: 'bold',
+      fontSize: 25
+    },
+  };
 
   newNote(){
-    
+
   }
   createNoteHeader(string) {
     var pixelWidth = require("string-pixel-width");
@@ -76,12 +85,12 @@ class MyNotesscreen extends Component {
   renderItem = ({ item, index }) => {
     return <View style={styles.noteContainer} />;
   };
+  returnNote(id, note) {
+  this.setState({id: id, note: note});
+  }
   render() {
     return (
       <View style={styles.container}>
-        <View style={styles.headerBox}>
-          <Text style={styles.headline}>Notes</Text>
-        </View>
         <ScrollView style={styles.scrollContainer}>
           <View style={styles.noteContainer}>
             <View style={styles.noteIconContainer}>
@@ -111,6 +120,8 @@ class MyNotesscreen extends Component {
               name="pluscircle"
               size={70}
               color={"rgba(0, 230, 64, 1)"}
+              onPress={() => this.props.navigation.navigate('NewNote',{returnData: this.returnNote.bind(this)})
+            }
             />
           </View>
         </View>

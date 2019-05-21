@@ -19,6 +19,14 @@ import myBarIcon from "../pictures/myBarImage.jpg";
 const { width: WIDTH, height: HEIGHT } = Dimensions.get("window");
 
 class MyPagescreen extends Component {
+  static navigationOptions = {
+    title: 'My Page',
+    headerTitleStyle: {
+      width: '100%',
+      fontWeight: 'bold',
+      fontSize: 25
+    },
+  };
   constructor(props){
     super(props)
   }
@@ -26,10 +34,6 @@ class MyPagescreen extends Component {
     return (
       <ImageBackground source={bgImage} style={styles.backgroundContainer}>
         <SafeAreaView style={{ flex: 1 }}>
-          <View style={styles.headerbox}>
-            <Text style={styles.headline}>MyPage</Text>
-          </View>
-
           <View>
             <TouchableOpacity
               style={styles.loginButton}
@@ -87,18 +91,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center"
   },
-  headline: {
-    marginTop: 10,
-    textAlign: "center", // <-- the magic
-    fontWeight: "bold",
-    fontSize: 25
-  },
-  headerbox: {
-    height: 60,
-    borderBottomWidth: 1,
-    borderBottomColor: "#dddddd"
-  },
-
   loginButton: {
     width: WIDTH - 55,
     height: 40,
