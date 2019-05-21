@@ -7,6 +7,7 @@ import Explorescreen from './screens/Explorescreen'
 import Morescreen from './screens/Morescreen'
 import  { Asset, Font } from 'expo';
 
+import MyNotesscreen from './screens/MyNotesscreen'
 import MyPagescreen from './screens/MyPagescreen'
 import MyBarscreen from './screens/MyBarscreen'
 import MyFavoriteDrinksscreen from './screens/MyFavoriteDrinksscreen'
@@ -136,11 +137,11 @@ class App extends Component {
 
     }
     this.initailizeListener()
-    console.log(this.state.userKeys)
+
   }
 
   componentWillMount(){
-    console.log("hej")
+
     this.initailizeListener()
   }
 

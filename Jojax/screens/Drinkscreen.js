@@ -62,6 +62,7 @@ const data1 = [
 ];
 
 
+
 class Drinkscreen extends Component {
   constructor(props) {
     super(props);
@@ -76,8 +77,13 @@ class Drinkscreen extends Component {
       drinkImages: [],
       drinkNames: [],
 
+      drinks: [
+      ],
+
     };
+
   }
+
 
   setModalVisible(visible) {
     this.setState({ modalVisible: visible });
@@ -101,19 +107,25 @@ componentDidMount() {
   componentWillMount(){
     //Loads the image, takes time to fetch from database
     this.loadImages()
+
+
   }
 
-  async loadImages(){
-    var aperol = this.state.allDrinkKeys[0];
-    var cranberrySangria = this.state.allDrinkKeys[1];
-
+  loadImages(){
+    //var aperol = this.state.allDrinkKeys[0];
+    //var cranberrySangria = this.state.allDrinkKeys[1];
+    let allDrinks = []
     for (let i = 0; i < this.state.allDrinkKeys.length; i++){
       let k = this.state.allDrinkKeys[i];
 
-      this.state.drinkNames.push(this.state.allDrinkItems[k].name)
-      await this.state.drinkImages.push(this.state.allDrinkItems[k].URL)
-
+      let drink = {
+        name: this.state.allDrinkItems[k].name,
+        url: this.state.allDrinkItems[k].URL
+      }
+      allDrinks.push(drink)
     }
+    this.setState({drinks: allDrinks})
+
   }
 
   pageContent() {
@@ -161,7 +173,9 @@ componentDidMount() {
   _onButtonPress() {
     return console.log("button pressed");
   }
+
   renderItem1 = ({item, index}) => {
+
     return (
       <View style={styles.drinkContainer}>
         <TouchableOpacity
@@ -173,13 +187,13 @@ componentDidMount() {
           </View>
           <View>
             <Image
-              source={{ uri: this.state.vodkaIMG }}
+              source={{ uri: item.url }}
               style={styles.imageDrink}
             />
           </View>
           <View style={styles.textBoxContainer}>
             <Text style={styles.textDrinkName}>{item.name}</Text>
-            <Text style={styles.textDrinkIngredients}>{item.ingredients}</Text>
+
           </View>
         </TouchableOpacity>
       </View>
@@ -206,9 +220,10 @@ componentDidMount() {
         </View>
         <View>
           <FlatList
-            data={data1}
+            data={this.state.drinks}
             renderItem={this.renderItem1}
             keyExtractor={item => item.name}
+            extraData={this.state}
           />
         </View>
       </View>
