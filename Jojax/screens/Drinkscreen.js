@@ -204,7 +204,7 @@ class Drinkscreen extends Component {
           </View>
           <TouchableOpacity
             style={styles.buttonFilter}
-            onPress={() => this.props.navigation.navigate("SpecDrinks")}
+            onPress={() => { this.setModalVisible(true); }}
           >
             <Text style={styles.textFilterButton}>Filter</Text>
           </TouchableOpacity>
@@ -221,7 +221,7 @@ class Drinkscreen extends Component {
         <Modal
           style={styles.modal}
           animationType="slide"
-          transparent={false}
+          transparent={true}
           visible={this.state.modalVisible}
           onRequestClose={() => {
             Alert.alert('Modal has been closed.');
@@ -339,31 +339,36 @@ const styles = StyleSheet.create({
   },
 
   modalContainer: {
-    height: '40%',
-    width: '80%',
-    opacity: 0.6,
     justifyContent: 'center',
     alignItems: 'center',
 
   },
 
   modal: {
-    height: '40%',
-    width: '80%',
+    alignSelf: 'center',
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 5,
 
   },
 
   modalContent: {
+    top: '20%',
+    elevation: 10,
+    alignSelf: 'center',
+    height: '60%',
+    width: '80%',
+    backgroundColor: 'white',
+    opacity: 0.95,
     justifyContent: 'center',
     alignItems: 'center',
+    borderRadius: 10,
+    borderWidth: 2,
+    borderColor: 'black',
   },
 
   hideModalButton: {
     justifyContent: 'center',
-    alignSelf: 'center',
+    alignItems: 'center',
     height: 60,
     width: 60,
     borderWidth: 1,
