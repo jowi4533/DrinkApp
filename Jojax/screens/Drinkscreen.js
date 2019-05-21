@@ -322,6 +322,8 @@ const styles = StyleSheet.create({
   },
 
   hideModalButton: {
+    justifyContent: 'center',
+    alignSelf: 'center',
     height: 60,
     width: 60,
     borderWidth: 1,
