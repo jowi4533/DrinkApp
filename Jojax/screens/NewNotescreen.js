@@ -4,25 +4,60 @@ import {
   View,
   Text,
   StyleSheet,
-  SafeAreaView,
   TextInput,
-  ScrollView,
-  TouchableOpacity,
   Dimensions
 } from "react-native";
 const { width: WIDTH, height: HEIGHT } = Dimensions.get("window");
 
 class NewNotescreen extends Component {
-
+  constructor(props){
+    super(props);
+    this.state ={
+      id: "1",
+      note: ""
+    }
+  }
+  static navigationOptions = {
+    title: 'New Note',
+    headerTitleStyle: {
+      fontWeight: 'bold',
+      fontSize: 25
+    },
+  };
+  goBack() {
+      console.log("testing0")
+      if (!(/\S/.test(this.state.note))){
+        console.log("testing1")
+        this.props.navigation.state.params.returnNote('123', 'this is note');
+        this.props.navigation.goBack();
+      }
+   };
 
 
   render() {
     return (
       <View style={styles.container}>
-        <View style={styles.headerBox}>
-          <Text style={styles.headline}>Notes</Text>
-        </View>
+        <View style = {styles.textInputContainer}>
+        <TextInput
+          style = {styles.textInputSize}
+          maxLength = {250}
+          placeholder = "Type your text here"
+          value = {this.state.note}
+          onChangeText = { (typedText) => {
+            this.setState({note: typedText});
+          }
+          }>
 
+        </TextInput>
+        </View>
+        <Text style = {{margin: 25, fontSize : 30, fontWeight: 'bold'}}>
+          {this.state.note}
+        </Text>
+        <View style = {styles.wordCountTextBox}>
+        <Text style = {styles.wordCountText}>
+          Characters:  {this.state.note.length}/250
+        </Text>
+          </View>
         </View>
     );
   }
@@ -33,52 +68,22 @@ const styles = StyleSheet.create({
   container: {
     flex: 1
   },
-  headline: {
-    textAlign: "center", // <-- the magic
-    fontWeight: "bold",
-    fontSize: 25
+  textInputContainer:{
+    padding: 10
   },
-  headerBox: {
-    height: 40,
-    width: WIDTH,
-    borderBottomColor: "#dddddd",
-    borderBottomWidth: 1
+  textInputSize:{
+    fontSize: 20
   },
-  footer: {
-    alignItems: "flex-end"
+  wordCountText:{
+    color: 'rgba(108, 122, 137, 1)'
   },
-  iconContainer: {
-    elevation: 10,
-    zIndex: 10,
-    marginRight: 10,
-    marginBottom: 10
-  },
-  noteContainer: {
-    flexDirection: "row",
-    height: HEIGHT / 10,
-    borderBottomColor: "#dddddd",
-    borderBottomWidth: 2,
+  wordCountTextBox:{
+    padding: 10,
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    bottom: 0
 
-  },
-  noteIconContainer: {
-    justifyContent: "center",
-    marginHorizontal:10,
-  },
-  noteTextContainer: {
-    marginVertical: 10,
-    justifyContent: 'center',
-  },
-  noteTextHeading: {
-    fontWeight: "bold",
-    color: "rgba(46, 49, 49, 1)",
-    fontSize: 16
-  },
-  noteTextEnding: {
-    color: "rgba(46, 49, 49, 1)",
-    fontSize: 14
-  },
-  notesTouch:{
-    width: '100%',
-    height: '100%'
-  },
+  }
+
 });
