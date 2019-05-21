@@ -102,6 +102,7 @@ const TabNavigator = createBottomTabNavigator({
   More:{
     screen: Morescreen,
     navigationOptions: {
+      title: "More",
       tabBarLabel: 'MORE',
       tabBarIcon: ({tintColor}) => (
         <Ionicons name='md-more' color={tintColor} size={28}>

@@ -84,6 +84,13 @@ const data2 = [
 ];
 
 class Explorescreen extends Component {
+  static navigationOptions = {
+    title: 'Explore',
+    headerTitleStyle: {
+      fontWeight: 'bold',
+      fontSize: 25
+    },
+  };
 
   constructor(props) {
     super(props);
@@ -105,9 +112,8 @@ class Explorescreen extends Component {
     return (
       <TouchableOpacity
         style={styles.seasonalBox}
-        onPress={() =>
-          this.props.navigation.navigate("DrinkCategory", item.category)
-        }
+        onPress={() => this.props.navigation.navigate('DrinkCategory', {title: item.category})
+      }
       >
         <Image style={styles.seasonalImage} source={item.image} />
         <View style={styles.drinkNameTextContainer}>
@@ -121,7 +127,7 @@ class Explorescreen extends Component {
       <TouchableOpacity
         style={styles.seasonalBox}
         onPress={() =>
-          this.props.navigation.navigate("DrinkCategory", item.category)
+          this.props.navigation.navigate("DrinkCategory", {title: item.category})
         }
       >
         <Image style={styles.baseSpiritImage} source={item.image} />
@@ -135,9 +141,6 @@ class Explorescreen extends Component {
   render() {
     return (
       <ImageBackground source={bgImage} style={styles.backgroundContainer}>
-        <View style={styles.headerBox}>
-          <Text style={styles.headline}>Explore</Text>
-        </View>
         <ScrollView contentContainerStyle={styles.contentContainer}>
           <View style={styles.discoverWeeklyContainer}>
             <View>
@@ -203,17 +206,6 @@ class Explorescreen extends Component {
 export default Explorescreen;
 
 const styles = StyleSheet.create({
-  headline: {
-    textAlign: "center", // <-- the magic
-    fontWeight: "bold",
-    fontSize: 25
-  },
-  headerBox: {
-    height: 40,
-    width: WIDTH,
-    borderBottomWidth: 1,
-    borderBottomColor: "#dddddd"
-  },
   discoverWeeklyContainer: {},
   discoverWeeklyBox: {
     backgroundColor: "white",

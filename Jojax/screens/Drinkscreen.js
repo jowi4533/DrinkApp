@@ -64,6 +64,13 @@ const data1 = [
 
 
 class Drinkscreen extends Component {
+  static navigationOptions = {
+    title: 'Drinks',
+    headerTitleStyle: {
+      fontWeight: 'bold',
+      fontSize: 25
+    },
+  };
   constructor(props) {
     super(props);
     this.state = {
@@ -194,9 +201,6 @@ class Drinkscreen extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <View style={styles.headerBox}>
-          <Text style={styles.textHeader}> Drinks </Text>
-        </View>
         <View style={styles.searchBox}>
           <View style={styles.innerSearchBox}>
             <EvilIcons name="search" size={30} />
@@ -209,7 +213,7 @@ class Drinkscreen extends Component {
             <Text style={styles.textFilterButton}>Filter</Text>
           </TouchableOpacity>
         </View>
-        <View>
+        <View style= {{paddingBottom: 70}}>
           <FlatList
             data={data1}
             renderItem={this.renderItem1}
@@ -225,18 +229,6 @@ export default Drinkscreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1
-  },
-  textHeader: {
-    marginTop: 2.5,
-    textAlign: "center", // <-- the magic
-    fontWeight: "bold",
-    fontSize: 25
-  },
-  headerBox: {
-    backgroundColor: "white",
-    height: 45,
-    borderBottomWidth: 1,
-    borderBottomColor: "#dddddd"
   },
   searchBox: {
     height: 70,

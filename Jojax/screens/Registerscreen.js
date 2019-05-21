@@ -18,6 +18,13 @@ import bgImage from "../pictures/236.jpg";
 const { width: WIDTH, height: HEIGHT } = Dimensions.get("window");
 
 class Registerscreen extends Component {
+  static navigationOptions = {
+    title: 'Register',
+    headerTitleStyle: {
+      fontWeight: 'bold',
+      fontSize: 25
+    },
+  };
   constructor(props){
     super(props);
     this.state = {
