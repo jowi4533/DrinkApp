@@ -20,6 +20,7 @@ class NewNotescreen extends Component {
   static navigationOptions = {
     title: 'New Note',
     headerTitleStyle: {
+      width: '100%',
       fontWeight: 'bold',
       fontSize: 25
     },

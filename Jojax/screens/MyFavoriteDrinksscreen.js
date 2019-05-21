@@ -20,6 +20,7 @@ class MyFavoriteDrinkscreen extends Component {
   static navigationOptions = {
     title: 'My Favorite Drinks',
     headerTitleStyle: {
+      width: '100%',
       fontWeight: 'bold',
       fontSize: 25
     },

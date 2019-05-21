@@ -37,7 +37,9 @@ const numColumns = 3;
 class MyBarscreen extends Component {
   static navigationOptions = {
     title: 'My Bar',
+    headerLayoutPreset: 'center',
     headerTitleStyle: {
+      width: '100%',
       fontWeight: 'bold',
       fontSize: 25
     },

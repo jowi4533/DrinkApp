@@ -56,17 +56,28 @@ const MyPageStack = createStackNavigator(
   Login: {screen: Loginscreen},
   SpecDrinks: {screen: SpecificDrinkscreen},
   NewNote: {screen: NewNotescreen}
+  },
+  {
+  headerLayoutPreset: 'center'
   }
 );
 const DrinkStack = createStackNavigator({
   AllDrinks: {screen: Drinkscreen},
-  SpecDrinks: {screen: SpecificDrinkscreen}
-});
+  SpecDrinks: {screen: SpecificDrinkscreen},
+  },
+  {
+    headerLayoutPreset: 'center'
+  }
+);
 const ExploreStack = createStackNavigator({
   Explore: {screen: Explorescreen},
   SpecDrinks: {screen: SpecificDrinkscreen},
   DrinkCategory: {screen:DrinkCategoryscreen}
-});
+  }, 
+  {
+    headerLayoutPreset: 'center'
+  }
+);
 
 const TabNavigator = createBottomTabNavigator({
   Explore:{

@@ -17,6 +17,7 @@ class MyNotesscreen extends Component {
   static navigationOptions = {
     title: 'My Notes',
     headerTitleStyle: {
+      width: '100%',
       fontWeight: 'bold',
       fontSize: 25
     },

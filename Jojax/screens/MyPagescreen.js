@@ -22,6 +22,7 @@ class MyPagescreen extends Component {
   static navigationOptions = {
     title: 'My Page',
     headerTitleStyle: {
+      width: '100%',
       fontWeight: 'bold',
       fontSize: 25
     },

@@ -69,6 +69,7 @@ class Drinkscreen extends Component {
   static navigationOptions = {
     title: 'Drinks',
     headerTitleStyle: {
+      width: '100%',
       fontWeight: 'bold',
       fontSize: 25
     },
