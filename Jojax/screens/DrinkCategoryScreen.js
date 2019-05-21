@@ -62,8 +62,6 @@ const data2 = [
 
 class DrinkCategoryscreen extends Component {
 
-
-
   renderItem1 = ({ item, index }) => {
     return (
       <TouchableOpacity style={styles.seasonalBox}

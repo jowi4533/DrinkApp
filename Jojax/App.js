@@ -10,7 +10,6 @@ import  { Asset, Font } from 'expo';
 import MyPagescreen from './screens/MyPagescreen'
 import MyBarscreen from './screens/MyBarscreen'
 import MyFavoriteDrinksscreen from './screens/MyFavoriteDrinksscreen'
-import MyNotesscreen from './screens/MyNotesscreen'
 import Registerscreen from './screens/Registerscreen'
 import Loginscreen from './screens/Loginscreen'
 import DrinkCategoryscreen from './screens/DrinkCategoryscreen'
@@ -51,7 +50,6 @@ const MyPageStack = createStackNavigator(
   MyPage: {screen: MyPagescreen},
   MyBar: {screen: MyBarscreen},
   MyFavoriteDrinks: {screen: MyFavoriteDrinksscreen},
-  MyNotes: {screen: MyNotesscreen},
   Register: {screen: Registerscreen},
   Login: {screen: Loginscreen},
   SpecDrinks: {screen: SpecificDrinkscreen}
@@ -127,30 +125,41 @@ class App extends Component {
   constructor(props){
     super(props)
     this.state = {
-      keys: null,
-      firebaseStorage: firebaseStorage,
-      drinkImages: imagesRef,
+      userKeys: null,
+      usersDB: usersDB,
+
+      allDrinkItems: null,
+      allDrinkKeys: null,
+
     }
+    this.initailizeListener()
+    console.log(this.state.userKeys)
   }
 
-  componentDidMount(){
+  componentWillMount(){
+    console.log("hej")
     this.initailizeListener()
   }
 
-  initailizeListener = () => {
-    usersDB.once("value", this.retrieveUserKeys, this.errData);
+  initailizeListener () {
+    usersDB.once("value", this.retrieveUserKeys.bind(this), this.errData);
+    drinksDB.once("value", this.retriveDrinkItems.bind(this), this.errData)
   }
 
-  retrieveUserKeys = (data) => {
-    this.setState({keys: Object.keys(data.val())});
+  retriveDrinkItems (data)  {
+    this.setState({allDrinkItems: data.val()});
+    this.setState({allDrinkKeys: Object.keys(data.val())});
+  }
+
+  retrieveUserKeys  (data)  {
+    this.setState({userKeys: Object.keys(data.val())});
     //console.log(this.state.keys);
     //console.log("testingkeys")
-
   }
 
   errData = (err) =>{
-    //console.log('Error!');
-    //console.log(err);
+    console.log('Error!');
+    console.log(err);
   }
 
   render(){

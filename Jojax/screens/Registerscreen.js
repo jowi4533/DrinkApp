@@ -1,5 +1,4 @@
 import React, { Component} from "react";
-import {usersDB} from '../App';
 import {Alert} from 'react-native'
 import App from '../App'
 import {
@@ -26,10 +25,11 @@ class Registerscreen extends Component {
       repeatPassword: 'Repeat Password',
 
     }
+   let usersDB = props.screenProps.usersDB;
   }
 
   readValues(){
-    console.log(usersDB)
+    console.log(this.usersDB)
     if(this.state.password === this.state.repeatPassword){
       if(this.checkIfUserExist() === false){
         this.createNewUser();
@@ -45,7 +45,7 @@ class Registerscreen extends Component {
       email: this.state.email,
       password: this.state.password
     }
-    usersDB.push(data);
+    this.usersDB.push(data);
   }
 
 

@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { Ionicons, FontAwesome, Entypo, EvilIcons } from "@expo/vector-icons";
-import { firebaseStorage } from "../App";
 import {
   View,
   Text,
@@ -24,13 +23,14 @@ class Drinkscreen extends Component {
     this.state ={
       modalVisible: false,
       dataSource: [],
-      dataLoaded: false,
 
-      //reference to the drinkImages in the storage
-      drinkImages: props.screenProps.drinkImages,
+      allDrinkKeys: props.screenProps.allDrinkKeys,
+      allDrinkItems: props.screenProps.allDrinkItems,
 
       //Images later to be loaded
-      vodkaIMG: ""
+      drinkImages: [],
+      drinkNames: [],
+
     };
   }
 
@@ -46,7 +46,7 @@ class Drinkscreen extends Component {
     </View>
   }
 
-  componentDidMount() {
+componentDidMount() {
     const url = "";
     fetch(url)
       .then(response => response.json())
@@ -59,29 +59,24 @@ class Drinkscreen extends Component {
         //console.log(error);
       });
 
-    this.loadImages();
-
-    this.forceUpdate();
   }
 
-  async loadImages() {
-    let referencesArray = [];
+  componentWillMount(){
+    //Loads the image, takes time to fetch from database
+    this.loadImages()
+  }
 
-    //Here u create all the images you need for the page
-    //Name of the picture is found in the firebase Storage on the website
-    //Give the images simple names when uploading to storage!
-    let vodkaRef = this.state.drinkImages.child("Vodka.jpg");
+  async loadImages(){
+    var aperol = this.state.allDrinkKeys[0];
+    var cranberrySangria = this.state.allDrinkKeys[1];
 
-    //Load these into imagesArray
-    referencesArray = [vodkaRef];
+    for (let i = 0; i < this.state.allDrinkKeys.length; i++){
+      let k = this.state.allDrinkKeys[i];
 
-    //Fetch the URL of the images
-    await vodkaRef.getDownloadURL().then(url => {
-      this.setState({ vodkaIMG: url });
-    });
-    console.log(this.state.vodkaIMG);
-    //When all data is loaded proceed to next step in componentDidMount
-    this.setState({ dataloaded: true });
+      this.state.drinkNames.push(this.state.allDrinkItems[k].name)
+      await this.state.drinkImages.push(this.state.allDrinkItems[k].URL)
+
+    }
   }
 
   pageContent() {
@@ -109,7 +104,7 @@ class Drinkscreen extends Component {
 
               <View>
                 <Image
-                  source={{ uri: this.state.vodkaIMG }}
+                  source={{ uri: this.state.drinkImages[0] }}
                   style={styles.imageDrink}
                 />
               </View>
@@ -134,8 +129,6 @@ class Drinkscreen extends Component {
   render(){
     return (
       <SafeAreaView style={styles.container}>
-
-
 
         <View style={styles.headerBox}>
           <Text style={styles.textHeader}> Drinks </Text>
@@ -162,7 +155,7 @@ class Drinkscreen extends Component {
             </View>
               <View>
                 <Image
-                  source={{ uri: this.state.vodkaIMG }}
+                  source={{ uri: this.state.drinkImages[0] }}
                   style={styles.imageDrink}
                 />
               </View>
