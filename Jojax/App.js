@@ -14,6 +14,7 @@ import Registerscreen from './screens/Registerscreen'
 import Loginscreen from './screens/Loginscreen'
 import DrinkCategoryscreen from './screens/DrinkCategoryscreen'
 import SpecificDrinkscreen from './screens/SpecificDrinkscreen'
+import NewNotescreen from './screens/NewNotescreen'
 
 
 import firebase from 'firebase'
@@ -50,9 +51,11 @@ const MyPageStack = createStackNavigator(
   MyPage: {screen: MyPagescreen},
   MyBar: {screen: MyBarscreen},
   MyFavoriteDrinks: {screen: MyFavoriteDrinksscreen},
+  MyNotes: {screen: MyNotesscreen },
   Register: {screen: Registerscreen},
   Login: {screen: Loginscreen},
-  SpecDrinks: {screen: SpecificDrinkscreen}
+  SpecDrinks: {screen: SpecificDrinkscreen},
+  NewNote: {screen: NewNotescreen}
   }
 );
 const DrinkStack = createStackNavigator({
@@ -161,7 +164,6 @@ class App extends Component {
     console.log('Error!');
     console.log(err);
   }
-
   render(){
     return (
       <AppContainer screenProps ={this.state}>

@@ -13,6 +13,10 @@ import {
 const { width: WIDTH, height: HEIGHT } = Dimensions.get("window");
 
 class MyNotesscreen extends Component {
+
+  newNote(){
+    
+  }
   createNoteHeader(string) {
     var pixelWidth = require("string-pixel-width");
     const stringWidth = pixelWidth(string, { size: 16 });
@@ -88,7 +92,9 @@ class MyNotesscreen extends Component {
                 raised={true}
               />
             </View>
+            <TouchableOpacity style = {styles.notesTouch}>
             <View style={styles.noteTextContainer}>
+
               <Text style={styles.noteTextHeading}>
                 {this.state.note_header}
               </Text>
@@ -96,6 +102,7 @@ class MyNotesscreen extends Component {
                 {this.state.note_ending}
               </Text>
             </View>
+          </TouchableOpacity>
           </View>
         </ScrollView>
         <View style={styles.footer}>
@@ -103,7 +110,7 @@ class MyNotesscreen extends Component {
             <AntDesign
               name="pluscircle"
               size={70}
-              color={"rgba(38, 166, 91, 1)"}
+              color={"rgba(0, 230, 64, 1)"}
             />
           </View>
         </View>
@@ -160,5 +167,9 @@ const styles = StyleSheet.create({
   noteTextEnding: {
     color: "rgba(46, 49, 49, 1)",
     fontSize: 14
-  }
+  },
+  notesTouch:{
+    width: '100%',
+    height: '100%'
+  },
 });
