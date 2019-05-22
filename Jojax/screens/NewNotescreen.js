@@ -28,6 +28,7 @@ class NewNotescreen extends Component {
     return {
     title: 'New Note',
     headerTitleStyle: {
+      width: '100%',
       fontWeight: 'bold',
       fontSize: 25
     },

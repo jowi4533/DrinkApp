@@ -20,6 +20,7 @@ class MyNotesscreen extends Component {
     headerBackTitle: 'Go Back',
     title: 'My Notes',
     headerTitleStyle: {
+      width: '100%',
       fontWeight: 'bold',
       fontSize: 25
     },

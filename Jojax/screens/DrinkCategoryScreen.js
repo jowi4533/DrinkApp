@@ -64,8 +64,9 @@ class DrinkCategoryscreen extends Component {
   static navigationOptions = ({ navigation }) => ({
    title: `${navigation.state.params.title}`,
     headerTitleStyle: {
+      width: '100%',
       fontWeight: 'bold',
-      fontSize: 25
+      fontSize: 25,
     },
   });
 

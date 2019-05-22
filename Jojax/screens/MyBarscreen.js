@@ -37,7 +37,9 @@ const numColumns = 3;
 class MyBarscreen extends Component {
   static navigationOptions = {
     title: 'My Bar',
+    headerLayoutPreset: 'center',
     headerTitleStyle: {
+      width: '100%',
       fontWeight: 'bold',
       fontSize: 25
     },
@@ -163,7 +165,6 @@ const styles = StyleSheet.create({
   },
 
   item: {
-    activeOpacity: 0,
     borderRadius: 10,
     // underlayColor: 'transparent',
     // onHideUnderlay: 'transparent',
@@ -178,7 +179,6 @@ const styles = StyleSheet.create({
   },
 
   itemPicture: {
-    blurRadius: 25,
     justifyContent: 'center',
     alignItems: 'center',
     width: '100%',

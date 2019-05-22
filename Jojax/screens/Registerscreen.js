@@ -21,6 +21,7 @@ class Registerscreen extends Component {
   static navigationOptions = {
     title: 'Register',
     headerTitleStyle: {
+      width: '100%',
       fontWeight: 'bold',
       fontSize: 25
     },
