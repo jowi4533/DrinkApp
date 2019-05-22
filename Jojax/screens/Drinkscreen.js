@@ -18,54 +18,6 @@ import {
 const { width: WIDTH, height: HEIGHT } = Dimensions.get("window");
 
 import SmallFavoriteButton from "../components/SmallFavoriteButton.js";
-<<<<<<< HEAD
-=======
-import ginBottle from "../pictures/ginBottle.jpg";
-
-const data1 = [
-  {
-    name: "Bloody Mary",
-    ingredients:
-      "Gin, White Rum, Tequila, Triple Sec, Vodka, Syrup, Lemon Juice, Cola, Ice"
-  },
-  {
-    name: "Long Isle Ice Tea",
-    ingredients:
-      "Gin, White Rum, Tequila, Triple Sec, Vodka, Syrup, Lemon Juice, Cola, Ice"
-  },
-  {
-    name: "Gin Tonic",
-    ingredients:
-      "Gin, White Rum, Tequila, Triple Sec, Vodka, Syrup, Lemon Juice, Cola, Ice"
-  },
-  {
-    name: "Dry Martini",
-    ingredients:
-      "Gin, White Rum, Tequila, Triple Sec, Vodka, Syrup, Lemon Juice, Cola, Ice"
-  },
-  {
-    name: "Sex On the Beach",
-    ingredients:
-      "Gin, White Rum, Tequila, Triple Sec, Vodka, Syrup, Lemon Juice, Cola, Ice"
-  },
-  {
-    name: "Mojito",
-    ingredients:
-      "Gin, White Rum, Tequila, Triple Sec, Vodka, Syrup, Lemon Juice, Cola, Ice"
-  },
-  {
-    name: "Pear Mojito",
-    ingredients:
-      "Gin, White Rum, Tequila, Triple Sec, Vodka, Syrup, Lemon Juice, Cola, Ice"
-  },
-  {
-    name: "Aperol Spritz",
-    ingredients:
-      "Gin, White Rum, Tequila, Triple Sec, Vodka, Syrup, Lemon Juice, Cola, Ice"
-  }
-];
-const numColumns = 4;
->>>>>>> 1d30f97f15e65aed86a210b2abc1e4e891488b20
 
 class Drinkscreen extends Component {
   static navigationOptions = {
@@ -76,6 +28,7 @@ class Drinkscreen extends Component {
       fontSize: 25
     },
   };
+
   constructor(props) {
     super(props);
     this.state = {
@@ -89,8 +42,6 @@ class Drinkscreen extends Component {
       modalVisible: false,
       dataSource: [],
 
-      searchBarValue: "Search",
-
       allDrinkKeys: props.screenProps.allDrinkKeys,
       allDrinkItems: props.screenProps.allDrinkItems,
 
@@ -98,36 +49,14 @@ class Drinkscreen extends Component {
       drinksDisplayed: []
 
     };
-
   }
-
 
   setModalVisible(visible) {
     this.setState({ modalVisible: visible });
   }
 
-<<<<<<< HEAD
-componentDidMount() {
-=======
-
-  _onButtonPress = item => {
-      if (item.selected !== true) {
-        this._addToArray(item);
-        this.setState(state => {
-        item.selected = true;
-        return {item}
-        })
-      }
-      else {
-        this._removeFromArray(item);
-        this.setState(state => {
-        item.selected = false;
-        return {item}
-      })
-      }
-  }
-
-  _addToArray(item) {
+//----------------      Filter button -------------
+  addToArray(item) {
     var array = this.state.isHighlighted;
     array.push(item.name);
     this.setState(state => {
@@ -136,7 +65,7 @@ componentDidMount() {
     console.log(this.state.isHighlighted)
   }
 
-  _removeFromArray(item) {
+  removeFromArray(item) {
     var array = this.state.isHighlighted;
     var search_term = item.name;
 
@@ -152,40 +81,6 @@ componentDidMount() {
     })
   }
 
-  // resetSelected = data => {
-  //   // return {
-  //   for (item in data) {
-  //     console.log('inuti for item in data')
-  //     console.log(item.selected)
-  //     if (item.selected === true)
-  //       console.log('inuti if item.selected === true')
-  //       this.setState(state => {
-  //       item.selected = false;
-  //       return {data}
-  //       })
-  //   }
-  //   this.setState(state => {
-  //   state.isHighlighted = [];
-  //   console.log(this.state.isHighlighted)
-  //   })
-  //
-  //   return {data}
-  //   // }
-  // }
-
-  // resetSelected1() {
-  //   data = this.state.data;
-  //   for(var i = 0; i < data.length; i++){
-  //     this.setState(prevState=>({
-  //       data[i]: {
-  //         ...prevState.data[i],
-  //         selected: false
-  //       }
-  //     }))
-  //   }
-  // }
-
-
 resetSelected = (selected) => {
     this.setState(oldState => {
         return {
@@ -199,15 +94,12 @@ resetSelected = (selected) => {
       state.isHighlighted = [];
       console.log(this.state.isHighlighted)
     })
-
-
 }
-
 
 _keyExtractor = (item, index) => item.name;
 
   componentDidMount() {
->>>>>>> 1d30f97f15e65aed86a210b2abc1e4e891488b20
+    this.setState({drinksDisplayed: this.state.drinks})
     const url = "";
     fetch(url)
       .then(response => response.json())
@@ -220,14 +112,32 @@ _keyExtractor = (item, index) => item.name;
         //console.log(error);
       });
   }
+  _onButtonPress = item => {
+    if (item.selected !== true) {
+      this.addToArray(item);
+      this.setState(state => {
+      item.selected = true;
+      return {item}
+      })
+    }
+    else {
+      this.removeFromArray(item);
+      this.setState(state => {
+      item.selected = false;
+      return {item}
+    })
+    }
+}
+
+//----------------    END  Filter button -------------
 
   componentWillMount(){
     //Loads the image, takes time to fetch from database
-    this.loadImages()
-
+    this.loadDrinks()
   }
 
-  loadImages(){
+//----------------      Load all Drinks -------------
+  loadDrinks(){
     let allDrinks = []
 
     for (let i = 0; i < this.state.allDrinkKeys.length; i++){
@@ -244,28 +154,27 @@ _keyExtractor = (item, index) => item.name;
 
   }
 
-  displayDrinks(){
-    let searchBarCharacters = this.state.searchBarValue .split('')
-
-    for(let i = 0; i < searchBarCharacters.length; i++){
-      this.loopOverDrinks(searchBarCharacters[i])
-    }
+//----------------      Choose drinks to Display -------------
+  displayDrinks(searchBarText){
+    this.loopOverDrinks(searchBarText)
   }
 
-  loopOverDrinks(searchBarCharacter){
-    console.log(searchBarCharacter)
+  loopOverDrinks(searchBarCharacters){
+    let drinksToDisplay = []
     for(let i = 0; i < this.state.drinks.length; i++){
-      let drinkNameCharacters = this.state.drinks[i].name.split('')
-      for(let j = 0; j < drinkNameCharacters.length; j++){
-        if(searchBarCharacter === drinkNameCharacters[j]){
-          console.log(this.state.drinks[i].name)
-          break;
-        }
+      let drinkName = this.state.drinks[i].name
+      if(drinkName.includes(searchBarCharacters)){
+        drinksToDisplay.push(this.state.drinks[i])
       }
     }
+
+    if(searchBarCharacters === "Search"){
+      this.setState({drinksDisplayed: this.state.drinks})
+    }
+    else{
+      this.setState({drinksDisplayed: drinksToDisplay})
+    }
   }
-
-
 
   renderItem = ({ item, index }) => {
     if (item.selected === true) {
@@ -314,8 +223,6 @@ _keyExtractor = (item, index) => item.name;
   };
 
   render() {
-    this.displayDrinks()
-
     return (
       <View style={styles.container}>
         <View style={styles.searchBox}>
@@ -324,7 +231,7 @@ _keyExtractor = (item, index) => item.name;
             <TextInput
             placeholder="Search"
             style={styles.searchInput}
-            onChangeText = {searchBarValue => this.setState({searchBarValue})}
+            onChangeText = {(text) => this.displayDrinks(text)}
             />
           </View>
           <TouchableOpacity
@@ -336,15 +243,12 @@ _keyExtractor = (item, index) => item.name;
         </View>
         <View style= {{paddingBottom: 70}}>
           <FlatList
-            data={this.state.drinks}
+            data={this.state.drinksDisplayed}
             renderItem={this.renderItem1}
             keyExtractor={item => item.name}
             extraData={this.state}
           />
         </View>
-
-
-
         <View style={styles.modalContainer}>
         <Modal
           style={styles.modal}
@@ -355,7 +259,6 @@ _keyExtractor = (item, index) => item.name;
           transparent={true}
           visible={this.state.modalVisible}
         >
-
           <View style={styles.modalContent}>
             <View style={styles.modalHeadingTextContainer}>
               <Text style={styles.modalHeadingText}>
@@ -369,13 +272,10 @@ _keyExtractor = (item, index) => item.name;
                   contentContainerStyle={styles.modalFlatList}
                   renderItem={this.renderItem}
                   keyExtractor={this._keyExtractor}
-
                 >
               </FlatList>
               </View>
-
             <View style={styles.modalButtonContainer}>
-
               <View style={styles.resetButtonContainer}>
               <TouchableHighlight style={styles.resetButton}
                 onPress={() => {
@@ -388,7 +288,6 @@ _keyExtractor = (item, index) => item.name;
                 </Text>
               </TouchableHighlight>
               </View>
-
               <View style={styles.okButtonContainer}>
               <TouchableHighlight style={styles.okButton}
                 onPress={() => {
@@ -400,11 +299,9 @@ _keyExtractor = (item, index) => item.name;
               </TouchableHighlight>
               </View>
             </View>
-
           </View>
         </Modal>
         </View>
-
       </View>
     );
   }
