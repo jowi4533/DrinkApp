@@ -44,6 +44,15 @@ const data2 = [
 const data3 = {name: "Long Island Ice Tea"};
 
 class SpecificDrinkscreen extends Component {
+  constructor(props){
+    super(props);
+
+    this.state = {
+      specificDrink : this.props.navigation.state.params.drink,
+    }
+  }
+
+
   modifyPreparations() {
     const data2 = [
       {
@@ -55,6 +64,7 @@ class SpecificDrinkscreen extends Component {
           "1.Fill a long glass with poop.,2.Add all ingredients except Coca poop.,3.Top with a splash of Cola and poop.,4.Garnish with a lemon poop."
       }
     ];
+
     const data3 = data2[0].instruc;
     let sentence = "";
     const newPrep = [];
@@ -66,7 +76,7 @@ class SpecificDrinkscreen extends Component {
         sentence = "";
       }
     }
-    console.log(newPrep);
+
     return newPrep;
   }
 

@@ -18,52 +18,6 @@ import {
 const { width: WIDTH, height: HEIGHT } = Dimensions.get("window");
 
 import SmallFavoriteButton from "../components/SmallFavoriteButton.js";
-import ginBottle from "../pictures/ginBottle.jpg";
-
-const data1 = [
-  {
-    name: "Bloody Mary",
-    ingredients:
-      "Gin, White Rum, Tequila, Triple Sec, Vodka, Syrup, Lemon Juice, Cola, Ice"
-  },
-  {
-    name: "Long Isle Ice Tea",
-    ingredients:
-      "Gin, White Rum, Tequila, Triple Sec, Vodka, Syrup, Lemon Juice, Cola, Ice"
-  },
-  {
-    name: "Gin Tonic",
-    ingredients:
-      "Gin, White Rum, Tequila, Triple Sec, Vodka, Syrup, Lemon Juice, Cola, Ice"
-  },
-  {
-    name: "Dry Martini",
-    ingredients:
-      "Gin, White Rum, Tequila, Triple Sec, Vodka, Syrup, Lemon Juice, Cola, Ice"
-  },
-  {
-    name: "Sex On the Beach",
-    ingredients:
-      "Gin, White Rum, Tequila, Triple Sec, Vodka, Syrup, Lemon Juice, Cola, Ice"
-  },
-  {
-    name: "Mojito",
-    ingredients:
-      "Gin, White Rum, Tequila, Triple Sec, Vodka, Syrup, Lemon Juice, Cola, Ice"
-  },
-  {
-    name: "Pear Mojito",
-    ingredients:
-      "Gin, White Rum, Tequila, Triple Sec, Vodka, Syrup, Lemon Juice, Cola, Ice"
-  },
-  {
-    name: "Aperol Spritz",
-    ingredients:
-      "Gin, White Rum, Tequila, Triple Sec, Vodka, Syrup, Lemon Juice, Cola, Ice"
-  }
-];
-
-
 
 class Drinkscreen extends Component {
   static navigationOptions = {
@@ -80,15 +34,13 @@ class Drinkscreen extends Component {
       modalVisible: false,
       dataSource: [],
 
+      searchBarValue: "Search",
+
       allDrinkKeys: props.screenProps.allDrinkKeys,
       allDrinkItems: props.screenProps.allDrinkItems,
 
-      //Images later to be loaded
-      drinkImages: [],
-      drinkNames: [],
-
-      drinks: [
-      ],
+      drinks: [],
+      drinksDisplayed: []
 
     };
 
@@ -120,15 +72,15 @@ componentDidMount() {
   }
 
   loadImages(){
-
     let allDrinks = []
+
     for (let i = 0; i < this.state.allDrinkKeys.length; i++){
       let k = this.state.allDrinkKeys[i];
-      console.log(this.state.allDrinkItems[k].keywords.ingredients)
+
       let drink = {
         name: this.state.allDrinkItems[k].name,
         url: this.state.allDrinkItems[k].URL,
-        ingredients: "apa"
+        ingredients: this.state.allDrinkItems[k].keywords.ingredients
       }
       allDrinks.push(drink)
     }
@@ -136,56 +88,34 @@ componentDidMount() {
 
   }
 
-  pageContent() {
-    return (
-      <SafeAreaView style={styles.container}>
-        <View style={styles.headerBox}>
-          <Text style={styles.textHeader}> Drinks </Text>
-        </View>
-        <View style={styles.searchBox}>
-          <View style={styles.innerSearchBox}>
-            <EvilIcons name="search" size={30} />
-            <TextInput placeholder="Search" style={styles.searchInput} />
-            <TouchableOpacity style={styles.buttonFilter}>
-              <Text style={styles.textFilterButton}>Filter</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
+  displayDrinks(){
+    let searchBarCharacters = this.state.searchBarValue .split('')
 
-        <ScrollView scrollEventThrottle={16}>
-          <View style={styles.drinkContainer}>
-            <TouchableOpacity
-              style={styles.buttonDrink}
-              onPress={() => this.props.navigation.navigate("SpecDrinks")}
-            >
-              <View>
-                <Image
-                  source={{ uri: this.state.drinkImages[0] }}
-                  style={styles.imageDrink}
-                />
-              </View>
-              <View style={styles.textBoxContainer}>
-                <Text style={styles.textDrinkName}>Long Island Ice Tea</Text>
-                <Text style={styles.textDrinkIngredients}>
-                  Gin, White Rum, Tequila, Triple Sec, Vodka, Syrup, Lemon
-                  Juice, Cola, Ice
-                </Text>
-              </View>
-            </TouchableOpacity>
-          </View>
-        </ScrollView>
-      </SafeAreaView>
-    );
+    for(let i = 0; i < searchBarCharacters.length; i++){
+      this.loopOverDrinks(searchBarCharacters[i])
+    }
+
   }
 
+  loopOverDrinks(searchBarCharacter){
+    console.log(searchBarCharacter)
+    for(let i = 0; i < this.state.drinks.length; i++){
+      let drinkNameCharacters = this.state.drinks[i].name.split('')
+      for(let j = 0; j < drinkNameCharacters.length; j++){
+        if(searchBarCharacter === drinkNameCharacters[j]){
+          console.log(this.state.drinks[i].name)
+          break;
+        }
+      }
+    }
+  }
 
   renderItem1 = ({item, index}) => {
-
     return (
       <View style={styles.drinkContainer}>
         <TouchableOpacity
           style={styles.buttonDrink}
-          onPress={() => this.props.navigation.navigate("SpecDrinks")}
+          onPress={() => this.props.navigation.navigate("SpecDrinks", {drink:item})}
         >
           <View style={styles.addToFavoriteButton}>
             <SmallFavoriteButton />
@@ -207,12 +137,18 @@ componentDidMount() {
   };
 
   render() {
+    this.displayDrinks()
+
     return (
       <View style={styles.container}>
         <View style={styles.searchBox}>
           <View style={styles.innerSearchBox}>
             <EvilIcons name="search" size={30} />
-            <TextInput placeholder="Search" style={styles.searchInput} />
+            <TextInput
+            placeholder="Search"
+            style={styles.searchInput}
+            onChangeText = {searchBarValue => this.setState({searchBarValue})}
+            />
           </View>
           <TouchableOpacity
             style={styles.buttonFilter}
