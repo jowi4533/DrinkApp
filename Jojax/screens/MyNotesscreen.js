@@ -83,14 +83,18 @@ class MyNotesscreen extends Component {
 
     this.getNoteSubstrings = this.getNoteSubstrings.bind(this);
   }
-  getNoteSubstrings(item) {
-    data2 = this.createNoteHeader(item);
-    var noteHeader = data2[0];
-    var noteEnding = this.createNoteEnding(data2[1]);
+  renameArrayKeys = (selected) => {
+        this.setState(oldState => {
+          return {
+            // create a new item object with the new key
+            data: oldState.data.map((item, index) => Object.assign({}, item,    {
+              selected: false
+            }))
+          }
+        })
+      }
 
-    this.setState({ note_header: noteHeader });
-    this.setState({ note_ending: noteEnding });
-  }
+
   getNoteHeader(item){
     data = this.createNoteHeader(item.text);
     var noteheader = data[0];
