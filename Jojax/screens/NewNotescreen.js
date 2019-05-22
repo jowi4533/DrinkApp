@@ -5,7 +5,8 @@ import {
   Text,
   StyleSheet,
   TextInput,
-  Dimensions
+  Dimensions,
+  Button
 } from "react-native";
 const { width: WIDTH, height: HEIGHT } = Dimensions.get("window");
 
@@ -13,28 +14,43 @@ class NewNotescreen extends Component {
   constructor(props){
     super(props);
     this.state ={
-      id: "1",
-      note: ""
+      text: "" ,
+      myID: this.props.navigation.state.params.prevID +1
+
+
+
     }
+    //const { navigation } = this.props,
+    //const myID = navigation.getParam('prevID', 0) +1,
+
   }
-  static navigationOptions = {
+  static navigationOptions = ({ navigation }) => {
+    return {
     title: 'New Note',
     headerTitleStyle: {
       fontWeight: 'bold',
       fontSize: 25
     },
+
   };
+};
   goBack() {
-      console.log("testing0")
-      if (!(/\S/.test(this.state.note))){
-        console.log("testing1")
-        this.props.navigation.state.params.returnNote('123', 'this is note');
+
+      if (/\S/.test(this.state.text)){
+        this.props.navigation.state.params.returnNote(this.state.myID, this.state.text);
+        this.props.navigation.goBack();
+      }
+      else{
         this.props.navigation.goBack();
       }
    };
+   componentWillMount() {
+     this.props.navigation.setParams({ createNote: this.createNote });
+   }
 
 
   render() {
+
     return (
       <View style={styles.container}>
         <View style = {styles.textInputContainer}>
@@ -42,20 +58,25 @@ class NewNotescreen extends Component {
           style = {styles.textInputSize}
           maxLength = {250}
           placeholder = "Type your text here"
-          value = {this.state.note}
+          value = {this.state.text}
           onChangeText = { (typedText) => {
-            this.setState({note: typedText});
+            this.setState({text: typedText});
           }
           }>
 
         </TextInput>
         </View>
         <Text style = {{margin: 25, fontSize : 30, fontWeight: 'bold'}}>
-          {this.state.note}
+          {this.state.text}
         </Text>
+        <Button
+         title="Save Note"
+         onPress={() => this.goBack()}
+       />
         <View style = {styles.wordCountTextBox}>
         <Text style = {styles.wordCountText}>
-          Characters:  {this.state.note.length}/250
+          Characters:  {this.state.text.length}/250
+
         </Text>
           </View>
         </View>

@@ -12,7 +12,6 @@ import {
   Image,
   ImageBackground,
   FlatList,
-  Alert,
   Button
 } from "react-native";
 import drImage from "../pictures/long_isle.png";
@@ -21,7 +20,7 @@ import FavoriteButton from "../components/FavoriteButton.js"
 const { width: WIDTH, height: HEIGHT } = Dimensions.get("window");
 
 const data = [
-  { name: "Tequila", units: "4cl" },
+  { name: "Tequila", units: "4cl"},
   { name: "Rom", units: "4cl" },
   { name: "Gin", units: "4cl" },
   { name: "Cointreau", units: "4cl" },
@@ -31,61 +30,49 @@ const data = [
   { name: "Lemon", units: "" }
 ];
 
-const data2 = [
-  {
-    instruc:
-      "1.Fill a long glass with ice.,2.Add all ingredients except Coca Cola.,3.Top with a splash of Cola and stir.,4.Garnish with a lemon wedge."
-  },
-  {
-    instruc:
-      "1.Fill a long glass with poop.,2.Add all ingredients except Coca poop.,3.Top with a splash of Cola and poop.,4.Garnish with a lemon poop."
-  }
-];
-const data3 = {name: "Long Island Ice Tea"};
+const data2 = {
+  id: 1,
+  Discover_Weekly: true,
+  Seasonal_Drink: "summer",
+  name: "Cranberry Sangria",
+  image: "https://firebasestorage.googleapis.com/v0/b/drinknic-e6779.appspot.com/o/Drinkpictures%2Faperol_spritz.png?alt=media&token=e2cd3c18-bc9f-4c8f-aa3d-e18502a5f5b6",
+  keywords: {strong: true, ingredients: "Aperol,Spritz,Water,Juice,"},
+  instruc: "1.Fill a long glass with ice.,2.Add all ingredients except Coca Cola.,3.Top with a splash of Cola and stir.,4.Garnish with a lemon wedge.,"
+};
 
 class SpecificDrinkscreen extends Component {
-  modifyPreparations() {
-    const data2 = [
-      {
-        instruc:
-          "1.Fill a long glass with ice.,2.Add all ingredients except Coca Cola.,3.Top with a splash of Cola and stir.,4.Garnish with a lemon wedge."
-      },
-      {
-        instruc:
-          "1.Fill a long glass with poop.,2.Add all ingredients except Coca poop.,3.Top with a splash of Cola and poop.,4.Garnish with a lemon poop."
-      }
-    ];
-    const data3 = data2[0].instruc;
+
+  modifyString(data) {
+    const data3 = data;
     let sentence = "";
     const newPrep = [];
     for (var i = 0; i < data3.length; i++) {
       if (data3[i] !== ",") {
         sentence = sentence + data3[i];
       } else {
-        newPrep.push({ inst: sentence });
+        newPrep.push({ eachItem: sentence });
         sentence = "";
       }
     }
-    console.log(newPrep);
     return newPrep;
   }
 
   renderItem1 = ({ item, index }) => {
     return (
       <View style={styles.oneIngredientBox}>
-        <Text style={styles.eachIngredientText}>{item.name}</Text>
+        <Text style={styles.eachIngredientText}>{item.eachItem}</Text>
       </View>
     );
   };
   renderItem2 = ({ item, index }) => {
     return (
       <Text style={styles.eachIngredientText}>
-        {item.units} {item.name}
+        {item.eachItem}
       </Text>
     );
   };
   renderItem3 = ({ item, index }) => {
-    return <Text style={styles.eachIngredientText}>{item.inst}</Text>;
+    return <Text style={styles.eachIngredientText}>{item.eachItem}</Text>;
   };
 
   render() {
@@ -103,7 +90,7 @@ class SpecificDrinkscreen extends Component {
                 <View style={{opacity:1}}>
 
                   <Text style={styles.drinkNameText}>
-                    {data3.name}
+                    {data2.name}
                   </Text>
                 </View>
               </View>
@@ -118,9 +105,9 @@ class SpecificDrinkscreen extends Component {
                 <View style={styles.ingredientOverviewBox}>
                   <FlatList
                     contentContainerStyle={styles.ingredientBox}
-                    data={data}
+                    data={this.modifyString(data2.keywords.ingredients)}
                     renderItem={this.renderItem1}
-                    keyExtractor={item => item.name}
+                    keyExtractor={item => item.eachItem}
                   />
                 </View>
                 <View style={styles.servingsContainer}>
@@ -128,20 +115,19 @@ class SpecificDrinkscreen extends Component {
                   <View style={styles.servingsBox}>
                       <Text style={styles.twoDrinksText}>2 Drinks</Text>
                     <FlatList
-                      data={data}
+                      data={this.modifyString(data2.keywords.ingredients)}
                       renderItem={this.renderItem2}
-                      keyExtractor={item => item.name}
+                      keyExtractor={item => item.eachItem}
                     />
                   </View>
                 </View>
               </View>
             </View>
-
             <View style={styles.preparationSheet}>
               <Text style={styles.preparationText}>Preparation</Text>
               <FlatList
                 contentContainerStyle={styles.prepBox}
-                data={this.modifyPreparations()}
+                data={this.modifyString(data2.instruc)}
                 renderItem={this.renderItem3}
               />
             </View>

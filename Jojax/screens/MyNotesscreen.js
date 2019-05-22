@@ -9,39 +9,48 @@ import {
   TextInput,
   ScrollView,
   TouchableOpacity,
-  Dimensions
+  Dimensions,
+  FlatList
 } from "react-native";
 const { width: WIDTH, height: HEIGHT } = Dimensions.get("window");
 
+
 class MyNotesscreen extends Component {
   static navigationOptions = {
+    headerBackTitle: 'Go Back',
     title: 'My Notes',
     headerTitleStyle: {
       fontWeight: 'bold',
       fontSize: 25
     },
   };
-
-  newNote(){
-
-  }
   createNoteHeader(string) {
     var pixelWidth = require("string-pixel-width");
     const stringWidth = pixelWidth(string, { size: 16 });
+    console.log("detta är bredden på strängen: " + stringWidth);
+    console.log("detta är den tillåtna maxbredden: " + (WIDTH - 67- 70));
+    console.log(string)
+    var string1 = string;
+    console.log(string1)
     if (stringWidth > WIDTH - 70 - 67) {
       var substring = "";
       for (var i = 0; i < string.length; i++) {
         substring = substring + string[i];
-        if (pixelWidth(substring, { size: 16 }) >= WIDTH - 67 - 70) {
-          var remainingString = string.substring(i);
-          return [substring + "...", remainingString];
+        if ((pixelWidth(substring, { size: 16 }) >= WIDTH - 67 - 70)&& substring[i]=== " ") {
+          var remainingString = string.substring(i+1);
+          console.log(remainingString);
+          return [substring.substring(0,substring.length -1) + "...", remainingString];
+
         }
       }
     }
-    return string;
+      return [string,]
+
+
   }
   createNoteEnding(string) {
     //var reversedString = [...string].reverse().join('');
+    console.log("note ending: " + string)
     var pixelWidth = require("string-pixel-width");
     const stringWidth = pixelWidth(string, { size: 14 });
     if (stringWidth > (WIDTH - 70 - 67) / 1.3) {
@@ -59,18 +68,19 @@ class MyNotesscreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      data1: {
-        note:
-          "hej detta är ett test på en titel på en titel som ska sträcka sig långt det kommer bli ännnu längre"
-      },
+      personalNotes: [
+        { id: 1, text: "Hej jag heter Jonas och detta är ett test på en note"},
+        { id: 2, text: "Hej jag heter Axel och detta är ett test på en note"},
+        { id: 3, text: "Hej jag heter Jakob och detta är ett test på en note"},
+        { id: 4, text: "Hej jag heter Jons och på en note som är bajs"}],
+
       note_header: "",
-      note_ending: ""
+      note_ending: "",
+      index: 3
+
     };
 
     this.getNoteSubstrings = this.getNoteSubstrings.bind(this);
-  }
-  componentDidMount() {
-    this.getNoteSubstrings(this.state.data1.note);
   }
   getNoteSubstrings(item) {
     data2 = this.createNoteHeader(item);
@@ -80,46 +90,83 @@ class MyNotesscreen extends Component {
     this.setState({ note_header: noteHeader });
     this.setState({ note_ending: noteEnding });
   }
+  getNoteHeader(item){
+    data = this.createNoteHeader(item.text);
+    var noteheader = data[0];
+    console.log(noteheader)
+    return (noteheader);
+  }
+  getNoteEnding(item){
+    data = this.createNoteHeader(item.text);
+    var noteEnding = this.createNoteEnding(data[1]);
+    return(noteEnding);
+  }
 
   renderItem = ({ item, index }) => {
-    return <View style={styles.noteContainer} />;
+    return (
+      <View style={styles.noteContainer}>
+        <View style={styles.noteIconContainer}>
+          <MaterialCommunityIcons
+            name={"checkbox-blank-circle"}
+            size={45}
+            color={"rgba(0, 230, 64, 1)"}
+            raised={true}
+          />
+        </View>
+      <TouchableOpacity style = {styles.notesTouch}>
+      <View style={styles.noteTextContainer}>
+        <Text style={styles.noteTextHeading}>
+          {this.getNoteHeader(item)}
+        </Text>
+        <Text style={styles.noteTextEnding}>
+          {this.getNoteEnding(item)} {item.id}
+        </Text>
+      </View>
+    </TouchableOpacity>
+  </View>
+
+    );
   };
-  returnNote(id, note) {
-  this.setState({id: id, note: note});
+  returnNote(id, text) {
+    this.setState(prevState => ({
+      personalNotes: [...prevState.personalNotes, {id: id , text:text}]
+    }))
+    //this.setState({id: id, text: text});
   }
+  lastObject(array){
+    var index = array.length -1;
+    return (array[index].text)
+
+  }
+  lastObjectID(array){
+    var index = array.length -1;
+    var id = array[index].id;
+    console.log(id)
+    return (id)
+  }
+
   render() {
     return (
       <View style={styles.container}>
         <ScrollView style={styles.scrollContainer}>
-          <View style={styles.noteContainer}>
-            <View style={styles.noteIconContainer}>
-              <MaterialCommunityIcons
-                name={"checkbox-blank-circle"}
-                size={45}
-                color={"rgba(0, 230, 64, 1)"}
-                raised={true}
+            <View>
+              <FlatList
+                data={this.state.personalNotes}
+                renderItem={this.renderItem}
+                keyExtractor={item => item.id}
               />
             </View>
-            <TouchableOpacity style = {styles.notesTouch}>
-            <View style={styles.noteTextContainer}>
-
-              <Text style={styles.noteTextHeading}>
-                {this.state.note_header}
-              </Text>
-              <Text style={styles.noteTextEnding}>
-                {this.state.note_ending}
-              </Text>
-            </View>
-          </TouchableOpacity>
-          </View>
         </ScrollView>
+        <Text>
+          {this.lastObject(this.state.personalNotes)}
+        </Text>
         <View style={styles.footer}>
           <View style={styles.iconContainer}>
             <AntDesign
               name="pluscircle"
               size={70}
               color={"rgba(0, 230, 64, 1)"}
-              onPress={() => this.props.navigation.navigate('NewNote',{returnData: this.returnNote.bind(this)})
+              onPress={() => this.props.navigation.navigate('NewNote',{returnNote: this.returnNote.bind(this), prevID: this.lastObjectID(this.state.personalNotes)})
             }
             />
           </View>
