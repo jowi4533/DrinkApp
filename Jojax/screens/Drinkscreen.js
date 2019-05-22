@@ -111,26 +111,24 @@ componentDidMount() {
       .catch(error => {
         //console.log(error);
       });
-
   }
 
   componentWillMount(){
     //Loads the image, takes time to fetch from database
     this.loadImages()
 
-
   }
 
   loadImages(){
-    //var aperol = this.state.allDrinkKeys[0];
-    //var cranberrySangria = this.state.allDrinkKeys[1];
+
     let allDrinks = []
     for (let i = 0; i < this.state.allDrinkKeys.length; i++){
       let k = this.state.allDrinkKeys[i];
-
+      console.log(this.state.allDrinkItems[k].keywords.ingredients)
       let drink = {
         name: this.state.allDrinkItems[k].name,
-        url: this.state.allDrinkItems[k].URL
+        url: this.state.allDrinkItems[k].URL,
+        ingredients: "apa"
       }
       allDrinks.push(drink)
     }
@@ -200,6 +198,7 @@ componentDidMount() {
           </View>
           <View style={styles.textBoxContainer}>
             <Text style={styles.textDrinkName}>{item.name}</Text>
+            <Text style={styles.textDrinkIngredients}>{item.ingredients}</Text>
 
           </View>
         </TouchableOpacity>

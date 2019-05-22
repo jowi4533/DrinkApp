@@ -13,7 +13,6 @@ import MyBarscreen from './screens/MyBarscreen'
 import MyFavoriteDrinksscreen from './screens/MyFavoriteDrinksscreen'
 import Registerscreen from './screens/Registerscreen'
 import Loginscreen from './screens/Loginscreen'
-import DrinkCategoryscreen from './screens/DrinkCategoryscreen'
 import SpecificDrinkscreen from './screens/SpecificDrinkscreen'
 import NewNotescreen from './screens/NewNotescreen'
 
@@ -73,8 +72,7 @@ const DrinkStack = createStackNavigator({
 const ExploreStack = createStackNavigator({
   Explore: {screen: Explorescreen},
   SpecDrinks: {screen: SpecificDrinkscreen},
-  DrinkCategory: {screen:DrinkCategoryscreen}
-  }, 
+  },
   {
     headerLayoutPreset: 'center'
   }
