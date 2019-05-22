@@ -235,47 +235,7 @@ _keyExtractor = (item, index) => item.name;
     this.setState({ dataloaded: true });
   }
 
-  pageContent() {
-    return (
-      <SafeAreaView style={styles.container}>
-        <View style={styles.headerBox}>
-          <Text style={styles.textHeader}> Drinks </Text>
-        </View>
-        <View style={styles.searchBox}>
-          <View style={styles.innerSearchBox}>
-            <EvilIcons name="search" size={30} />
-            <TextInput placeholder="Search" style={styles.searchInput} />
-            <TouchableOpacity style={styles.buttonFilter}>
-              <Text style={styles.textFilterButton}>Filter</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
 
-        <ScrollView scrollEventThrottle={16}>
-          <View style={styles.drinkContainer}>
-            <TouchableOpacity
-              style={styles.buttonDrink}
-              onPress={() => this.props.navigation.navigate("SpecDrinks")}
-            >
-              <View>
-                <Image
-                  source={ginBottle}
-                  style={styles.imageDrink}
-                />
-              </View>
-              <View style={styles.textBoxContainer}>
-                <Text style={styles.textDrinkName}>Long Island Ice Tea</Text>
-                <Text style={styles.textDrinkIngredients}>
-                  Gin, White Rum, Tequila, Triple Sec, Vodka, Syrup, Lemon
-                  Juice, Cola, Ice
-                </Text>
-              </View>
-            </TouchableOpacity>
-          </View>
-        </ScrollView>
-      </SafeAreaView>
-    );
-  }
 
   renderItem = ({ item, index }) => {
     if (item.selected === true) {
