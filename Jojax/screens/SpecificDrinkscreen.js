@@ -19,16 +19,6 @@ import bgImage from "../pictures/236.jpg";
 import FavoriteButton from "../components/FavoriteButton.js"
 const { width: WIDTH, height: HEIGHT } = Dimensions.get("window");
 
-const data = [
-  { name: "Tequila", units: "4cl"},
-  { name: "Rom", units: "4cl" },
-  { name: "Gin", units: "4cl" },
-  { name: "Cointreau", units: "4cl" },
-  { name: "Lemon Juice", units: "4cl" },
-  { name: "Coca Cola", units: "" },
-  { name: "Ice", units: "" },
-  { name: "Lemon", units: "" }
-];
 
 const data2 = {
   id: 1,
