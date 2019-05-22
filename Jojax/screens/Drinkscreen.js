@@ -63,7 +63,7 @@ const data1 = [
       "Gin, White Rum, Tequila, Triple Sec, Vodka, Syrup, Lemon Juice, Cola, Ice"
   }
 ];
-
+const numColumns = 4;
 
 class Drinkscreen extends Component {
   static navigationOptions = {
@@ -77,6 +77,13 @@ class Drinkscreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      data: [
+        {name: 'Gin', selected: false}, {name: 'Vodka', selected: false}, {name: 'Whiskey', selected: false}, {name: 'White Rum', selected: false}, {name: 'Dark Rum', selected: false}, {name: 'Tequila', selected: false},
+        {name: 'White Wine', selected: false}, {name: 'Red Wine', selected: false}, {name: 'Blue Wine', selected: false}, {name: 'Schnaps', selected: false},
+        {name: 'Absinthe', selected: false},
+        {name: 'Rose Wine', selected: false}
+      ],
+      isHighlighted: [],
       modalVisible: false,
       dataSource: [],
       dataLoaded: false,
@@ -92,6 +99,103 @@ class Drinkscreen extends Component {
   setModalVisible(visible) {
     this.setState({ modalVisible: visible });
   }
+
+
+  _onButtonPress = item => {
+      if (item.selected !== true) {
+        this._addToArray(item);
+        this.setState(state => {
+        item.selected = true;
+        return {item}
+        })
+      }
+      else {
+        this._removeFromArray(item);
+        this.setState(state => {
+        item.selected = false;
+        return {item}
+      })
+      }
+  }
+
+  _addToArray(item) {
+    var array = this.state.isHighlighted;
+    array.push(item.name);
+    this.setState(state => {
+    state.isHighlighted = array;
+    })
+    console.log(this.state.isHighlighted)
+  }
+
+  _removeFromArray(item) {
+    var array = this.state.isHighlighted;
+    var search_term = item.name;
+
+    for (var i = array.length-1; i >= 0; i--) {
+      if (array[i] === search_term) {
+        array.splice(i, 1);
+      }
+    }
+
+    this.setState(state => {
+    state.isHighlighted = array;
+    console.log(this.state.isHighlighted)
+    })
+  }
+
+  // resetSelected = data => {
+  //   // return {
+  //   for (item in data) {
+  //     console.log('inuti for item in data')
+  //     console.log(item.selected)
+  //     if (item.selected === true)
+  //       console.log('inuti if item.selected === true')
+  //       this.setState(state => {
+  //       item.selected = false;
+  //       return {data}
+  //       })
+  //   }
+  //   this.setState(state => {
+  //   state.isHighlighted = [];
+  //   console.log(this.state.isHighlighted)
+  //   })
+  //
+  //   return {data}
+  //   // }
+  // }
+
+  // resetSelected1() {
+  //   data = this.state.data;
+  //   for(var i = 0; i < data.length; i++){
+  //     this.setState(prevState=>({
+  //       data[i]: {
+  //         ...prevState.data[i],
+  //         selected: false
+  //       }
+  //     }))
+  //   }
+  // }
+
+
+resetSelected = (selected) => {
+    this.setState(oldState => {
+        return {
+          // create a new item object with the new key
+          data: oldState.data.map((item, index) => Object.assign({}, item,    {
+            selected: false
+          }))
+        }
+    })
+    this.setState(state => {
+      state.isHighlighted = [];
+      console.log(this.state.isHighlighted)
+    })
+
+
+}
+
+
+_keyExtractor = (item, index) => item.name;
 
   componentDidMount() {
     const url = "";
@@ -173,6 +277,26 @@ class Drinkscreen extends Component {
     );
   }
 
+  renderItem = ({ item, index }) => {
+    if (item.selected === true) {
+      return (
+        <TouchableOpacity style={styles.modalItemSelected} onPress={ () => { this._onButtonPress(item) } }>
+          <View style={styles.modalItemContainer}>
+              <Text style={styles.modalItemText}> {item.name} </Text>
+          </View>
+        </TouchableOpacity>
+      );
+    }
+
+    return (
+        <TouchableOpacity style={styles.modalItem} onPress={ () => { this._onButtonPress(item) } }>
+          <View style={styles.modalItemContainer}>
+              <Text style={styles.modalItemText}> {item.name} </Text>
+          </View>
+        </TouchableOpacity>
+    );
+  };
+
 
   renderItem1 = ({item, index}) => {
     return (
@@ -191,8 +315,8 @@ class Drinkscreen extends Component {
             />
           </View>
           <View style={styles.textBoxContainer}>
-            <Text style={styles.textDrinkName}>{item.name}</Text>
-            <Text style={styles.textDrinkIngredients}>{item.ingredients}</Text>
+            <Text style={styles.textDrinkName}> {item.name} </Text>
+            <Text style={styles.textDrinkIngredients}> {item.ingredients} </Text>
           </View>
         </TouchableOpacity>
       </View>
@@ -211,7 +335,7 @@ class Drinkscreen extends Component {
             style={styles.buttonFilter}
             onPress={() => { this.setModalVisible(true); }}
           >
-            <Text style={styles.textFilterButton}>Filter</Text>
+            <Text style={styles.textFilterButton}> Filter </Text>
           </TouchableOpacity>
         </View>
         <View style= {{paddingBottom: 70}}>
@@ -222,25 +346,64 @@ class Drinkscreen extends Component {
           />
         </View>
 
+
+
         <View style={styles.modalContainer}>
         <Modal
           style={styles.modal}
+          onRequestClose={() => {
+            Alert.alert('Modal has been closed.');
+          }}
           animationType="slide"
           transparent={true}
           visible={this.state.modalVisible}
-          onRequestClose={() => {
-            Alert.alert('Modal has been closed.');
-          }}>
+        >
 
           <View style={styles.modalContent}>
-              <Text>Hello World!</Text>
+            <View style={styles.modalHeadingTextContainer}>
+              <Text style={styles.modalHeadingText}>
+                Ingredients
+              </Text>
+            </View>
+              <View style={styles.modalFlatListContainer}>
+                <FlatList
+                  data={this.state.data}
+                  extraData={this.state}
+                  contentContainerStyle={styles.modalFlatList}
+                  renderItem={this.renderItem}
+                  keyExtractor={this._keyExtractor}
 
-              <TouchableHighlight style={styles.hideModalButton}
+                >
+              </FlatList>
+              </View>
+
+            <View style={styles.modalButtonContainer}>
+
+              <View style={styles.resetButtonContainer}>
+              <TouchableHighlight style={styles.resetButton}
+                onPress={() => {
+                  this.resetSelected();
+                }}
+                renderItem={this.renderItem}
+              >
+                <Text style={styles.resetButtonText}>
+                  RESET
+                </Text>
+              </TouchableHighlight>
+              </View>
+
+              <View style={styles.okButtonContainer}>
+              <TouchableHighlight style={styles.okButton}
                 onPress={() => {
                   this.setModalVisible(!this.state.modalVisible);
                 }}>
-                <Text>Hide Modal</Text>
+                <Text style={styles.okButtonText}>
+                  OK
+                </Text>
               </TouchableHighlight>
+              </View>
+            </View>
+
           </View>
         </Modal>
         </View>
@@ -334,38 +497,131 @@ const styles = StyleSheet.create({
   modalContainer: {
     justifyContent: 'center',
     alignItems: 'center',
-
   },
 
   modal: {
     alignSelf: 'center',
     justifyContent: 'center',
     alignItems: 'center',
-
   },
 
   modalContent: {
     top: '20%',
     elevation: 10,
     alignSelf: 'center',
-    height: '60%',
+    height: '50%',
     width: '80%',
     backgroundColor: 'white',
     opacity: 0.95,
-    justifyContent: 'center',
-    alignItems: 'center',
+    //justifyContent: 'center',
+    //alignItems: 'center',
     borderRadius: 10,
-    borderWidth: 2,
+    borderWidth: 1,
     borderColor: 'black',
   },
 
-  hideModalButton: {
+  modalHeadingTextContainer: {
+    marginRight: 15,
+    marginLeft: 15,
+    marginTop: 10,
+    paddingBottom: 5,
+    marginBottom: 5,
+    borderBottomWidth: 1,
+    borderBottomColor: 'lightgrey',
+  },
+
+  modalHeadingText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+
+  modalFlatList: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+  },
+
+  modalFlatListContainer: {
+    flex: 1,
+  },
+
+  modalItem: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    alignSelf: 'flex-start',
+    borderRadius: 12,
+    backgroundColor: 'rgba(52, 152, 219, 1)',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginHorizontal: 8,
+    marginVertical: 5,
+    width: WIDTH*0.9*0.25,
+  },
+
+  modalItemSelected: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    alignSelf: 'flex-start',
+    borderRadius: 12,
+    backgroundColor: 'green',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginHorizontal: 8,
+    marginVertical: 5,
+    width: WIDTH*0.9*0.25,
+  },
+
+  modalItemContainer: {
+    flexDirection: 'row',
+  },
+
+  modalItemText: {
+    flexDirection: 'row',
+    fontSize: 12,
+    color: 'white',
+    paddingVertical: 5,
+  },
+
+  modalButtonContainer: {
+    //alignItems: 'flex-end',
+    justifyContent: 'space-between',
+    flexDirection: 'row',
+
+  },
+
+  resetButtonContainer: {
+    marginLeft: 10,
+    marginBottom: 10,
+  },
+
+  resetButton: {
     justifyContent: 'center',
     alignItems: 'center',
-    height: 60,
-    width: 60,
-    borderWidth: 1,
-    borderColor: 'red',
-    borderRadius: 5,
+    backgroundColor: 'lightgrey',
+    height: 35,
+    width: 55,
+    borderRadius: 8,
   },
+
+  resetButtonText: {
+    fontSize: 12,
+  },
+
+  okButtonContainer: {
+    marginRight: 10,
+    marginBottom: 10,
+  },
+
+  okButton: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'lightgrey',
+    height: 35,
+    width: 55,
+    borderRadius: 8,
+  },
+
+  okButtonText: {
+    fontSize: 12,
+  },
+
 });
