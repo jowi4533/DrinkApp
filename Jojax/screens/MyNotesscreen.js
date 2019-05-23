@@ -75,25 +75,9 @@ class MyNotesscreen extends Component {
         { id: 3, text: "Hej jag heter Jakob och detta är ett test på en note"},
         { id: 4, text: "Hej jag heter Jons och på en note som är bajs"}],
 
-      note_header: "",
-      note_ending: "",
-      index: 3
-
     };
 
-    this.getNoteSubstrings = this.getNoteSubstrings.bind(this);
   }
-  renameArrayKeys = (selected) => {
-        this.setState(oldState => {
-          return {
-            // create a new item object with the new key
-            data: oldState.data.map((item, index) => Object.assign({}, item,    {
-              selected: false
-            }))
-          }
-        })
-      }
-
 
   getNoteHeader(item){
     data = this.createNoteHeader(item.text);
