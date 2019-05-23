@@ -7,13 +7,12 @@ import Explorescreen from './screens/Explorescreen'
 import Morescreen from './screens/Morescreen'
 import  { Asset, Font } from 'expo';
 
+import MyNotesscreen from './screens/MyNotesscreen'
 import MyPagescreen from './screens/MyPagescreen'
 import MyBarscreen from './screens/MyBarscreen'
 import MyFavoriteDrinksscreen from './screens/MyFavoriteDrinksscreen'
-import MyNotesscreen from './screens/MyNotesscreen'
 import Registerscreen from './screens/Registerscreen'
 import Loginscreen from './screens/Loginscreen'
-import DrinkCategoryscreen from './screens/DrinkCategoryscreen'
 import SpecificDrinkscreen from './screens/SpecificDrinkscreen'
 import NewNotescreen from './screens/NewNotescreen'
 
@@ -37,6 +36,7 @@ if(!firebase.apps.length){
 //Everything database related (text, passwords, users etc)
 
 let database = firebase.database();
+let drinksDB = database.ref('Drinks')
 let usersDB = database.ref('Users');
 export {usersDB};
 //Everything Storage (Images) related
@@ -72,8 +72,7 @@ const DrinkStack = createStackNavigator({
 const ExploreStack = createStackNavigator({
   Explore: {screen: Explorescreen},
   SpecDrinks: {screen: SpecificDrinkscreen},
-  DrinkCategory: {screen:DrinkCategoryscreen}
-  }, 
+  },
   {
     headerLayoutPreset: 'center'
   }
@@ -140,30 +139,41 @@ class App extends Component {
   constructor(props){
     super(props)
     this.state = {
-      keys: null,
-      firebaseStorage: firebaseStorage,
-      drinkImages: imagesRef,
+      userKeys: null,
+      usersDB: usersDB,
+
+      allDrinkItems: null,
+      allDrinkKeys: null,
+
     }
+    this.initailizeListener()
+
   }
 
-  componentDidMount(){
+  componentWillMount(){
+
     this.initailizeListener()
   }
 
-  initailizeListener = () => {
-    usersDB.once("value", this.retrieveUserKeys, this.errData);
+  initailizeListener () {
+    usersDB.once("value", this.retrieveUserKeys.bind(this), this.errData);
+    drinksDB.once("value", this.retriveDrinkItems.bind(this), this.errData)
   }
 
-  retrieveUserKeys = (data) => {
-    this.setState({keys: Object.keys(data.val())});
+  retriveDrinkItems (data)  {
+    this.setState({allDrinkItems: data.val()});
+    this.setState({allDrinkKeys: Object.keys(data.val())});
+  }
+
+  retrieveUserKeys  (data)  {
+    this.setState({userKeys: Object.keys(data.val())});
     //console.log(this.state.keys);
     //console.log("testingkeys")
-
   }
 
   errData = (err) =>{
-    //console.log('Error!');
-    //console.log(err);
+    console.log('Error!');
+    console.log(err);
   }
   render(){
     return (

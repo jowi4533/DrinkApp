@@ -10,29 +10,37 @@ import {
   ScrollView,
   TouchableOpacity,
   Dimensions,
-  FlatList
+  FlatList,
+  Button
 } from "react-native";
 const { width: WIDTH, height: HEIGHT } = Dimensions.get("window");
+import NewNoteButton from "../components/NewNoteButton.js";
 
 
 class MyNotesscreen extends Component {
-  static navigationOptions = {
-    headerBackTitle: 'Go Back',
+  static navigationOptions = ({navigation}) =>
+  { return{
     title: 'My Notes',
     headerTitleStyle: {
       width: '100%',
       fontWeight: 'bold',
-      fontSize: 25
+      fontSize: 25,
+      color: 'black'
     },
-  };
+    headerTintColor: 'rgb(205,133,63)',
+    headerRight:
+    <NewNoteButton
+      onPress={navigation.getParam('handleNewNotepress')
+    }>
+  </NewNoteButton>,
+  headerBackTitleStyle:{
+    fontSize: 18
+  }
+  }};
   createNoteHeader(string) {
     var pixelWidth = require("string-pixel-width");
     const stringWidth = pixelWidth(string, { size: 16 });
-    console.log("detta är bredden på strängen: " + stringWidth);
-    console.log("detta är den tillåtna maxbredden: " + (WIDTH - 67- 70));
-    console.log(string)
     var string1 = string;
-    console.log(string1)
     if (stringWidth > WIDTH - 70 - 67) {
       var substring = "";
       for (var i = 0; i < string.length; i++) {
@@ -73,10 +81,18 @@ class MyNotesscreen extends Component {
         { id: 1, text: "Hej jag heter Jonas och detta är ett test på en note"},
         { id: 2, text: "Hej jag heter Axel och detta är ett test på en note"},
         { id: 3, text: "Hej jag heter Jakob och detta är ett test på en note"},
-        { id: 4, text: "Hej jag heter Jons och på en note som är bajs"}],
+        { id: 4, text: "Hej jag heter Jons och på en note som är bajs"},
+        { id: 5, text: "Hej jag heter Axel och detta är ett test på en note"},
+        { id: 6, text: "Hej jag heter Jakob och detta är ett test på en note"},
+        { id: 7, text: "Hej jag heter Jons och på en note som är bajs"},
+        { id: 8, text: "Hej jag heter Axel och detta är ett test på en note"},
+        { id: 9, text: "Hej jag heter Jakob och detta är ett test på en note"},
+        { id: 10, text: "Hej jag heter Jons och på en note som är bajs"}]
 
     };
-
+    this.props.navigation.setParams({
+      handleNewNotepress: this.handleNewNotepress
+    });
   }
 
   getNoteHeader(item){
@@ -89,6 +105,10 @@ class MyNotesscreen extends Component {
     data = this.createNoteHeader(item.text);
     var noteEnding = this.createNoteEnding(data[1]);
     return(noteEnding);
+  }
+  handleNewNotepress = () =>{
+    this.props.navigation.navigate('NewNote',{returnNote: this.returnNote.bind(this), prevID: this.lastObjectID(this.state.personalNotes)})
+
   }
 
   renderItem = ({ item, index }) => {
@@ -108,7 +128,7 @@ class MyNotesscreen extends Component {
           {this.getNoteHeader(item)}
         </Text>
         <Text style={styles.noteTextEnding}>
-          {this.getNoteEnding(item)} {item.id}
+          {this.getNoteEnding(item)}
         </Text>
       </View>
     </TouchableOpacity>
@@ -140,26 +160,13 @@ class MyNotesscreen extends Component {
         <ScrollView style={styles.scrollContainer}>
             <View>
               <FlatList
+                inverted
                 data={this.state.personalNotes}
                 renderItem={this.renderItem}
                 keyExtractor={item => item.id}
               />
             </View>
         </ScrollView>
-        <Text>
-          {this.lastObject(this.state.personalNotes)}
-        </Text>
-        <View style={styles.footer}>
-          <View style={styles.iconContainer}>
-            <AntDesign
-              name="pluscircle"
-              size={70}
-              color={"rgba(0, 230, 64, 1)"}
-              onPress={() => this.props.navigation.navigate('NewNote',{returnNote: this.returnNote.bind(this), prevID: this.lastObjectID(this.state.personalNotes)})
-            }
-            />
-          </View>
-        </View>
       </View>
     );
   }
@@ -182,7 +189,10 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1
   },
   footer: {
-    alignItems: "flex-end"
+    backgroundColor: 'rgba(255,255,255,0.1)',
+    alignItems: "flex-end",
+    borderTopWidth: 1,
+    borderTopColor: "#dddddd"
   },
   iconContainer: {
     elevation: 10,
@@ -218,4 +228,5 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%'
   },
+
 });

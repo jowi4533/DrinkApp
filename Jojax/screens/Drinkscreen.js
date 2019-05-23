@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { Ionicons, FontAwesome, Entypo, EvilIcons } from "@expo/vector-icons";
-import { firebaseStorage } from "../App";
 import {
   View,
   Text,
@@ -19,51 +18,6 @@ import {
 const { width: WIDTH, height: HEIGHT } = Dimensions.get("window");
 
 import SmallFavoriteButton from "../components/SmallFavoriteButton.js";
-import ginBottle from "../pictures/ginBottle.jpg";
-
-const data1 = [
-  {
-    name: "Bloody Mary",
-    ingredients:
-      "Gin, White Rum, Tequila, Triple Sec, Vodka, Syrup, Lemon Juice, Cola, Ice"
-  },
-  {
-    name: "Long Isle Ice Tea",
-    ingredients:
-      "Gin, White Rum, Tequila, Triple Sec, Vodka, Syrup, Lemon Juice, Cola, Ice"
-  },
-  {
-    name: "Gin Tonic",
-    ingredients:
-      "Gin, White Rum, Tequila, Triple Sec, Vodka, Syrup, Lemon Juice, Cola, Ice"
-  },
-  {
-    name: "Dry Martini",
-    ingredients:
-      "Gin, White Rum, Tequila, Triple Sec, Vodka, Syrup, Lemon Juice, Cola, Ice"
-  },
-  {
-    name: "Sex On the Beach",
-    ingredients:
-      "Gin, White Rum, Tequila, Triple Sec, Vodka, Syrup, Lemon Juice, Cola, Ice"
-  },
-  {
-    name: "Mojito",
-    ingredients:
-      "Gin, White Rum, Tequila, Triple Sec, Vodka, Syrup, Lemon Juice, Cola, Ice"
-  },
-  {
-    name: "Pear Mojito",
-    ingredients:
-      "Gin, White Rum, Tequila, Triple Sec, Vodka, Syrup, Lemon Juice, Cola, Ice"
-  },
-  {
-    name: "Aperol Spritz",
-    ingredients:
-      "Gin, White Rum, Tequila, Triple Sec, Vodka, Syrup, Lemon Juice, Cola, Ice"
-  }
-];
-const numColumns = 4;
 
 class Drinkscreen extends Component {
   static navigationOptions = {
@@ -74,6 +28,7 @@ class Drinkscreen extends Component {
       fontSize: 25
     },
   };
+
   constructor(props) {
     super(props);
     this.state = {
@@ -86,13 +41,13 @@ class Drinkscreen extends Component {
       isHighlighted: [],
       modalVisible: false,
       dataSource: [],
-      dataLoaded: false,
 
-      //reference to the drinkImages in the storage
-      drinkImages: props.screenProps.drinkImages,
+      allDrinkKeys: props.screenProps.allDrinkKeys,
+      allDrinkItems: props.screenProps.allDrinkItems,
 
-      //Images later to be loaded
-      vodkaIMG: ""
+      drinks: [],
+      drinksDisplayed: []
+
     };
   }
 
@@ -100,25 +55,8 @@ class Drinkscreen extends Component {
     this.setState({ modalVisible: visible });
   }
 
-
-  _onButtonPress = item => {
-      if (item.selected !== true) {
-        this._addToArray(item);
-        this.setState(state => {
-        item.selected = true;
-        return {item}
-        })
-      }
-      else {
-        this._removeFromArray(item);
-        this.setState(state => {
-        item.selected = false;
-        return {item}
-      })
-      }
-  }
-
-  _addToArray(item) {
+//----------------      Filter button -------------
+  addToArray(item) {
     var array = this.state.isHighlighted;
     array.push(item.name);
     this.setState(state => {
@@ -127,7 +65,7 @@ class Drinkscreen extends Component {
     console.log(this.state.isHighlighted)
   }
 
-  _removeFromArray(item) {
+  removeFromArray(item) {
     var array = this.state.isHighlighted;
     var search_term = item.name;
 
@@ -143,40 +81,6 @@ class Drinkscreen extends Component {
     })
   }
 
-  // resetSelected = data => {
-  //   // return {
-  //   for (item in data) {
-  //     console.log('inuti for item in data')
-  //     console.log(item.selected)
-  //     if (item.selected === true)
-  //       console.log('inuti if item.selected === true')
-  //       this.setState(state => {
-  //       item.selected = false;
-  //       return {data}
-  //       })
-  //   }
-  //   this.setState(state => {
-  //   state.isHighlighted = [];
-  //   console.log(this.state.isHighlighted)
-  //   })
-  //
-  //   return {data}
-  //   // }
-  // }
-
-  // resetSelected1() {
-  //   data = this.state.data;
-  //   for(var i = 0; i < data.length; i++){
-  //     this.setState(prevState=>({
-  //       data[i]: {
-  //         ...prevState.data[i],
-  //         selected: false
-  //       }
-  //     }))
-  //   }
-  // }
-
-
 resetSelected = (selected) => {
     this.setState(oldState => {
         return {
@@ -190,14 +94,12 @@ resetSelected = (selected) => {
       state.isHighlighted = [];
       console.log(this.state.isHighlighted)
     })
-
-
 }
-
 
 _keyExtractor = (item, index) => item.name;
 
   componentDidMount() {
+    this.setState({drinksDisplayed: this.state.drinks})
     const url = "";
     fetch(url)
       .then(response => response.json())
@@ -209,33 +111,70 @@ _keyExtractor = (item, index) => item.name;
       .catch(error => {
         //console.log(error);
       });
+  }
+  _onButtonPress = item => {
+    if (item.selected !== true) {
+      this.addToArray(item);
+      this.setState(state => {
+      item.selected = true;
+      return {item}
+      })
+    }
+    else {
+      this.removeFromArray(item);
+      this.setState(state => {
+      item.selected = false;
+      return {item}
+    })
+    }
+}
 
-    this.loadImages();
+//----------------    END  Filter button -------------
 
-    this.forceUpdate();
+  componentWillMount(){
+    //Loads the image, takes time to fetch from database
+    this.loadDrinks()
   }
 
-  async loadImages() {
-    let referencesArray = [];
+//----------------      Load all Drinks -------------
+  loadDrinks(){
+    let allDrinks = []
 
-    //Here u create all the images you need for the page
-    //Name of the picture is found in the firebase Storage on the website
-    //Give the images simple names when uploading to storage!
-    let vodkaRef = this.state.drinkImages.child("Vodka.jpg");
+    for (let i = 0; i < this.state.allDrinkKeys.length; i++){
+      let k = this.state.allDrinkKeys[i];
 
-    //Load these into imagesArray
-    referencesArray = [vodkaRef];
+      let drink = {
+        name: this.state.allDrinkItems[k].name,
+        url: this.state.allDrinkItems[k].URL,
+        ingredients: this.state.allDrinkItems[k].keywords.ingredients
+      }
+      allDrinks.push(drink)
+    }
+    this.setState({drinks: allDrinks})
 
-    //Fetch the URL of the images
-    await vodkaRef.getDownloadURL().then(url => {
-      this.setState({ vodkaIMG: url });
-    });
-    console.log(this.state.vodkaIMG);
-    //When all data is loaded proceed to next step in componentDidMount
-    this.setState({ dataloaded: true });
   }
 
+//----------------      Choose drinks to Display -------------
+  displayDrinks(searchBarText){
+    this.loopOverDrinks(searchBarText)
+  }
 
+  loopOverDrinks(searchBarCharacters){
+    let drinksToDisplay = []
+    for(let i = 0; i < this.state.drinks.length; i++){
+      let drinkName = this.state.drinks[i].name
+      if(drinkName.includes(searchBarCharacters)){
+        drinksToDisplay.push(this.state.drinks[i])
+      }
+    }
+
+    if(searchBarCharacters === "Search"){
+      this.setState({drinksDisplayed: this.state.drinks})
+    }
+    else{
+      this.setState({drinksDisplayed: drinksToDisplay})
+    }
+  }
 
   renderItem = ({ item, index }) => {
     if (item.selected === true) {
@@ -257,26 +196,26 @@ _keyExtractor = (item, index) => item.name;
     );
   };
 
-
   renderItem1 = ({item, index}) => {
     return (
       <View style={styles.drinkContainer}>
         <TouchableOpacity
           style={styles.buttonDrink}
-          onPress={() => this.props.navigation.navigate("SpecDrinks")}
+          onPress={() => this.props.navigation.navigate("SpecDrinks", {drink:item})}
         >
           <View style={styles.addToFavoriteButton}>
             <SmallFavoriteButton />
           </View>
           <View>
             <Image
-              source={{ uri: this.state.vodkaIMG }}
+              source={{ uri: item.url }}
               style={styles.imageDrink}
             />
           </View>
           <View style={styles.textBoxContainer}>
-            <Text style={styles.textDrinkName}> {item.name} </Text>
-            <Text style={styles.textDrinkIngredients}> {item.ingredients} </Text>
+            <Text style={styles.textDrinkName}>{item.name}</Text>
+            <Text style={styles.textDrinkIngredients}>{item.ingredients}</Text>
+
           </View>
         </TouchableOpacity>
       </View>
@@ -289,7 +228,11 @@ _keyExtractor = (item, index) => item.name;
         <View style={styles.searchBox}>
           <View style={styles.innerSearchBox}>
             <EvilIcons name="search" size={30} />
-            <TextInput placeholder="Search" style={styles.searchInput} />
+            <TextInput
+            placeholder="Search"
+            style={styles.searchInput}
+            onChangeText = {(text) => this.displayDrinks(text)}
+            />
           </View>
           <TouchableOpacity
             style={styles.buttonFilter}
@@ -300,14 +243,12 @@ _keyExtractor = (item, index) => item.name;
         </View>
         <View style= {{paddingBottom: 70}}>
           <FlatList
-            data={data1}
+            data={this.state.drinksDisplayed}
             renderItem={this.renderItem1}
             keyExtractor={item => item.name}
+            extraData={this.state}
           />
         </View>
-
-
-
         <View style={styles.modalContainer}>
         <Modal
           style={styles.modal}
@@ -318,7 +259,6 @@ _keyExtractor = (item, index) => item.name;
           transparent={true}
           visible={this.state.modalVisible}
         >
-
           <View style={styles.modalContent}>
             <View style={styles.modalHeadingTextContainer}>
               <Text style={styles.modalHeadingText}>
@@ -332,13 +272,10 @@ _keyExtractor = (item, index) => item.name;
                   contentContainerStyle={styles.modalFlatList}
                   renderItem={this.renderItem}
                   keyExtractor={this._keyExtractor}
-
                 >
               </FlatList>
               </View>
-
             <View style={styles.modalButtonContainer}>
-
               <View style={styles.resetButtonContainer}>
               <TouchableHighlight style={styles.resetButton}
                 onPress={() => {
@@ -351,7 +288,6 @@ _keyExtractor = (item, index) => item.name;
                 </Text>
               </TouchableHighlight>
               </View>
-
               <View style={styles.okButtonContainer}>
               <TouchableHighlight style={styles.okButton}
                 onPress={() => {
@@ -363,11 +299,9 @@ _keyExtractor = (item, index) => item.name;
               </TouchableHighlight>
               </View>
             </View>
-
           </View>
         </Modal>
         </View>
-
       </View>
     );
   }

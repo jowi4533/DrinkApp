@@ -1,14 +1,16 @@
 import React, { Component } from "react";
-import { AntDesign, MaterialCommunityIcons } from "@expo/vector-icons";
+import { AntDesign, MaterialCommunityIcons,SimpleLineIcons } from "@expo/vector-icons";
 import {
   View,
   Text,
   StyleSheet,
   TextInput,
   Dimensions,
-  Button
+  Button,
+  ScrollView
 } from "react-native";
 const { width: WIDTH, height: HEIGHT } = Dimensions.get("window");
+import SaveNoteButton from "../components/SaveNoteButton.js";
 
 class NewNotescreen extends Component {
   constructor(props){
@@ -17,11 +19,10 @@ class NewNotescreen extends Component {
       text: "" ,
       myID: this.props.navigation.state.params.prevID +1
 
-
-
     }
-    //const { navigation } = this.props,
-    //const myID = navigation.getParam('prevID', 0) +1,
+    this.props.navigation.setParams({
+      handleSaveNotepress: this.handleSaveNotepress
+    });
 
   }
   static navigationOptions = ({ navigation }) => {
@@ -30,21 +31,32 @@ class NewNotescreen extends Component {
     headerTitleStyle: {
       width: '100%',
       fontWeight: 'bold',
-      fontSize: 25
+      fontSize: 25,
+      color: 'black'
     },
+    headerTintColor: 'rgb(205,133,63)',
+    headerRight:
+    <SaveNoteButton
+      onPress={navigation.getParam('handleSaveNotepress')
+    }>
+  </SaveNoteButton>,
+  headerBackTitleStyle:{
+    fontSize: 18
+  }
+
 
   };
 };
-  goBack() {
+handleSaveNotepress = () =>{
+  if (/\S/.test(this.state.text)){
+    this.props.navigation.state.params.returnNote(this.state.myID, this.state.text);
+    this.props.navigation.goBack();
+  }
+  else{
+    this.props.navigation.goBack();
+  }
 
-      if (/\S/.test(this.state.text)){
-        this.props.navigation.state.params.returnNote(this.state.myID, this.state.text);
-        this.props.navigation.goBack();
-      }
-      else{
-        this.props.navigation.goBack();
-      }
-   };
+}
    componentWillMount() {
      this.props.navigation.setParams({ createNote: this.createNote });
    }
@@ -54,8 +66,11 @@ class NewNotescreen extends Component {
 
     return (
       <View style={styles.container}>
+        <ScrollView>
+
         <View style = {styles.textInputContainer}>
         <TextInput
+          multiline = {true}
           style = {styles.textInputSize}
           maxLength = {250}
           placeholder = "Type your text here"
@@ -67,19 +82,13 @@ class NewNotescreen extends Component {
 
         </TextInput>
         </View>
-        <Text style = {{margin: 25, fontSize : 30, fontWeight: 'bold'}}>
-          {this.state.text}
-        </Text>
-        <Button
-         title="Save Note"
-         onPress={() => this.goBack()}
-       />
+         </ScrollView>
         <View style = {styles.wordCountTextBox}>
         <Text style = {styles.wordCountText}>
           Characters:  {this.state.text.length}/250
-
         </Text>
           </View>
+
         </View>
     );
   }
@@ -91,6 +100,7 @@ const styles = StyleSheet.create({
     flex: 1
   },
   textInputContainer:{
+    width: WIDTH,
     padding: 10
   },
   textInputSize:{
@@ -100,6 +110,8 @@ const styles = StyleSheet.create({
     color: 'rgba(108, 122, 137, 1)'
   },
   wordCountTextBox:{
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     padding: 10,
     position: 'absolute',
     left: 0,

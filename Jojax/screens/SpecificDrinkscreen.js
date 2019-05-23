@@ -30,8 +30,16 @@ const data2 = {
   instruc:
     "1.Fill a long glass with ice.,2.Add all ingredients except Coca Cola.,3.Top with a splash of Cola and stir.,4.Garnish with a lemon wedge.,"
 };
-
 class SpecificDrinkscreen extends Component {
+
+  constructor(props){
+  super(props);
+
+  this.state = {
+    specificDrink : this.props.navigation.state.params.drink,
+  }
+}
+
   modifyString(data) {
     const data3 = data;
     let sentence = "";
