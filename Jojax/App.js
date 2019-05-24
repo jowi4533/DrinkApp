@@ -15,7 +15,7 @@ import Registerscreen from './screens/Registerscreen'
 import Loginscreen from './screens/Loginscreen'
 import SpecificDrinkscreen from './screens/SpecificDrinkscreen'
 import NewNotescreen from './screens/NewNotescreen'
-
+import EditNotescreen from './screens/EditNotescreen'
 
 import firebase from 'firebase'
 //-------------------------------//
@@ -55,7 +55,8 @@ const MyPageStack = createStackNavigator(
   Register: {screen: Registerscreen},
   Login: {screen: Loginscreen},
   SpecDrinks: {screen: SpecificDrinkscreen},
-  NewNote: {screen: NewNotescreen}
+  NewNote: {screen: NewNotescreen},
+  EditNote: {screen: EditNotescreen}
   },
   {
   headerLayoutPreset: 'center'
