@@ -42,13 +42,12 @@ class Drinkscreen extends Component {
       modalVisible: false,
       dataSource: [],
 
-      allDrinkKeys: props.screenProps.allDrinkKeys,
-      allDrinkItems: props.screenProps.allDrinkItems,
-
-      drinks: [],
+      drinks: props.screenProps.drinks,
       drinksDisplayed: []
 
+
     };
+
   }
 
   setModalVisible(visible) {
@@ -62,7 +61,7 @@ class Drinkscreen extends Component {
     this.setState(state => {
     state.isHighlighted = array;
     })
-    console.log(this.state.isHighlighted)
+
   }
 
   removeFromArray(item) {
@@ -77,7 +76,7 @@ class Drinkscreen extends Component {
 
     this.setState(state => {
     state.isHighlighted = array;
-    console.log(this.state.isHighlighted)
+
     })
   }
 
@@ -131,38 +130,17 @@ _keyExtractor = (item, index) => item.name;
 
 //----------------    END  Filter button -------------
 
-  componentWillMount(){
-    //Loads the image, takes time to fetch from database
-    this.loadDrinks()
-  }
-
-//----------------      Load all Drinks -------------
-  loadDrinks(){
-    let allDrinks = []
-
-    for (let i = 0; i < this.state.allDrinkKeys.length; i++){
-      let k = this.state.allDrinkKeys[i];
-
-      let drink = {
-        name: this.state.allDrinkItems[k].name,
-        url: this.state.allDrinkItems[k].URL,
-        ingredients: this.state.allDrinkItems[k].keywords.ingredients
-      }
-      allDrinks.push(drink)
-    }
-    this.setState({drinks: allDrinks})
-
-  }
 
 //----------------      Choose drinks to Display -------------
   displayDrinks(searchBarText){
-    this.loopOverDrinks(searchBarText)
+    this.loopOverDrinks(searchBarText.toLowerCase())
   }
 
   loopOverDrinks(searchBarCharacters){
     let drinksToDisplay = []
     for(let i = 0; i < this.state.drinks.length; i++){
-      let drinkName = this.state.drinks[i].name
+
+      let drinkName = this.state.drinks[i].name.toLowerCase()
       if(drinkName.includes(searchBarCharacters)){
         drinksToDisplay.push(this.state.drinks[i])
       }
@@ -195,6 +173,13 @@ _keyExtractor = (item, index) => item.name;
         </TouchableOpacity>
     );
   };
+  renderItemIngredients = ({ item, index }) => {
+    return (
+      <View>
+        <Text style={styles.textDrinkIngredients}>{item}, </Text>
+      </View>
+    );
+  };
 
   renderItem1 = ({item, index}) => {
     return (
@@ -214,7 +199,14 @@ _keyExtractor = (item, index) => item.name;
           </View>
           <View style={styles.textBoxContainer}>
             <Text style={styles.textDrinkName}>{item.name}</Text>
-            <Text style={styles.textDrinkIngredients}>{item.ingredients}</Text>
+            <FlatList
+            data={Object.keys(item.ingredients)}
+            renderItem={this.renderItemIngredients}
+            keyExtractor={item => item.name}
+            horizontal= {true}
+            extraData={this.state}
+          />
+
 
           </View>
         </TouchableOpacity>
@@ -374,7 +366,6 @@ const styles = StyleSheet.create({
   },
   textDrinkIngredients: {
     fontSize: 14,
-    marginLeft: 15,
     marginTop: 15,
     color: "rgba(108, 122, 137, 1)"
   },
