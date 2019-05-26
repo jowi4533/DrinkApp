@@ -146,13 +146,15 @@ class App extends Component {
       allDrinkItems: null,
       allDrinkKeys: null,
 
-    }
-    this.initailizeListener()
+      drinks: [],
 
+      loaded: false,
+
+    }
+    this.loadResources()
   }
 
-  componentWillMount(){
-
+  loadResources(){
     this.initailizeListener()
   }
 
@@ -164,6 +166,10 @@ class App extends Component {
   retriveDrinkItems (data)  {
     this.setState({allDrinkItems: data.val()});
     this.setState({allDrinkKeys: Object.keys(data.val())});
+
+    this.loadDrinks()
+    this.setState({loaded:true})
+
   }
 
   retrieveUserKeys  (data)  {
@@ -176,11 +182,35 @@ class App extends Component {
     console.log('Error!');
     console.log(err);
   }
+
+  loadDrinks(){
+
+    let allDrinks = []
+    for (let i = 0; i < this.state.allDrinkKeys.length; i++){
+      let k = this.state.allDrinkKeys[i];
+      let drink = {
+        name: this.state.allDrinkItems[k].name,
+        url: this.state.allDrinkItems[k].URL,
+        ingredients: this.state.allDrinkItems[k].Ingredients,
+        categories: this.state.allDrinkItems[k].Categories,
+        instructions: this.state.allDrinkItems[k].Preparation_instructions,
+      }
+      allDrinks.push(drink)
+    }
+    this.setState({drinks: allDrinks})
+  }
+
   render(){
-    return (
-      <AppContainer screenProps ={this.state}>
-      </AppContainer>
-    );
+    if(this.state.loaded === true){
+      return (
+        <AppContainer screenProps ={this.state}>
+        </AppContainer>
+      );
+    }
+    else{
+      return null
+    }
+
   }
 }
 export default App;

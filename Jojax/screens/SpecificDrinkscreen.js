@@ -37,15 +37,23 @@ class SpecificDrinkscreen extends Component {
 
   this.state = {
     specificDrink : this.props.navigation.state.params.drink,
+    instructions: [],
+
   }
+  this.loadServings()
 }
+  loadServings(){
+    console.log(this.state.specificDrink.ingredients)
+  }
+
 
   modifyString(data) {
     const data3 = data;
+
     let sentence = "";
     const newPrep = [];
     for (var i = 0; i < data3.length; i++) {
-      if (data3[i] !== ",") {
+      if (data3[i] !== "," || data3[i] !== " ") {
         sentence = sentence + data3[i];
       } else {
         newPrep.push({ eachItem: sentence });
@@ -54,21 +62,27 @@ class SpecificDrinkscreen extends Component {
     }
     return newPrep;
   }
-
+  //renders ingredients
   renderItem1 = ({ item, index }) => {
     return (
       <View style={styles.oneIngredientBox}>
-        <Text style={styles.eachIngredientText}>{item.eachItem}</Text>
+        <Text style={styles.eachIngredientText}>{item}</Text>
       </View>
     );
   };
+
+  //Renders servings together with 4
   renderItem2 = ({ item, index }) => {
-    return <Text style={styles.eachIngredientText}>{item.eachItem}</Text>;
+    console.log(item)
+    return <Text style={styles.eachIngredientText}>{item}</Text>;
   };
+
+  //renders preparationinstructions
   renderItem3 = ({ item, index }) => {
-    return <Text style={styles.eachIngredientText}>{item.eachItem}</Text>;
+    return <Text style={styles.eachIngredientText}>{item}</Text>;
   };
-  //jons : image background nedan ser du source={drImage} som inte är dynamisk
+
+
   render() {
     return (
       <ScrollView>
@@ -78,10 +92,10 @@ class SpecificDrinkscreen extends Component {
               <FavoriteButton />
             </View>
 
-            <ImageBackground style={styles.drinkImage} source={drImage}>
+            <ImageBackground style={styles.drinkImage} source={{ uri: this.state.specificDrink.url }}>
               <View style={styles.drinkNameContainer}>
                 <View style={{ opacity: 1 }}>
-                  <Text style={styles.drinkNameText}>{data2.name}</Text>
+                  <Text style={styles.drinkNameText}>{this.state.specificDrink.name}</Text>
                 </View>
               </View>
             </ImageBackground>
@@ -95,7 +109,7 @@ class SpecificDrinkscreen extends Component {
                 <View style={styles.ingredientOverviewBox}>
                   <FlatList
                     contentContainerStyle={styles.ingredientBox}
-                    data={this.modifyString(data2.keywords.ingredients)}
+                    data={Object.keys(this.state.specificDrink.ingredients)}
                     renderItem={this.renderItem1}
                     keyExtractor={item => item.eachItem}
                   />
@@ -105,7 +119,12 @@ class SpecificDrinkscreen extends Component {
                   <View style={styles.servingsBox}>
                     <Text style={styles.twoDrinksText}>2 Drinks</Text>
                     <FlatList
-                      data={this.modifyString(data2.keywords.ingredients)}
+                      data={Object.keys(this.state.specificDrink.ingredients)}
+                      renderItem={this.renderItem2}
+                      keyExtractor={item => item.eachItem}
+                    />
+                    <FlatList
+                      data={Object.values(this.state.specificDrink.ingredients)}
                       renderItem={this.renderItem2}
                       keyExtractor={item => item.eachItem}
                     />
@@ -117,7 +136,7 @@ class SpecificDrinkscreen extends Component {
               <Text style={styles.preparationText}>Preparation</Text>
               <FlatList
                 contentContainerStyle={styles.prepBox}
-                data={this.modifyString(data2.instruc)}
+                data={Object.values(this.state.specificDrink.instructions)}
                 renderItem={this.renderItem3}
               />
             </View>

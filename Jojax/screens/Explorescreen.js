@@ -18,44 +18,6 @@ import aperol from "../pictures/aperol_spritz.png";
 
 const { width: WIDTH, height: HEIGHT } = Dimensions.get("window");
 
-const data = [
-  {
-    id: 1,
-    name: "Long Isle Ice Tea",
-    image: require("../pictures/long_isle.png")
-  },
-  {
-    id: 2,
-    name: "Aperol Spritz",
-    image: require("../pictures/aperol_spritz.png")
-  },
-  {
-    id: 3,
-    name: "Long Isle Ice Tea",
-    image: require("../pictures/long_isle.png")
-  },
-  {
-    id: 4,
-    name: "Aperol Spritz",
-    image: require("../pictures/aperol_spritz.png")
-  },
-  {
-    id: 5,
-    name: "Long Isle Ice Tea",
-    image: require("../pictures/long_isle.png")
-  },
-  {
-    id: 6,
-    name: "Aperol Spritz",
-    image: require("../pictures/aperol_spritz.png")
-  },
-  {
-    id: 7,
-    name: "Long Isle Ice Tea",
-    image: require("../pictures/long_isle.png")
-  }
-];
-
 const data2 = [
   {
     id: 1,
@@ -83,7 +45,67 @@ const data2 = [
   }
 ];
 
+
+
 class Explorescreen extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      drinks: props.screenProps.drinks,
+
+      //All the categories in which drinks are placed
+      drinksDisplayed: [],
+      discoverWeekly: [],
+      seasonalDrinks: [],
+      classicDrinks: [],
+      baseSpirits: []
+    }
+  }
+
+  loopSeasonalDrinks(){
+    let drinksToDisplay = []
+    for(let i = 0; i < this.state.drinks.length; i++){
+      if(this.state.drinks[i].Seasonal_Drink === "spring"){
+        this.seasonalDrinks[0]
+      }
+      if(this.state.drinks[i].Seasonal_Drink === "summer"){
+
+      }
+      if(this.state.drinks[i].Seasonal_Drink === "fall"){
+
+      }
+      if(this.state.drinks[i].Seasonal_Drink === "winter"){
+
+      }
+    }
+  }
+
+  loopClassicDrinks(){
+    let classicDrinks = []
+    for(let i = 0; i < this.state.drinks.length; i++){
+      if(this.state.drinks[i].categories.classic === true){
+        classicDrinks.push(this.state.drinks[i])
+      }
+    }
+    this.setState({classicDrinks: classicDrinks})
+  }
+
+  loopDiscoverWeekly(){
+    let weeklyDrinks = []
+    for(let i = 0; i < this.state.drinks.length; i++){
+      if(this.state.drinks[i].categories.Discover_Weekly === true){
+        weeklyDrinks.push(this.state.drinks[i])
+      }
+    }
+    this.setState({discoverWeekly: weeklyDrinks})
+  }
+
+  componentWillMount(){
+    this.loopDiscoverWeekly()
+    this.loopClassicDrinks()
+  }
+
   static navigationOptions = {
     title: 'Explore',
     headerTitleStyle: {
@@ -93,19 +115,13 @@ class Explorescreen extends Component {
     },
   };
 
-  constructor(props) {
-    super(props);
-    this.state = {
-
-    }
-
-  }
-
-
   renderItem1 = ({ item, index }) => {
     return (
       <View style={styles.discoverWeeklyBox}>
-        <Image style={styles.drinkImage} source={item.image} />
+        <Image
+          source={{ uri: item.url }}
+          style={styles.drinkImage}
+        />
         <View style={styles.drinkNameTextContainer}>
           <Text style={styles.drinkNameText}>{item.name}</Text>
         </View>
@@ -153,7 +169,7 @@ class Explorescreen extends Component {
             <ScrollView horizontal={true} showsVerticalScrollIndicator={false}>
               <View style={styles.scrollviewContainer}>
                 <FlatList
-                  data={data}
+                  data={this.state.discoverWeekly}
                   renderItem={this.renderItem1}
                   keyExtractor={item => item.id}
                   horizontal={true}
@@ -181,7 +197,7 @@ class Explorescreen extends Component {
             <ScrollView horizontal={true} showsVerticalScrollIndicator={false}>
               <View style={styles.scrollviewContainer}>
                 <FlatList
-                  data={data}
+                  data={this.state.classicDrinks}
                   renderItem={this.renderItem1}
                   keyExtractor={item => item.id}
                   horizontal={true}
