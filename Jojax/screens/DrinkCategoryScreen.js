@@ -17,48 +17,6 @@ import {
 import bgImage from "../pictures/236.jpg";
 const { width: WIDTH, height: HEIGHT } = Dimensions.get("window");
 
-const data2 = [
-  {
-    id: 1,
-    name: "Cranberry Sangria",
-    category: "Fall",
-    image: require("../pictures/cranberry_sangria.png") },
-  {
-    id: 2,
-    name: "Lavender Lemonade Mojito",
-    category: "Spring",
-    image: require("../pictures/lavendel.png") },
-  {
-    id: 3,
-    name: "Pear Mojito",
-    category: "Summer",
-    image: require("../pictures/pear_mojito.png") },
-  {
-    id: 4,
-    name: "Very Merry Bourbon Alexander",
-    category: "Winter",
-    image: require("../pictures/very_merry_bourbon_alexander.png") },
-    {
-      id: 5,
-      name: "Pear Mojito",
-      category: "Summer",
-      image: require("../pictures/pear_mojito.png") },
-    {
-      id: 6,
-      name: "Very Merry Bourbon Alexander",
-      category: "Winter",
-      image: require("../pictures/very_merry_bourbon_alexander.png") },
-      {
-        id: 7,
-        name: "Cranberry Sangria",
-        category: "Fall",
-        image: require("../pictures/cranberry_sangria.png") },
-      {
-        id: 8,
-        name: "Lavender Lemonade Mojito",
-        category: "Spring",
-        image: require("../pictures/lavendel.png") }
-];
 
 class DrinkCategoryscreen extends Component {
   constructor(props){
