@@ -18,7 +18,7 @@ import SmallFavoriteButton from "../components/SmallFavoriteButton.js"
 
 class MyFavoriteDrinkscreen extends Component {
   static navigationOptions = {
-    title: 'My Favorite Drinks',
+    title: 'My Favorites',
     headerTitleStyle: {
       width: '100%',
       fontWeight: 'bold',

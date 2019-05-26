@@ -15,6 +15,7 @@ import {
 } from "react-native";
 const { width: WIDTH, height: HEIGHT } = Dimensions.get("window");
 import NewNoteButton from "../components/NewNoteButton.js";
+import NoteStatusButton from "../components/NoteStatusButton.js"
 
 class MyNotesscreen extends Component {
   static navigationOptions = ({ navigation }) => {
@@ -80,16 +81,16 @@ class MyNotesscreen extends Component {
     super(props);
     this.state = {
       personalNotes: [
-        { id: 1, text: "Hej jag heter Jonas och detta är ett test på en note" },
-        { id: 2, text: "Hej jag heter Axel och detta är ett test på en note" },
-        { id: 3, text: "Hej jag heter Jakob och detta är ett test på en note" },
-        { id: 4, text: "Hej jag heter Jons och på en note som är bra" },
-        { id: 5, text: "Hej jag heter Axel och detta är ett test på en note" },
-        { id: 6, text: "Hej jag heter Jakob och detta är ett test på en note" },
-        { id: 7, text: "Hej jag heter Jons och på en note som är bra" },
-        { id: 8, text: "Hej jag heter Axel och detta är ett test på en note" },
-        { id: 9, text: "Hej jag heter Jakob och detta är ett test på en note" },
-        { id: 10, text: "Hej jag heter Jons och på en note som är bra" }
+        { id: 1, text: "Hej jag heter Jonas och detta är ett test på en note",noteStatus:"green" },
+        { id: 2, text: "Hej jag heter Axel och detta är ett test på en note", noteStatus:"orange" },
+        { id: 3, text: "Hej jag heter Jakob och detta är ett test på en note", noteStatus:"green" },
+        { id: 4, text: "Hej jag heter Jons och på en note som är bra", noteStatus:"green" },
+        { id: 5, text: "Hej jag heter Axel och detta är ett test på en note", noteStatus:"green" },
+        { id: 6, text: "Hej jag heter Jakob och detta är ett test på en note", noteStatus:"green" },
+        { id: 7, text: "Hej jag heter Jons och på en note som är bra", noteStatus:"green" },
+        { id: 8, text: "Hej jag heter Axel och detta är ett test på en note", noteStatus:"red" },
+        { id: 9, text: "Hej jag heter Jakob och detta är ett test på en note", noteStatus:"orange" },
+        { id: 10, text: "Hej jag heter Jons och på en note som är bra", noteStatus:"green" }
       ]
     };
     this.props.navigation.setParams({
@@ -140,18 +141,35 @@ class MyNotesscreen extends Component {
     personalNotesarr.find(note => note.id === id).text = text;
     this.setState({ personalNotes: personalNotesarr });
   };
+  changeNoteStatus(id){
+    let personalNotesarr = this.state.personalNotes;
+    const noteStatus = personalNotesarr.find(note=> note.id ===id).noteStatus;
+    if (noteStatus === "green" ){
+      personalNotesarr.find(note => note.id === id).noteStatus = "orange";
+      this.setState({ personalNotes: personalNotesarr });
+      return
+    }
+    else if (noteStatus === "orange") {
+      personalNotesarr.find(note => note.id === id).noteStatus = "red";
+      this.setState({ personalNotes: personalNotesarr });
+      return
+    }
+    else{
+      personalNotesarr.find(note => note.id === id).noteStatus = "green";
+      this.setState({ personalNotes: personalNotesarr });
+      return
+    }
+  }
 
   renderItem = ({ item, index }) => {
     return (
       <View style={styles.noteContainer}>
-        <View style={styles.noteIconContainer}>
-          <MaterialCommunityIcons
-            name={"checkbox-blank-circle"}
-            size={45}
-            color={"rgba(0, 230, 64, 1)"}
-            raised={true}
-          />
-        </View>
+      <NoteStatusButton
+        noteStatus={item.noteStatus}
+        onPress= {()=>this.changeNoteStatus(item.id)}
+        >
+      </NoteStatusButton>
+      <View style = {styles.clickableNoteContainer}>
         <TouchableOpacity
           onPress={() =>
             this.props.navigation.navigate("EditNote", {
@@ -172,6 +190,7 @@ class MyNotesscreen extends Component {
             </Text>
           </View>
         </TouchableOpacity>
+        </View>
       </View>
     );
   };
@@ -227,15 +246,12 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     height: HEIGHT / 10,
     borderBottomColor: "#dddddd",
-    borderBottomWidth: 2
-  },
-  noteIconContainer: {
-    justifyContent: "center",
-    marginHorizontal: 10
+    borderBottomWidth: 2,
+    alignItems: "center",
   },
   noteTextContainer: {
-    marginVertical: 10,
-    justifyContent: "center"
+    justifyContent: "center",
+    height:'100%'
   },
   noteTextHeading: {
     fontWeight: "bold",
@@ -249,5 +265,9 @@ const styles = StyleSheet.create({
   notesTouch: {
     width: "100%",
     height: "100%"
+  },
+  clickableNoteContainer:{
+    width: '100%',
+    justifyContent: 'center'
   }
 });

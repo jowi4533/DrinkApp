@@ -15,6 +15,8 @@ import {
   Switch,
   NativeModules
 } from "react-native";
+const { width: WIDTH, height: HEIGHT } = Dimensions.get("window");
+
 import bgImage from "../pictures/236.jpg";
 import ginBottle from "../pictures/ginBottle.jpg";
 
@@ -109,34 +111,42 @@ _keyExtractor = (item, index) => item.name;
   renderItem = ({ item, index }) => {
     if (item.selected === true) {
       return (
-
+      <View style={styles.itemContainer}>
         <TouchableOpacity style={styles.itemSelected} onPress={ () => { this._onButtonPress(item) } }>
           <View style={styles.borderView}>
             <ImageBackground source={ginBottle} style={styles.itemPicture}>
-              <Text style={styles.itemText}> {item.name} </Text>
+              <View style={styles.itemTextContainer}>
+                <Text style={styles.itemText}> {item.name} </Text>
+              </View>
             </ImageBackground>
           </View>
         </TouchableOpacity>
+      </View>
 
       );
     }
 
     return (
-
+      <View style={styles.itemContainer}>
         <TouchableOpacity style={styles.item} onPress={ () => { this._onButtonPress(item) } }>
           <View style={styles.itemPictureContainer}>
             <ImageBackground source={ginBottle} style={styles.itemPicture}>
-              <Text style={styles.itemText}> {item.name} </Text>
+              <View style={styles.itemTextContainer}>
+                <Text style={styles.itemText}> {item.name} </Text>
+              </View>
             </ImageBackground>
           </View>
         </TouchableOpacity>
-
+      </View>
     );
   };
 
   render() {
     return (
       <ImageBackground source={bgImage} style={styles.backgroundContainer}>
+        <View style={styles.informationTextContainer}>
+          <Text style={styles.informationText}>Select the ingredients you have at home to see what drinks you can make</Text>
+        </View>
 
           <FlatList
             data={this.state.data}
@@ -164,54 +174,83 @@ const styles = StyleSheet.create({
     marginVertical: 1,
   },
 
+  informationTextContainer: {
+    width: WIDTH,
+    backgroundColor: 'white',
+    justifyContent: 'center',
+    alignItems: 'center',
+    },
+
+  informationText: {
+    color: "rgba(108, 122, 137, 1)",
+    fontSize: 18,
+    //fontWeight: 'bold',
+    paddingVertical: 20,
+    paddingHorizontal: 20,
+  },
+
+  itemContainer: {
+    flex: 1,
+    elevation: 20,
+  },
+
   item: {
+    elevation: 20,
     borderRadius: 10,
-    // underlayColor: 'transparent',
-    // onHideUnderlay: 'transparent',
-    // activeOpacity: 1,
-    backgroundColor: 'rgba(52, 152, 219, 1)',
+    backgroundColor: 'rgba(189, 195, 199, 1)',
     alignItems: 'center',
     justifyContent: 'center',
     flex: 1,
-    margin: 5,
-    opacity: 1,
+    margin: 15,
+    height: Dimensions.get('window').width / numColumns,
+  },
+
+  itemSelected: {
+    elevation: 20,
+    borderRadius: 10,
+    backgroundColor: 'rgba(218, 223, 225, 1)',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flex: 1,
+    margin: 15,
     height: Dimensions.get('window').width / numColumns,
   },
 
   itemPicture: {
-    justifyContent: 'center',
+    justifyContent: 'flex-end',
     alignItems: 'center',
     width: '100%',
     height: '100%',
 
   },
 
-  itemText: {
-    fontSize: 18,
-    color: 'black',
+  itemTextContainer: {
+    alignItems: 'center',
+    backgroundColor: 'rgba(108, 122, 137, 0.5)',
+    opacity: 1,
+    width: '100%',
+    borderRadius: 8,
   },
 
-  itemSelected: {
-
-    borderRadius: 10,
-    backgroundColor: 'rgba(107, 185, 240, 1)',
-
-    //borderWidth: 1,
-    //borderColor: 'rgba(240, 52, 52, 1)',
-
+  itemTextContainer2: {
     alignItems: 'center',
-    justifyContent: 'center',
-    flex: 1,
-    margin: 5,
-    height: Dimensions.get('window').width / numColumns,
+    backgroundColor: 'rgba(108, 122, 137, 0.5)',
+    opacity: 1,
+    width: '100%',
+    borderRadius: 10,
+  },
+
+  itemText: {
+    fontSize: 18,
+    color: 'white',
   },
 
   borderView: {
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 10,
-    height:'99.5%',
-    width: '99.5%',
+    height:'100%',
+    width: '100%',
     borderWidth: 2,
     borderColor: 'rgba(240, 52, 52, 1)',
     flex: 1,
@@ -219,6 +258,8 @@ const styles = StyleSheet.create({
   },
 
   itemPictureContainer: {
+    borderWidth: 2,
+    borderColor: 'transparent',
     alignItems: 'center',
     justifyContent: 'center',
     flex: 1,

@@ -470,9 +470,9 @@ const styles = StyleSheet.create({
 
   modalItemText: {
     flexDirection: 'row',
-    fontSize: 12,
+    fontSize: 13,
     color: 'white',
-    paddingVertical: 5,
+    paddingVertical: 8,
   },
 
   modalButtonContainer: {
