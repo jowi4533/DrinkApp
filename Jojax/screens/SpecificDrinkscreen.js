@@ -28,8 +28,25 @@ class SpecificDrinkscreen extends Component {
   this.state = {
     specificDrink : this.props.navigation.state.params.drink,
     instructions: [],
+    ingredients: []
   }
+  this.loadIngredients()
 }
+
+  loadIngredients(){
+    allIngredientItems = Object.values(this.state.specificDrink.allIngredients)
+    allIngredientKeys = Object.keys(this.state.specificDrink.allIngredients)
+
+    ingredients = []
+    for(let i = 0; i < allIngredientItems.length; i++){
+      let ingredient = {
+        [allIngredientKeys[i]]: allIngredientItems[i],
+      }
+      ingredients.push(ingredient)
+    }
+    this.state.ingredients = ingredients
+    console.log(this.state.ingredients)
+  }
 
   //renders ingredients
   renderItem1 = ({ item, index }) => {
@@ -43,7 +60,10 @@ class SpecificDrinkscreen extends Component {
   //Renders servings together with 4
   renderItem2 = ({ item, index }) => {
     console.log(item)
-    return <Text style={styles.eachIngredientText}>{item}</Text>;
+    ingredientAmount = Object.values(item)
+    ingredientName = Object.keys(item)
+
+    return <Text style={styles.eachIngredientText}>{ingredientAmount}cl of {ingredientName}</Text>;
   };
 
   //renders preparationinstructions
@@ -78,7 +98,7 @@ class SpecificDrinkscreen extends Component {
                 <View style={styles.ingredientOverviewBox}>
                   <FlatList
                     contentContainerStyle={styles.ingredientBox}
-                    data={Object.keys(this.state.specificDrink.ingredients)}
+                    data={Object.keys(this.state.specificDrink.allIngredients)}
                     renderItem={this.renderItem1}
                     keyExtractor={item => item.eachItem}
                   />
@@ -88,12 +108,7 @@ class SpecificDrinkscreen extends Component {
                   <View style={styles.servingsBox}>
                     <Text style={styles.twoDrinksText}>2 Drinks</Text>
                     <FlatList
-                      data={Object.keys(this.state.specificDrink.ingredients)}
-                      renderItem={this.renderItem2}
-                      keyExtractor={item => item.eachItem}
-                    />
-                    <FlatList
-                      data={Object.values(this.state.specificDrink.ingredients)}
+                      data={this.state.ingredients}
                       renderItem={this.renderItem2}
                       keyExtractor={item => item.eachItem}
                     />
