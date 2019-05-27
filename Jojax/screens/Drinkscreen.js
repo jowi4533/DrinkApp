@@ -41,9 +41,12 @@ class Drinkscreen extends Component {
       isHighlighted: [],
       modalVisible: false,
       dataSource: [],
+      searchBarText: "",
 
       drinks: props.screenProps.drinks,
-      drinksDisplayed: []
+      drinksDisplayed: [],
+      filteredDrinks: [],
+      searchBarDrinks: []
 
 
     };
@@ -57,27 +60,21 @@ class Drinkscreen extends Component {
 //----------------      Filter button -------------
   addToArray(item) {
     var array = this.state.isHighlighted;
-    array.push(item.name);
+    array.push(item.name.toLowerCase());
     this.setState(state => {
     state.isHighlighted = array;
     })
-
   }
 
   removeFromArray(item) {
-    var array = this.state.isHighlighted;
-    var search_term = item.name;
+    let array = this.state.isHighlighted;
 
-    for (var i = array.length-1; i >= 0; i--) {
-      if (array[i] === search_term) {
+    for (let i = 0; i < this.state.isHighlighted.length; i++) {
+      if (this.state.isHighlighted[i] === item.name.toLowerCase()) {
         array.splice(i, 1);
       }
     }
-
-    this.setState(state => {
-    state.isHighlighted = array;
-
-    })
+    this.setState({isHighlighted: array})
   }
 
 resetSelected = (selected) => {
@@ -91,7 +88,7 @@ resetSelected = (selected) => {
     })
     this.setState(state => {
       state.isHighlighted = [];
-      console.log(this.state.isHighlighted)
+
     })
 }
 
@@ -99,6 +96,7 @@ _keyExtractor = (item, index) => item.name;
 
   componentDidMount() {
     this.setState({drinksDisplayed: this.state.drinks})
+    this.setState({filteredDrinks: this.state.drinks})
     const url = "";
     fetch(url)
       .then(response => response.json())
@@ -120,38 +118,91 @@ _keyExtractor = (item, index) => item.name;
       })
     }
     else {
+
       this.removeFromArray(item);
       this.setState(state => {
       item.selected = false;
       return {item}
     })
     }
+
+    this.filterDrinks()
 }
+
 
 //----------------    END  Filter button -------------
 
 
 //----------------      Choose drinks to Display -------------
-  displayDrinks(searchBarText){
-    this.loopOverDrinks(searchBarText.toLowerCase())
+
+  displayDrinks(){
+    drinksToDisplay = []
+
+    if(this.state.searchBarDrinks.length !== 0){
+      for(let i = 0; i < this.state.searchBarDrinks.length; i++){
+        if(this.state.filteredDrinks.length === 0){
+          this.setState({drinksDisplayed: this.state.searchBarDrinks})
+        }
+        else {
+          for(let j = 0; j < this.state.filteredDrinks.length; j++){
+            if(this.state.searchBarDrinks[i] === this.state.filteredDrinks[j]){
+              drinksToDisplay.push(this.state.searchBarDrinks[i])
+            }
+          }
+          this.setState({drinksDisplayed: drinksToDisplay})
+        }
+      }
+    } else{
+      this.setState({drinksDisplayed: this.state.filteredDrinks})
+
+    }
+
   }
 
   loopOverDrinks(searchBarCharacters){
-    let drinksToDisplay = []
+    searchBarDrinks = []
     for(let i = 0; i < this.state.drinks.length; i++){
-
       let drinkName = this.state.drinks[i].name.toLowerCase()
+
       if(drinkName.includes(searchBarCharacters)){
-        drinksToDisplay.push(this.state.drinks[i])
+        searchBarDrinks.push(this.state.drinks[i])
       }
     }
 
-    if(searchBarCharacters === "Search"){
-      this.setState({drinksDisplayed: this.state.drinks})
+    if(searchBarCharacters === ""){
+        this.state.searchBarDrinks = this.state.drinks
+    } else{
+      this.state.searchBarDrinks = searchBarDrinks
     }
-    else{
-      this.setState({drinksDisplayed: drinksToDisplay})
+    this.displayDrinks()
+  }
+
+  filterDrinks(){
+    //Filters drinks
+    filteredDrinks = []
+    for (let i = 0; i < this.state.drinks.length; i++){
+      let ingredientsInDrink = 0
+      for(let j = 0; j < this.state.isHighlighted.length; j++){
+        if(this.state.drinks[i].ingredients.hasOwnProperty(this.state.isHighlighted[j])){
+          ingredientsInDrink++
+        }
+      }
+      if(ingredientsInDrink === this.state.isHighlighted.length){
+        filteredDrinks.push(this.state.drinks[i])
+      }
     }
+
+    if(filteredDrinks.length === 0){
+      if(this.state.isHighlighted.length !== 0){
+        this.state.filteredDrinks = []
+      }
+      else{
+        this.state.filteredDrinks = this.state.drinks
+      }
+    } else{
+      this.state.filteredDrinks = filteredDrinks
+    }
+    this.displayDrinks()
   }
 
   renderItem = ({ item, index }) => {
@@ -226,7 +277,7 @@ _keyExtractor = (item, index) => item.name;
             <TextInput
             placeholder="Search"
             style={styles.searchInput}
-            onChangeText = {(text) => this.displayDrinks(text)}
+            onChangeText = {(text) => this.loopOverDrinks(text.toLowerCase())}
             />
           </View>
           <TouchableOpacity
