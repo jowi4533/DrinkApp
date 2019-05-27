@@ -43,7 +43,7 @@ class SpecificDrinkscreen extends Component {
   this.loadServings()
 }
   loadServings(){
-    console.log(this.state.specificDrink.ingredients)
+    //console.log(Object.keys(this.state.specificDrink.ingredients))
   }
 
 
@@ -73,7 +73,6 @@ class SpecificDrinkscreen extends Component {
 
   //Renders servings together with 4
   renderItem2 = ({ item, index }) => {
-    console.log(item)
     return <Text style={styles.eachIngredientText}>{item}</Text>;
   };
 
@@ -84,6 +83,7 @@ class SpecificDrinkscreen extends Component {
 
 
   render() {
+    console.log(this.state.specificDrink.ingredients)
     return (
       <ScrollView>
         <View style={{ height: HEIGHT / 2.6 }}>
@@ -128,6 +128,7 @@ class SpecificDrinkscreen extends Component {
                       renderItem={this.renderItem2}
                       keyExtractor={item => item.eachItem}
                     />
+
                   </View>
                 </View>
               </View>
