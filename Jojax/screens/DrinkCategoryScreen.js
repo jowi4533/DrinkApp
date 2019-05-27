@@ -77,7 +77,7 @@ class DrinkCategoryscreen extends Component {
           />
 
         <ImageBackground
-          style={[styles.fixed, styles.containter, {zIndex: -1}]}
+          style={[styles.fixed, styles.container, {zIndex: -1}]}
           source={bgImage}
               />
           </View>
@@ -88,7 +88,7 @@ class DrinkCategoryscreen extends Component {
 export default DrinkCategoryscreen;
 
 const styles = StyleSheet.create({
-  containter: {
+  container: {
     width: WIDTH,
     height: HEIGHT
   },
