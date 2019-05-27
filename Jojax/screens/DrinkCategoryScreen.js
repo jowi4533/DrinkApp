@@ -77,7 +77,7 @@ class DrinkCategoryscreen extends Component {
           />
 
         <ImageBackground
-          style={[styles.fixed, styles.containter, {zIndex: -1}]}
+          style={[styles.fixed, styles.container, {zIndex: -1}]}
           source={bgImage}
               />
           </View>
@@ -88,7 +88,7 @@ class DrinkCategoryscreen extends Component {
 export default DrinkCategoryscreen;
 
 const styles = StyleSheet.create({
-  containter: {
+  container: {
     width: WIDTH,
     height: HEIGHT
   },
@@ -115,27 +115,23 @@ const styles = StyleSheet.create({
    margin: 5
  },
  seasonalText: {
+   textAlign: 'center',
    fontSize: 18,
    fontWeight: "bold",
-   marginLeft:5
+   marginLeft:10
  },
  seasonalBox: {
+   borderRadius: 5,
    backgroundColor: "white",
    margin: 5
  },
  drinkNameTextContainer:{
+  // backgroundColor:'blue',
+   marginLeft:5,
+   marginBottom:5,
    width: (WIDTH - 40) / 2,
-   paddingRight: 5,
+   //paddingRight: 5,
  },
- headline: {
-   textAlign: "center", // <-- the magic
-   fontWeight: "bold",
-   fontSize: 25
- },
- headerbox: {
-   height: 40,
-   borderBottomWidth: 1,
-   borderBottomColor: "#dddddd"
- }
+
 
 });

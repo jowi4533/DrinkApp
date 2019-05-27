@@ -47,6 +47,9 @@ const styles = StyleSheet.create({
     left: 0,
     top: 0,
   },
+  favoriteButton:{
+    padding: 15
+  }
 
 
 });
