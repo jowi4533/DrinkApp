@@ -43,10 +43,15 @@ render(){
 
 const styles = StyleSheet.create({
   selectedColor: {
-    position: 'absolute',
-    left: 0,
-    top: 0,
+    //position: 'absolute',
+    //left: 0,
+  //  top: 0,
+
   },
+  favoriteButton:{
+    marginTop:3,
+    padding:12,
+  }
 
 
 });
