@@ -10,6 +10,7 @@ import  { Asset, Font } from 'expo';
 import MyNotesscreen from './screens/MyNotesscreen'
 import MyPagescreen from './screens/MyPagescreen'
 import MyBarscreen from './screens/MyBarscreen'
+import DrinkCategoryScreen from './screens/DrinkCategoryScreen'
 import MyFavoriteDrinksscreen from './screens/MyFavoriteDrinksscreen'
 import Registerscreen from './screens/Registerscreen'
 import Loginscreen from './screens/Loginscreen'
@@ -73,6 +74,7 @@ const DrinkStack = createStackNavigator({
 const ExploreStack = createStackNavigator({
   Explore: {screen: Explorescreen},
   SpecDrinks: {screen: SpecificDrinkscreen},
+  DrinkCategory: {screen: DrinkCategoryScreen}
   },
   {
     headerLayoutPreset: 'center'

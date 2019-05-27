@@ -61,6 +61,16 @@ const data2 = [
 ];
 
 class DrinkCategoryscreen extends Component {
+  constructor(props){
+    super(props);
+
+    this.state = {
+      drinks: props.screenProps.drinks,
+      title: this.props.navigation.state.params.title.toLowerCase(),
+      drinksDisplayed: []
+    }
+
+  }
   static navigationOptions = ({ navigation }) => ({
    title: `${navigation.state.params.title}`,
     headerTitleStyle: {
@@ -70,12 +80,25 @@ class DrinkCategoryscreen extends Component {
     },
   });
 
+  componentWillMount(){
+    let drinksToRender = []
+
+    for(let i = 0; i < this.state.drinks.length; i++){
+      if(this.state.drinks[i].categories.hasOwnProperty(this.state.title)){
+        drinksToRender.push(this.state.drinks[i])
+      }
+    }
+    this.setState({drinksDisplayed: drinksToRender})
+
+
+  }
+
   renderItem1 = ({ item, index }) => {
     return (
       <TouchableOpacity style={styles.seasonalBox}
         onPress={() => this.props.navigation.navigate("")}
         >
-        <Image style={styles.seasonalImage} source={item.image} />
+        <Image style={styles.seasonalImage} source={{uri : item.url}} />
         <View style={styles.drinkNameTextContainer}>
           <Text style={styles.seasonalText}>
             {item.name}
@@ -89,7 +112,7 @@ class DrinkCategoryscreen extends Component {
     return (
       <View style={{paddingBottom:40}}>
           <FlatList
-            data={data2}
+            data={this.state.drinksDisplayed}
             renderItem={this.renderItem1}
             keyExtractor={item => item.id}
             numColumns={2}

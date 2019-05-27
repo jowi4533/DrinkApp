@@ -19,17 +19,7 @@ import bgImage from "../pictures/236.jpg";
 import FavoriteButton from "../components/FavoriteButton.js";
 const { width: WIDTH, height: HEIGHT } = Dimensions.get("window");
 
-const data2 = {
-  id: 1,
-  Discover_Weekly: true,
-  Seasonal_Drink: "summer",
-  name: "Cranberry Sangria",
-  image:
-    "https://firebasestorage.googleapis.com/v0/b/drinknic-e6779.appspot.com/o/Drinkpictures%2Faperol_spritz.png?alt=media&token=e2cd3c18-bc9f-4c8f-aa3d-e18502a5f5b6",
-  keywords: { strong: true, ingredients: "Aperol,Spritz,Water,Juice," },
-  instruc:
-    "1.Fill a long glass with ice.,2.Add all ingredients except Coca Cola.,3.Top with a splash of Cola and stir.,4.Garnish with a lemon wedge.,"
-};
+
 class SpecificDrinkscreen extends Component {
 
   constructor(props){
@@ -38,30 +28,12 @@ class SpecificDrinkscreen extends Component {
   this.state = {
     specificDrink : this.props.navigation.state.params.drink,
     instructions: [],
-
   }
-  this.loadServings()
 }
   loadServings(){
     //console.log(Object.keys(this.state.specificDrink.ingredients))
   }
 
-
-  modifyString(data) {
-    const data3 = data;
-
-    let sentence = "";
-    const newPrep = [];
-    for (var i = 0; i < data3.length; i++) {
-      if (data3[i] !== "," || data3[i] !== " ") {
-        sentence = sentence + data3[i];
-      } else {
-        newPrep.push({ eachItem: sentence });
-        sentence = "";
-      }
-    }
-    return newPrep;
-  }
   //renders ingredients
   renderItem1 = ({ item, index }) => {
     return (
