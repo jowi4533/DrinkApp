@@ -239,8 +239,8 @@ const styles = StyleSheet.create({
   },
   addToFavoriteButton: {
     position: "absolute",
-    right: 12,
-    top: 7,
+    right: 0,
+    top: 0,
     zIndex: 2
   }
 });

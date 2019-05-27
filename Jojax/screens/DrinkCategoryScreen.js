@@ -115,27 +115,23 @@ const styles = StyleSheet.create({
    margin: 5
  },
  seasonalText: {
+   textAlign: 'center',
    fontSize: 18,
    fontWeight: "bold",
-   marginLeft:5
+   marginLeft:10
  },
  seasonalBox: {
+   borderRadius: 5,
    backgroundColor: "white",
    margin: 5
  },
  drinkNameTextContainer:{
+  // backgroundColor:'blue',
+   marginLeft:5,
+   marginBottom:5,
    width: (WIDTH - 40) / 2,
-   paddingRight: 5,
+   //paddingRight: 5,
  },
- headline: {
-   textAlign: "center", // <-- the magic
-   fontWeight: "bold",
-   fontSize: 25
- },
- headerbox: {
-   height: 40,
-   borderBottomWidth: 1,
-   borderBottomColor: "#dddddd"
- }
+
 
 });

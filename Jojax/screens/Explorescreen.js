@@ -159,6 +159,7 @@ class Explorescreen extends Component {
   };
 
   render() {
+
     return (
       <ImageBackground source={bgImage} style={styles.backgroundContainer}>
         <ScrollView contentContainerStyle={styles.contentContainer}>

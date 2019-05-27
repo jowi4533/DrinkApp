@@ -29,7 +29,6 @@ const DeleteNoteButton =( { onPress } ) => {
 
 const styles = StyleSheet.create({
   DeleteNoteContainer:{
-    backgroundColor: 'pink',
     padding: 10,
     paddingBottom: -10,
     marginRight: 10

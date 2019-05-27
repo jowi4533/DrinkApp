@@ -415,7 +415,7 @@ const styles = StyleSheet.create({
     marginLeft: 15,
     marginTop: 15,
     color: "rgba(46, 49, 49, 1)",
-    marginRight: 10
+    marginRight: 10,
   },
   textDrinkIngredients: {
     fontSize: 14,
