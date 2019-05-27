@@ -201,10 +201,13 @@ class App extends Component {
     let allDrinks = []
     for (let i = 0; i < this.state.allDrinkKeys.length; i++){
       let k = this.state.allDrinkKeys[i];
+
       let drink = {
         name: this.state.allDrinkItems[k].name,
         url: this.state.allDrinkItems[k].URL,
-        ingredients: this.state.allDrinkItems[k].Ingredients,
+        spirits: this.state.allDrinkItems[k].Ingredients.spirits,
+        otherIngredients: this.state.allDrinkItems[k].Ingredients.otherIngredients,
+        allIngredients: Object.assign({}, this.state.allDrinkItems[k].Ingredients.spirits, this.state.allDrinkItems[k].Ingredients.otherIngredients),
         categories: this.state.allDrinkItems[k].Categories,
         instructions: this.state.allDrinkItems[k].Preparation_instructions,
       }

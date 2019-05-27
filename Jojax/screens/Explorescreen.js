@@ -63,6 +63,7 @@ class Explorescreen extends Component {
       classicDrinks: [],
       baseSpirits: []
     }
+    console.log(this.state.drinks[0])
   }
 
   loopSeasonalDrinks(){

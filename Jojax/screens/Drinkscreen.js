@@ -87,10 +87,8 @@ resetSelected = (selected) => {
           }))
         }
     })
-    this.setState(state => {
-      state.isHighlighted = [];
-
-    })
+    this.state.isHighlighted = []
+    this.filterDrinks()
 }
 
 _keyExtractor = (item, index) => item.name;
@@ -184,12 +182,15 @@ _keyExtractor = (item, index) => item.name;
     for (let i = 0; i < this.state.drinks.length; i++){
       let ingredientsInDrink = 0
       for(let j = 0; j < this.state.isHighlighted.length; j++){
-        if(this.state.drinks[i].ingredients.hasOwnProperty(this.state.isHighlighted[j])){
-          ingredientsInDrink++
+        if(this.state.drinks[i].allIngredients.hasOwnProperty(this.state.isHighlighted[j])){
+          if(filteredDrinks.includes(this.state.drinks[i])){
+          } else{
+              filteredDrinks.push(this.state.drinks[i])
+          }
         }
       }
       if(ingredientsInDrink === this.state.isHighlighted.length){
-        filteredDrinks.push(this.state.drinks[i])
+
       }
     }
 
@@ -249,20 +250,18 @@ _keyExtractor = (item, index) => item.name;
           <View>
           <View style={styles.textBoxContainer}>
             <Text style={styles.textDrinkName}>{item.name}</Text>
+            <FlatList
+            data={Object.keys(item.allIngredients)}
+            renderItem={this.renderItemIngredients}
+            keyExtractor={item => item.name}
+            horizontal= {true}
+            extraData={this.state}
+          />
             <View style={styles.SmallFavoriteButtonContainer}>
             <SmallFavoriteButton>
             </SmallFavoriteButton>
               </View>
             </View>
-            <View style ={styles.ingredientssss}>
-              <FlatList
-              data={Object.keys(item.ingredients)}
-              renderItem={this.renderItemIngredients}
-              keyExtractor={item => item.name}
-              horizontal= {true}
-              extraData={this.state}
-            />
-          </View>
           </View>
         </TouchableOpacity>
       </View>
