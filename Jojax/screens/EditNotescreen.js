@@ -10,8 +10,10 @@ import {
   ScrollView
 } from "react-native";
 const { width: WIDTH, height: HEIGHT } = Dimensions.get("window");
+
 import SaveNoteButton from "../components/SaveNoteButton.js";
 import DeleteNoteButton from "../components/DeleteNoteButton.js";
+import {colors} from "../assets/colors.js";
 
 class EditNotescreen extends Component {
   constructor(props){

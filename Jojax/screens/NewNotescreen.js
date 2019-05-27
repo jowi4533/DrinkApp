@@ -10,7 +10,9 @@ import {
   ScrollView
 } from "react-native";
 const { width: WIDTH, height: HEIGHT } = Dimensions.get("window");
+
 import SaveNoteButton from "../components/SaveNoteButton.js";
+import {colors} from "../assets/colors.js";
 
 class NewNotescreen extends Component {
   constructor(props){

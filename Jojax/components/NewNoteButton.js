@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   StyleSheet,
 } from 'react-native';
+import {colors} from "../assets/colors.js";
 
 const NewNoteButton =( { onPress } ) => {
 

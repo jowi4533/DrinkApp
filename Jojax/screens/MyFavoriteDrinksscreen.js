@@ -13,8 +13,10 @@ import {
   Image
 } from "react-native";
 const { width: WIDTH, height: HEIGHT } = Dimensions.get("window");
-import FavoriteButton from "../components/FavoriteButton.js"
-import SmallFavoriteButton from "../components/SmallFavoriteButton.js"
+
+import FavoriteButton from "../components/FavoriteButton.js";
+import SmallFavoriteButton from "../components/SmallFavoriteButton.js";
+import {colors} from "../assets/colors.js";
 
 class MyFavoriteDrinkscreen extends Component {
   static navigationOptions = {

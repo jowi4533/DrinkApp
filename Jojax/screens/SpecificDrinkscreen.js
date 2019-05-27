@@ -17,8 +17,9 @@ import {
 import drImage from "../pictures/long_isle.png";
 import bgImage from "../pictures/236.jpg";
 import FavoriteButton from "../components/FavoriteButton.js";
-const { width: WIDTH, height: HEIGHT } = Dimensions.get("window");
+import {colors} from "../assets/colors.js";
 
+const { width: WIDTH, height: HEIGHT } = Dimensions.get("window");
 
 class SpecificDrinkscreen extends Component {
 

@@ -18,6 +18,7 @@ import {
 const { width: WIDTH, height: HEIGHT } = Dimensions.get("window");
 
 import SmallFavoriteButton from "../components/SmallFavoriteButton.js";
+import {colors} from "../assets/colors.js";
 
 class Drinkscreen extends Component {
   static navigationOptions = {
@@ -410,12 +411,13 @@ const styles = StyleSheet.create({
     width: 105,
   },
   textDrinkName: {
+    width: '78%',
     fontSize: 18,
     fontWeight: "bold",
     marginLeft: 15,
     marginTop: 15,
     color: "rgba(46, 49, 49, 1)",
-    marginRight: 10,
+    //marginRight: 10,
   },
   textDrinkIngredients: {
     fontSize: 14,

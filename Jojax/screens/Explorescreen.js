@@ -15,8 +15,10 @@ import {
 import drImage from "../pictures/long_isle.png";
 import bgImage from "../pictures/236.jpg";
 import aperol from "../pictures/aperol_spritz.png";
+import {colors} from "../assets/colors.js";
 
 const { width: WIDTH, height: HEIGHT } = Dimensions.get("window");
+
 
 const data2 = [
   {
@@ -128,7 +130,7 @@ class Explorescreen extends Component {
       </View>
     );
   };
-  //Drink Categories ( not used atm) -- text below image
+  //Drink Categories ( not used atm ) -- text below image
   renderItem2 = ({ item, index }) => {
     return (
       <TouchableOpacity
@@ -152,10 +154,15 @@ class Explorescreen extends Component {
           this.props.navigation.navigate("DrinkCategory", {title: item.category})
         }
       >
-        <Image style={styles.baseSpiritImage} source={item.image} />
+
+        <ImageBackground style={styles.baseSpiritImage} source={item.image}>
+          <View style={styles.baseSpiritImageContainer}>
         <View style={styles.baseSpiritTextContainer}>
           <Text style={styles.baseSpiritsText}>{item.category}</Text>
         </View>
+        </View>
+      </ImageBackground>
+
       </TouchableOpacity>
     );
   };
@@ -303,24 +310,38 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     marginBottom: 10
   },
+
+  baseSpiritImageContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(255,255,255,0.25)',
+    width: '100%',
+    height: '100%',
+
+  },
+
   baseSpiritImage: {
     width: (WIDTH - 40) / 2,
     height: (WIDTH - 40) / 2,
     margin: 5,
     justifyContent: "center",
     alignItems: "center",
-    opacity: 0.8
+    //opacity: 0.8,
   },
   baseSpiritTextContainer: {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
+    // position: "absolute",
+    // top: 0,
+    // left: 0,
+    // right: 0,
+    // bottom: 0,
+    width: '90%',
     justifyContent: "center",
-    alignItems: "center"
+    alignItems: "center",
+    //opacity: 1,
   },
   baseSpiritsText: {
+    textAlign: 'center',
+    width: '90%',
     fontSize: 25,
     fontWeight: "bold",
     color: "white",

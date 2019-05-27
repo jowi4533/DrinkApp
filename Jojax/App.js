@@ -156,6 +156,17 @@ class App extends Component {
     this.loadResources()
   }
 
+  // async componentDidMount(){
+  //   await Font.loadAsync({
+  //
+  //     'Quicksand-Bold' : require('.assets/fonts/Quicksand-Bold.ttf'),
+  //       'Quicksand-Light' : require('.assets/fonts/Quicksand-Light.ttf'),
+  //         'Quicksand-Medium' : require('.assets/fonts/Quicksand-Medium.ttf'),
+  //          'Quicksand-Regular' : require('.assets/fonts/Quicksand-Regular.ttf'),
+  //   });
+  //   this.setState({ fontLoaded: true });
+  // };
+
   loadResources(){
     this.initailizeListener()
   }

@@ -14,8 +14,10 @@ import {
   Button
 } from "react-native";
 const { width: WIDTH, height: HEIGHT } = Dimensions.get("window");
+
 import NewNoteButton from "../components/NewNoteButton.js";
-import NoteStatusButton from "../components/NoteStatusButton.js"
+import NoteStatusButton from "../components/NoteStatusButton.js";
+import {colors} from "../assets/colors.js";
 
 class MyNotesscreen extends Component {
   static navigationOptions = ({ navigation }) => {

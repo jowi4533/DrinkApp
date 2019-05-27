@@ -17,8 +17,10 @@ import {
 } from "react-native";
 const { width: WIDTH, height: HEIGHT } = Dimensions.get("window");
 
+
 import bgImage from "../pictures/236.jpg";
 import ginBottle from "../pictures/ginBottle.jpg";
+import {colors} from "../assets/colors.js";
 
 
 // const formatData = (data, numColumns) => {
