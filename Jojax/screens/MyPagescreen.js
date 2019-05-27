@@ -25,8 +25,10 @@ import transparentBar from "../pictures/transparentBar.png";
 import transparentBarIcon from "../pictures/transparentBarIcon.png";
 import bar1 from "../pictures/bar1.png";
 import bar2 from "../pictures/bar2.jpg";
+import bar3 from "../pictures/bar3.png";
 import heart2 from "../pictures/heart2.png";
 import notes1 from "../pictures/notes1.png";
+import notes2 from "../pictures/notes2.png";
 
 const { width: WIDTH, height: HEIGHT } = Dimensions.get("window");
 
@@ -44,7 +46,7 @@ class MyPagescreen extends Component {
   }
   render() {
     return (
-      <ImageBackground source={bgImage} style={styles.backgroundContainer}>
+      <ImageBackground style={styles.backgroundContainer}>
 
         <View style={styles.loginButtonContainer}>
           <TouchableOpacity
@@ -65,7 +67,7 @@ class MyPagescreen extends Component {
             >
               <View style={styles.myBarButtonImageContainer}>
                 <Image
-                  source={transparentBar}
+                  source={bar3}
                   style={styles.myBarButtonImage}
                 />
               </View>
@@ -102,7 +104,7 @@ class MyPagescreen extends Component {
             >
               <View style={styles.myNotesButtonImageContainer}>
                 <Image
-                  source={notes1}
+                  source={notes2}
                   style={styles.myNotesButtonImage}
                 />
               </View>
@@ -131,21 +133,19 @@ const styles = StyleSheet.create({
   },
 
   loginButtonContainer: {
-    elevation: 20,
     width: WIDTH,
     backgroundColor: 'rgba(245, 171, 53, 1)',
     justifyContent: 'center',
     alignItems: 'center',
     paddingVertical: 17,
-    marginBottom: 8,
-
   },
 
   loginButton: {
+    elevation: 10,
     width: WIDTH/1.1,
     height: 45,
     borderRadius: 10,
-    ////marginTop:  35,
+    //marginTop:  35,
     justifyContent: "center",
     backgroundColor: "white",
   },
@@ -182,12 +182,13 @@ const styles = StyleSheet.create({
   },
 
   myBarButtonImage: {
-    height: 105,
-    width: 105,
+    elevation: 20,
+    height: 95,
+    width: 95,
   },
 
   myBarButtonTextContainer: {
-    width: WIDTH - 175,
+    width: WIDTH - 165,
     justifyContent: 'center',
   },
 
@@ -228,15 +229,16 @@ const styles = StyleSheet.create({
   },
 
   myFavoritesButtonImage: {
-    marginLeft: 5,
-    alignSelf: 'center',
+    elevation: 20,
+    //marginLeft: 5,
+    //alignSelf: 'center',
     height: 95,
     width: 95,
   },
 
   myFavoritesButtonTextContainer: {
-    marginLeft: 10,
-    width: WIDTH - 175,
+    //marginLeft: 10,
+    width: WIDTH - 165,
     justifyContent: 'center',
   },
 
@@ -276,12 +278,13 @@ const styles = StyleSheet.create({
   },
 
   myNotesButtonImage: {
-    height: 105,
-    width: 105,
+    elevation: 20,
+    height: 95,
+    width: 95,
   },
 
   myNotesButtonTextContainer: {
-    width: WIDTH - 175,
+    width: WIDTH - 165,
     justifyContent: 'center',
   },
 
