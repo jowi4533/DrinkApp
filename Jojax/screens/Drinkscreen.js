@@ -240,15 +240,13 @@ _keyExtractor = (item, index) => item.name;
           style={styles.buttonDrink}
           onPress={() => this.props.navigation.navigate("SpecDrinks", {drink:item})}
         >
-          <View style={styles.addToFavoriteButton}>
-            <SmallFavoriteButton />
-          </View>
           <View>
             <Image
               source={{ uri: item.url }}
               style={styles.imageDrink}
             />
           </View>
+          <View>
           <View style={styles.textBoxContainer}>
             <Text style={styles.textDrinkName}>{item.name}</Text>
             <FlatList
@@ -258,8 +256,11 @@ _keyExtractor = (item, index) => item.name;
             horizontal= {true}
             extraData={this.state}
           />
-
-
+            <View style={styles.SmallFavoriteButtonContainer}>
+            <SmallFavoriteButton>
+            </SmallFavoriteButton>
+              </View>
+            </View>
           </View>
         </TouchableOpacity>
       </View>
@@ -400,7 +401,6 @@ const styles = StyleSheet.create({
     flexDirection: "row"
   },
   buttonDrink: {
-    backgroundColor: "white",
     flex: 1,
     flexDirection: "row"
   },
@@ -414,22 +414,23 @@ const styles = StyleSheet.create({
     marginLeft: 15,
     marginTop: 15,
     color: "rgba(46, 49, 49, 1)",
-    marginRight: 10
+    marginRight: 10,
   },
   textDrinkIngredients: {
     fontSize: 14,
-    marginTop: 15,
     color: "rgba(108, 122, 137, 1)"
   },
   textBoxContainer: {
-    width: WIDTH - 105
+    width: WIDTH - 105,
+    flexDirection: "row",
+    justifyContent: 'space-between',
   },
-  addToFavoriteButton:{
-    position: 'absolute',
-    right:12,
-    top:7,
-    zIndex:2
-  },
+  //addToFavoriteButton:{
+  //  position: 'absolute',
+  //  right:12,
+  //  top:7,
+  //  zIndex:2
+  //},
 
   modalContainer: {
     justifyContent: 'center',
@@ -560,5 +561,10 @@ const styles = StyleSheet.create({
   okButtonText: {
     fontSize: 12,
   },
+  SmallFavoriteButtonContainer:{
+  },
+  ingredientssss:{
+    marginLeft: 15
+  }
 
 });

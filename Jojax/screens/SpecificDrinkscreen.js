@@ -32,6 +32,9 @@ class SpecificDrinkscreen extends Component {
   }
   this.loadIngredients()
 }
+  loadServings(){
+    //console.log(Object.keys(this.state.specificDrink.ingredients))
+  }
 
   loadIngredients(){
     allIngredientItems = Object.values(this.state.specificDrink.allIngredients)
@@ -73,6 +76,7 @@ class SpecificDrinkscreen extends Component {
 
 
   render() {
+    console.log(this.state.specificDrink.ingredients)
     return (
       <ScrollView>
         <View style={{ height: HEIGHT / 2.6 }}>
@@ -112,6 +116,7 @@ class SpecificDrinkscreen extends Component {
                       renderItem={this.renderItem2}
                       keyExtractor={item => item.eachItem}
                     />
+
                   </View>
                 </View>
               </View>
@@ -250,8 +255,8 @@ const styles = StyleSheet.create({
   },
   addToFavoriteButton: {
     position: "absolute",
-    right: 12,
-    top: 7,
+    right: 0,
+    top: 0,
     zIndex: 2
   }
 });

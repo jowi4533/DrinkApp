@@ -115,7 +115,7 @@ class Explorescreen extends Component {
       fontSize: 25
     },
   };
-
+  //Discoverweekly + classic drinks atm
   renderItem1 = ({ item, index }) => {
     return (
       <View style={styles.discoverWeeklyBox}>
@@ -129,6 +129,7 @@ class Explorescreen extends Component {
       </View>
     );
   };
+  //Drink Categories ( not used atm) -- text below image
   renderItem2 = ({ item, index }) => {
     return (
       <TouchableOpacity
@@ -143,6 +144,7 @@ class Explorescreen extends Component {
       </TouchableOpacity>
     );
   };
+  //category boxes -- text ontop of image + opacity
   renderItem3 = ({ item, index }) => {
     return (
       <TouchableOpacity
@@ -160,6 +162,7 @@ class Explorescreen extends Component {
   };
 
   render() {
+
     return (
       <ImageBackground source={bgImage} style={styles.backgroundContainer}>
         <ScrollView contentContainerStyle={styles.contentContainer}>
@@ -185,7 +188,7 @@ class Explorescreen extends Component {
             <View>
               <FlatList
                 data={data2}
-                renderItem={this.renderItem2}
+                renderItem={this.renderItem3}
                 keyExtractor={item => item.id}
                 numColumns= {2}
               />
@@ -246,12 +249,17 @@ const styles = StyleSheet.create({
     margin: 5
   },
   drinkNameText: {
+    textAlign:'center',
     fontSize: 16,
-    margin: 5,
     fontWeight: "bold"
   },
   drinkNameTextContainer: {
-    width: WIDTH / 2.6
+    //backgroundColor: 'blue',
+    width: WIDTH / 2.6,
+    marginLeft:5,
+    paddingLeft:5,
+    paddingBottom:5,
+    paddingRight:5
   },
   scrollviewContainer: {
     marginLeft: 5,

@@ -44,7 +44,7 @@ class MyPagescreen extends Component {
   }
   render() {
     return (
-      <ImageBackground source={bgImage} style={styles.backgroundContainer}>
+      <ImageBackground style={styles.backgroundContainer}>
 
         <View style={styles.loginButtonContainer}>
           <TouchableOpacity
@@ -137,7 +137,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     paddingVertical: 17,
-    marginBottom: 8,
+    
 
   },
 
