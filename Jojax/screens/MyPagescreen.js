@@ -174,7 +174,6 @@ const styles = StyleSheet.create({
   },
 
   myBarButtonImage: {
-    elevation: 20,
     height: 95,
     width: 95,
   },
@@ -221,7 +220,6 @@ const styles = StyleSheet.create({
   },
 
   myFavoritesButtonImage: {
-    elevation: 20,
     //marginLeft: 5,
     //alignSelf: 'center',
     height: 95,
@@ -270,7 +268,6 @@ const styles = StyleSheet.create({
   },
 
   myNotesButtonImage: {
-    elevation: 20,
     height: 95,
     width: 95,
   },
