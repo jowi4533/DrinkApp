@@ -16,17 +16,11 @@ import {
   Alert,
   FlatList,
 } from "react-native";
-import aperolpic from "../pictures/aperol_spritz.png";
 import bgImage from "../pictures/236.jpg";
-import myBarImage from "../pictures/myBarPic.jpg";
-import myFavoritesImage from "../pictures/myFavoritesPic.png";
-import myBarIcon from "../pictures/myBarImage.jpg";
-import transparentBar from "../pictures/transparentBar.png";
-import transparentBarIcon from "../pictures/transparentBarIcon.png";
-import bar1 from "../pictures/bar1.png";
-import bar2 from "../pictures/bar2.jpg";
-import heart2 from "../pictures/heart2.png";
-import notes1 from "../pictures/notes1.png";
+import barIcon from "../pictures/barIcon.png";
+import heartIcon from "../pictures/heartIcon.png";
+import notesIcon from "../pictures/notesIcon.png";
+import {colors} from "../assets/colors.js";
 
 const { width: WIDTH, height: HEIGHT } = Dimensions.get("window");
 
@@ -65,7 +59,7 @@ class MyPagescreen extends Component {
             >
               <View style={styles.myBarButtonImageContainer}>
                 <Image
-                  source={transparentBar}
+                  source={barIcon}
                   style={styles.myBarButtonImage}
                 />
               </View>
@@ -84,7 +78,7 @@ class MyPagescreen extends Component {
             >
               <View style={styles.myFavoritesButtonImageContainer}>
                 <Image
-                  source={heart2}
+                  source={heartIcon}
                   style={styles.myFavoritesButtonImage}
                 />
               </View>
@@ -102,7 +96,7 @@ class MyPagescreen extends Component {
             >
               <View style={styles.myNotesButtonImageContainer}>
                 <Image
-                  source={notes1}
+                  source={notesIcon}
                   style={styles.myNotesButtonImage}
                 />
               </View>
@@ -131,27 +125,25 @@ const styles = StyleSheet.create({
   },
 
   loginButtonContainer: {
-    elevation: 20,
     width: WIDTH,
-    backgroundColor: 'rgba(245, 171, 53, 1)',
+    backgroundColor: colors.darkgreen,
     justifyContent: 'center',
     alignItems: 'center',
     paddingVertical: 17,
-
-
   },
 
   loginButton: {
+    elevation: 10,
     width: WIDTH/1.1,
     height: 45,
     borderRadius: 10,
-    ////marginTop:  35,
+    //marginTop:  35,
     justifyContent: "center",
-    backgroundColor: "white",
+    backgroundColor: colors.white,
   },
 
   loginButtonText: {
-    color: "black",
+    color: colors.black,
     fontSize: 18,
     //fontWeight: 'bold',
     fontFamily: 'Quicksand-Bold',
@@ -168,13 +160,13 @@ const styles = StyleSheet.create({
     height: 135,
     width: WIDTH,
     borderBottomWidth: 1,
-    borderBottomColor: 'lightgrey',
+    borderBottomColor: colors.midgray,
     //flexDirection: "row"
   },
 
   myBarButton: {
     flex: 1,
-    backgroundColor: 'white',
+    backgroundColor: colors.white,
     flexDirection: "row"
   },
 
@@ -183,12 +175,13 @@ const styles = StyleSheet.create({
   },
 
   myBarButtonImage: {
-    height: 105,
-    width: 105,
+    elevation: 20,
+    height: 95,
+    width: 95,
   },
 
   myBarButtonTextContainer: {
-    width: WIDTH - 175,
+    width: WIDTH - 165,
     justifyContent: 'center',
   },
 
@@ -199,7 +192,7 @@ const styles = StyleSheet.create({
     marginLeft: 15,
     //marginTop:  12,
     marginRight: 10,
-    color: "rgba(46, 49, 49, 1)",
+    color: colors.black,
   },
 
   myBarButtonTextBody: {
@@ -207,7 +200,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     marginLeft: 15,
     //marginTop:  8,
-    color: "rgba(108, 122, 137, 1)"
+    color: colors.darkgray,
   },
 
 
@@ -215,13 +208,13 @@ const styles = StyleSheet.create({
     height: 135,
     width: WIDTH,
     borderBottomWidth: 1,
-    borderBottomColor: 'lightgrey',
+    borderBottomColor: colors.midgray,
     //flexDirection: "row"
   },
 
   myFavoritesButton: {
     flex: 1,
-    backgroundColor: 'white',
+    backgroundColor: colors.white,
     flexDirection: "row"
   },
 
@@ -231,15 +224,16 @@ const styles = StyleSheet.create({
   },
 
   myFavoritesButtonImage: {
-    marginLeft: 5,
-    alignSelf: 'center',
+    elevation: 20,
+    //marginLeft: 5,
+    //alignSelf: 'center',
     height: 95,
     width: 95,
   },
 
   myFavoritesButtonTextContainer: {
-    marginLeft: 10,
-    width: WIDTH - 175,
+    //marginLeft: 10,
+    width: WIDTH - 165,
     justifyContent: 'center',
   },
 
@@ -250,7 +244,7 @@ const styles = StyleSheet.create({
     marginLeft: 15,
     //marginTop:  12,
     marginRight: 10,
-    color: "rgba(46, 49, 49, 1)",
+    color: colors.black,
   },
 
   myFavoritesButtonTextBody: {
@@ -258,7 +252,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     marginLeft: 15,
     //marginTop:  8,
-    color: "rgba(108, 122, 137, 1)"
+    color: colors.darkgray
   },
 
 
@@ -266,13 +260,13 @@ const styles = StyleSheet.create({
     height: 135,
     width: WIDTH,
     borderBottomWidth: 1,
-    borderBottomColor: 'lightgrey',
+    borderBottomColor: colors.midgray,
     //flexDirection: "row"
   },
 
   myNotesButton: {
     flex: 1,
-    backgroundColor: 'white',
+    backgroundColor: colors.white,
     flexDirection: "row"
   },
 
@@ -281,12 +275,13 @@ const styles = StyleSheet.create({
   },
 
   myNotesButtonImage: {
-    height: 105,
-    width: 105,
+    elevation: 20,
+    height: 95,
+    width: 95,
   },
 
   myNotesButtonTextContainer: {
-    width: WIDTH - 175,
+    width: WIDTH - 165,
     justifyContent: 'center',
   },
 
@@ -297,7 +292,7 @@ const styles = StyleSheet.create({
     marginLeft: 15,
     //marginTop:  12,
     marginRight: 10,
-    color: "rgba(46, 49, 49, 1)",
+    color: colors.black
   },
 
   myNotesButtonTextBody: {
@@ -305,21 +300,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     marginLeft: 15,
     //marginTop:  8,
-    color: "rgba(108, 122, 137, 1)"
-  },
-
-
-
-
-
-
-  myBarIcon: {
-    paddingLeft: 10,
-    flex: 1,
-    aspectRatio: 1,
-    resizeMode: "contain",
-    justifyContent: "center",
-    alignItems: "center"
+    color: colors.darkgray,
   },
 
 });

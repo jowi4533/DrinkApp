@@ -18,6 +18,7 @@ import {
 const { width: WIDTH, height: HEIGHT } = Dimensions.get("window");
 
 import SmallFavoriteButton from "../components/SmallFavoriteButton.js";
+import {colors} from "../assets/colors.js";
 
 class Drinkscreen extends Component {
   static navigationOptions = {
@@ -86,10 +87,8 @@ resetSelected = (selected) => {
           }))
         }
     })
-    this.setState(state => {
-      state.isHighlighted = [];
-
-    })
+    this.state.isHighlighted = []
+    this.filterDrinks()
 }
 
 _keyExtractor = (item, index) => item.name;
@@ -183,12 +182,15 @@ _keyExtractor = (item, index) => item.name;
     for (let i = 0; i < this.state.drinks.length; i++){
       let ingredientsInDrink = 0
       for(let j = 0; j < this.state.isHighlighted.length; j++){
-        if(this.state.drinks[i].ingredients.hasOwnProperty(this.state.isHighlighted[j])){
-          ingredientsInDrink++
+        if(this.state.drinks[i].allIngredients.hasOwnProperty(this.state.isHighlighted[j])){
+          if(filteredDrinks.includes(this.state.drinks[i])){
+          } else{
+              filteredDrinks.push(this.state.drinks[i])
+          }
         }
       }
       if(ingredientsInDrink === this.state.isHighlighted.length){
-        filteredDrinks.push(this.state.drinks[i])
+
       }
     }
 
@@ -224,12 +226,19 @@ _keyExtractor = (item, index) => item.name;
         </TouchableOpacity>
     );
   };
-  renderItemIngredients = ({ item, index }) => {
-    return (
-      <View>
-        <Text style={styles.textDrinkIngredients}>{item}, </Text>
-      </View>
-    );
+
+  // renderItemIngredients = ({ item, index }) => {
+  //   return (
+  //     <View>
+  //       <Text style={styles.textDrinkIngredients}>{item}, </Text>
+  //     </View>
+  //   );
+  // };
+
+  getIngredients = (data) => {
+    var string = data.toString();
+    string = string.replace(/,/g, ", ");
+    return (string)
   };
 
   renderItem1 = ({item, index}) => {
@@ -245,23 +254,20 @@ _keyExtractor = (item, index) => item.name;
               style={styles.imageDrink}
             />
           </View>
-          <View>
-          <View style={styles.textBoxContainer}>
-            <Text style={styles.textDrinkName}>{item.name}</Text>
-            <View style={styles.SmallFavoriteButtonContainer}>
-            <SmallFavoriteButton>
-            </SmallFavoriteButton>
+          <View style={styles.itemTextContainer}>
+            <View style={styles.textHeadingContainer}>
+              <Text style={styles.textDrinkName}>{item.name}</Text>
+              <View style={styles.SmallFavoriteButtonContainer}>
+                <SmallFavoriteButton>
+                </SmallFavoriteButton>
               </View>
             </View>
-            <View style ={styles.ingredientssss}>
-              <FlatList
-              data={Object.keys(item.ingredients)}
-              renderItem={this.renderItemIngredients}
-              keyExtractor={item => item.name}
-              horizontal= {true}
-              extraData={this.state}
-            />
-          </View>
+
+            <View style={styles.ingredientsTextContainer}>
+              <Text style={styles.ingredientsText}>
+                {this.getIngredients(Object.keys(item.allIngredients))}
+              </Text>
+            </View>
           </View>
         </TouchableOpacity>
       </View>
@@ -295,6 +301,7 @@ _keyExtractor = (item, index) => item.name;
             extraData={this.state}
           />
         </View>
+
         <View style={styles.modalContainer}>
         <Modal
           style={styles.modal}
@@ -319,7 +326,7 @@ _keyExtractor = (item, index) => item.name;
                   renderItem={this.renderItem}
                   keyExtractor={this._keyExtractor}
                 >
-              </FlatList>
+                </FlatList>
               </View>
             <View style={styles.modalButtonContainer}>
               <View style={styles.resetButtonContainer}>
@@ -410,24 +417,42 @@ const styles = StyleSheet.create({
     width: 105,
   },
   textDrinkName: {
+    width: '78%',
     fontSize: 18,
     //fontWeight: "bold",
     fontFamily: 'Quicksand-Medium',
     marginLeft: 15,
     marginTop: 15,
     color: "rgba(46, 49, 49, 1)",
-    marginRight: 10,
+    //marginRight: 10,
   },
   textDrinkIngredients: {
     fontSize: 14,
     color: "rgba(108, 122, 137, 1)",
     fontFamily: 'Quicksand-Medium',
   },
-  textBoxContainer: {
+  textHeadingContainer: {
     width: WIDTH - 105,
     flexDirection: "row",
     justifyContent: 'space-between',
   },
+
+  ingredientsTextContainer: {
+    marginLeft: 15,
+    width: '80%',
+  },
+
+  ingredientsText: {
+    textTransform: 'uppercase',
+    fontSize: 14,
+    color: "rgba(108, 122, 137, 1)"
+  },
+  //addToFavoriteButton:{
+  //  position: 'absolute',
+  //  right:12,
+  //  top:7,
+  //  zIndex:2
+  //},
 
   modalContainer: {
     justifyContent: 'center',

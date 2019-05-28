@@ -7,6 +7,7 @@ import {
   StyleSheet,
   Text
 } from 'react-native';
+import {colors} from "../assets/colors.js";
 
 const NoteStatusButton =( { onPress, noteStatus} ) => {
 

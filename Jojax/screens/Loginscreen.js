@@ -11,8 +11,10 @@ import {
   TouchableOpacity
 } from "react-native";
 import bgImage from '../pictures/236.jpg'
+import {colors} from "../assets/colors.js";
 
 const { width:WIDTH, height:HEIGHT } = Dimensions.get('window');
+
 
 class Registerscreen extends Component {
   static navigationOptions = {
