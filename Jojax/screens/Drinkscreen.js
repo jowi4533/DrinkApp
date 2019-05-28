@@ -458,7 +458,8 @@ const styles = StyleSheet.create({
   textDrinkName: {
     width: '78%',
     fontSize: 18,
-    fontWeight: "bold",
+    //fontWeight: "bold",
+    fontFamily: 'Quicksand-Medium',
     marginLeft: 15,
     marginTop: 15,
     color: "rgba(46, 49, 49, 1)",
@@ -466,7 +467,8 @@ const styles = StyleSheet.create({
   },
   textDrinkIngredients: {
     fontSize: 14,
-    color: "rgba(108, 122, 137, 1)"
+    color: "rgba(108, 122, 137, 1)",
+    fontFamily: 'Quicksand-Medium',
   },
   textHeadingContainer: {
     width: WIDTH - 105,

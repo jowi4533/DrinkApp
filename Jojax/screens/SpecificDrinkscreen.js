@@ -80,12 +80,11 @@ class SpecificDrinkscreen extends Component {
     //console.log(this.state.specificDrink.ingredients)
     return (
       <ScrollView>
-        <View style={{ height: HEIGHT / 2.6 }}>
+        <View style={{ height: WIDTH }}>
           <View style={styles.drinkImageContainer}>
             <View style={styles.addToFavoriteButton}>
               <FavoriteButton />
             </View>
-
             <ImageBackground style={styles.drinkImage} source={{ uri: this.state.specificDrink.url }}>
               <View style={styles.drinkNameContainer}>
                 <View style={{ opacity: 1 }}>
@@ -150,15 +149,13 @@ const styles = StyleSheet.create({
 
   drinkImage: {
     flex: 1,
-    width: undefined,
-    height: undefined,
+    width: WIDTH,
+    height: WIDTH,
     resizeMode: "contain",
     justifyContent: "flex-end"
   },
   ingredientsAndPreparationContainer: {
     flex: 60
-    //borderWidth: 1,
-    //borderColor: "red"
   },
   backgroundContainer: {
     flex: 1,
@@ -168,7 +165,6 @@ const styles = StyleSheet.create({
   },
   ingredientSheet: {
     backgroundColor: "white",
-    //height:HEIGHT/2,
     width: WIDTH - 20,
     margin: 10
   },
@@ -185,9 +181,6 @@ const styles = StyleSheet.create({
   },
   ingredientInnerContainer: {
     marginBottom: 10
-    //marginLeft: 15,
-    //borderBottomWidth: 3,
-    //borderBottomColor: "green"
   },
   eachIngredientText: {
     fontSize: 18
@@ -208,7 +201,6 @@ const styles = StyleSheet.create({
     fontSize: 20
   },
   ingredientOverviewBox: {
-    //borderBottomWidth: 1,
     marginLeft: 15,
     marginRight: 15,
     paddingBottom: 10

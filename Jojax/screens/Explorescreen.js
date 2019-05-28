@@ -245,10 +245,11 @@ const styles = StyleSheet.create({
   },
   discoverWeeklyText: {
     fontSize: 25,
-    fontWeight: "bold",
+    //fontWeight: "bold",
     marginTop: 10,
     marginLeft: 10,
-    marginBottom: 10
+    marginBottom: 10,
+    fontFamily: 'Quicksand-Bold'
   },
   drinkImage: {
     height: WIDTH / 2.6,
@@ -258,7 +259,8 @@ const styles = StyleSheet.create({
   drinkNameText: {
     textAlign:'center',
     fontSize: 16,
-    fontWeight: "bold"
+    //fontWeight: "bold",
+    fontFamily: 'Quicksand-Bold'
   },
   drinkNameTextContainer: {
     //backgroundColor: 'blue',
@@ -279,10 +281,11 @@ const styles = StyleSheet.create({
   },
   seasonalDrinksText: {
     fontSize: 25,
-    fontWeight: "bold",
+    //fontWeight: "bold",
     marginTop: 10,
     marginLeft: 10,
-    marginBottom: 10
+    marginBottom: 10,
+    fontFamily: 'Quicksand-Bold'
   },
   seasonalImage: {
     width: (WIDTH - 40) / 2,
@@ -291,9 +294,10 @@ const styles = StyleSheet.create({
   },
   seasonalText: {
     fontSize: 20,
-    fontWeight: "bold",
+    //fontWeight: "bold",
     textAlign: "center",
-    paddingLeft: 40
+    paddingLeft: 40,
+    fontFamily: 'Quicksand-Bold',
   },
   seasonalBox: {
     backgroundColor: "white",
@@ -306,10 +310,11 @@ const styles = StyleSheet.create({
   classicDrinksContainer: {},
   classicDrinksText: {
     fontSize: 25,
-    fontWeight: "bold",
+    //fontWeight: "bold",
     marginTop: 10,
     marginLeft: 10,
-    marginBottom: 10
+    marginBottom: 10,
+    fontFamily: 'Quicksand-Bold'
   },
 
   baseSpiritImageContainer: {
@@ -344,8 +349,9 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     width: '90%',
     fontSize: 25,
-    fontWeight: "bold",
+    //fontWeight: "bold",
     color: "white",
-    opacity: 1
+    opacity: 1,
+    fontFamily: 'Quicksand-Bold'
   }
 });

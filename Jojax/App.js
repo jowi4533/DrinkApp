@@ -1,6 +1,6 @@
 import React, { Component} from 'react';
 import { Ionicons,FontAwesome,Entypo } from '@expo/vector-icons';
-import { StyleSheet, Text, View, SafeAreaView } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, ActivityIndicator } from 'react-native';
 import { createAppContainer, createBottomTabNavigator, createStackNavigator } from 'react-navigation'
 import Drinkscreen from './screens/Drinkscreen'
 import Explorescreen from './screens/Explorescreen'
@@ -144,22 +144,23 @@ class App extends Component {
       drinks: [],
       loaded: false,
 
+      fontLoaded: false
+
     }
     this.loadResources()
   }
 
+  async componentDidMount(){
+  await Font.loadAsync({
 
-
-  // async componentDidMount(){
-  //   await Font.loadAsync({
-  //
-  //     'Quicksand-Bold' : require('.assets/fonts/Quicksand-Bold.ttf'),
-  //       'Quicksand-Light' : require('.assets/fonts/Quicksand-Light.ttf'),
-  //         'Quicksand-Medium' : require('.assets/fonts/Quicksand-Medium.ttf'),
-  //          'Quicksand-Regular' : require('.assets/fonts/Quicksand-Regular.ttf'),
-  //   });
-  //   this.setState({ fontLoaded: true });
-  // };
+    'Quicksand-Bold' : require('./fonts/Quicksand-Bold.ttf'),
+      'Quicksand-Light' : require('./fonts/Quicksand-Light.ttf'),
+        'Quicksand-Medium' : require('./fonts/Quicksand-Medium.ttf'),
+         'Quicksand-Regular' : require('./fonts/Quicksand-Regular.ttf'),
+  }).then(()=>{
+        this.setState({ fontLoaded: true });
+  })
+};
 
   loadResources(){
     this.initailizeListener()
@@ -206,8 +207,11 @@ class App extends Component {
   render(){
     if(this.state.loaded === true){
       return (
-        <AppContainer screenProps ={this.state}>
-        </AppContainer>
+
+          <AppContainer screenProps ={this.state}>
+          </AppContainer>
+
+
       );
     }
     else{
