@@ -129,7 +129,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.darkgreen,
     justifyContent: 'center',
     alignItems: 'center',
-    paddingVertical: 17,
+    paddingVertical: 15,
   },
 
   loginButton: {

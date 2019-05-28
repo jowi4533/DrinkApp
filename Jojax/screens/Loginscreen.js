@@ -31,7 +31,7 @@ class Registerscreen extends Component {
       <ImageBackground source={bgImage} style={styles.backgroundContainer}>
           <View style = {styles.textContainer}>
             <Text style = {styles.loginText}>
-              LOGIN OR BAJS
+              LOGIN
             </Text>
             <View style ={styles.descText}>
             <Text style = {{marginHorizontal:12}}>
@@ -43,7 +43,7 @@ class Registerscreen extends Component {
           <TextInput
           style={styles.input}
           placeholder = {'Email'}
-          placeholderTextColor = {'rgba(0,0,0,0.5)'}
+          placeholderTextColor = 'darkgray'
           underlineColorAndroid = 'transparent'
           />
           </View>
@@ -52,7 +52,7 @@ class Registerscreen extends Component {
           style={styles.input}
           placeholder = {'Password'}
           secureTextEntry= {true}
-          placeholderTextColor = {'rgba(0,0,0,0.5)'}
+          placeholderTextColor = 'darkgray'
           underlineColorAndroid = 'transparent'
           />
           </View>
@@ -61,10 +61,10 @@ class Registerscreen extends Component {
           </TouchableOpacity>
 
           <View style ={ styles.newaccountContainer}>
-          <Text> Don't have an account?</Text>
+          <Text style={styles.textRegisterHere}>Don't have an account?</Text>
           </View>
-          <TouchableOpacity style = {styles.buttonRegisterHere} onPress={() => this.props.navigation.navigate('Register')}>
-          <Text style ={ styles.textRegisterHere}> Register Here! </Text>
+          <TouchableOpacity style={styles.buttonRegisterHere} onPress={() => this.props.navigation.navigate('Register')}>
+          <Text style={styles.buttonRegisterHereText}>REGISTER HERE</Text>
           </TouchableOpacity>
 
 
@@ -93,8 +93,8 @@ const styles = StyleSheet.create({
    borderRadius: 25,
    fontSize: 16,
    paddingLeft: 45,
-   backgroundColor: 'white',
-   color: 'rgba(0,0,0,0.9)',
+   backgroundColor: colors.white,
+   color: colors.black,
    marginHorizontal: 25,
  },
  input2:{
@@ -104,7 +104,9 @@ const styles = StyleSheet.create({
    alignItems: 'center'
  },
  loginText:{
-   color: 'rgba(0,0,0,0.7)',
+   textAlign: 'center',
+   width: WIDTH,
+   color: colors.darkgray,
    fontSize: 20,
    fontWeight: 'bold',
  },
@@ -115,15 +117,16 @@ const styles = StyleSheet.create({
    fontWeight: 'bold'
  },
  loginButton:{
+   elevation: 10,
    width: WIDTH -55,
    height: 40,
    borderRadius: 25,
    marginTop: 35,
    justifyContent: 'center',
-   backgroundColor: '#07757D',
+   backgroundColor: colors.darkgreen,
  },
  textLoginButton:{
-   color: 'rgba(255,255,255,0.9)',
+   color: colors.white,
    fontSize: 16,
    textAlign: 'center'
  },
@@ -131,16 +134,25 @@ const styles = StyleSheet.create({
    marginTop: 30
  },
  textRegisterHere:{
+   fontSize: 16,
    textAlign: 'center',
    justifyContent: 'center',
-   color:'rgba(249, 105, 14, 1)'
+   color: colors.darkgray,
  },
  buttonRegisterHere:{
+   elevation: 10,
+   backgroundColor: colors.orange,
    justifyContent:'center',
-   width: 100,
-   height: 20,
+   marginTop: 30,
+   //alignSelf: 'flex-end',
+   width: WIDTH -55,
+   height: 40,
    borderRadius: 25,
  },
-
+ buttonRegisterHereText: {
+   color: colors.white,
+   fontSize: 16,
+   textAlign: 'center'
+ },
 
 });

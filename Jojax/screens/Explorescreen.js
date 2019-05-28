@@ -192,7 +192,7 @@ class Explorescreen extends Component {
           <View style={styles.seasonalDrinksContainer}>
             <Text style={styles.seasonalDrinksText}>Seasonal Drinks</Text>
 
-            <View>
+            <View style={styles.seasonalDrinksGrid}>
               <FlatList
                 data={data2}
                 renderItem={this.renderItem3}
@@ -220,7 +220,7 @@ class Explorescreen extends Component {
           <View style={styles.seasonalDrinksContainer}>
             <Text style={styles.seasonalDrinksText}>Base Spirits</Text>
 
-            <View>
+            <View style={styles.seasonalDrinksGrid}>
               <FlatList
                 data={data2}
                 renderItem={this.renderItem3}
@@ -237,18 +237,22 @@ class Explorescreen extends Component {
 export default Explorescreen;
 
 const styles = StyleSheet.create({
-  discoverWeeklyContainer: {},
+  discoverWeeklyContainer: {
+  },
   discoverWeeklyBox: {
-    backgroundColor: "white",
+    backgroundColor: colors.white,
     marginHorizontal: 5,
-    borderRadius: 5
+    borderRadius: 5,
   },
   discoverWeeklyText: {
-    fontSize: 25,
+    textAlign: 'center',
+    color: colors.black,
+    fontSize: 26,
     fontWeight: "bold",
-    marginTop: 10,
-    marginLeft: 10,
-    marginBottom: 10
+    marginTop: 15,
+    //marginBottom: 5,
+    //marginLeft: 10,
+
   },
   drinkImage: {
     height: WIDTH / 2.6,
@@ -256,6 +260,7 @@ const styles = StyleSheet.create({
     margin: 5
   },
   drinkNameText: {
+    color: colors.black,
     textAlign:'center',
     fontSize: 16,
     fontWeight: "bold"
@@ -269,20 +274,27 @@ const styles = StyleSheet.create({
     paddingRight:5
   },
   scrollviewContainer: {
-    marginLeft: 5,
-    marginRight: 5
+    marginTop: 10,
   },
   backgroundContainer: {
     width: null,
     height: null,
     alignItems: "center"
   },
+  seasonalDrinksContainer: {
+
+  },
   seasonalDrinksText: {
-    fontSize: 25,
+    textAlign: 'center',
+    color: colors.black,
+    fontSize: 26,
     fontWeight: "bold",
-    marginTop: 10,
-    marginLeft: 10,
-    marginBottom: 10
+    marginTop: 15,
+    marginBottom: 5,
+    //marginLeft: 10,
+  },
+  seasonalDrinksGrid:  {
+
   },
   seasonalImage: {
     width: (WIDTH - 40) / 2,
@@ -290,26 +302,29 @@ const styles = StyleSheet.create({
     margin: 5
   },
   seasonalText: {
+    color: colors.black,
     fontSize: 20,
     fontWeight: "bold",
     textAlign: "center",
     paddingLeft: 40
   },
   seasonalBox: {
-    backgroundColor: "white",
+    backgroundColor: colors.white,
     margin: 5,
     borderRadius: 5
   },
   contentContainer: {
-    paddingBottom: 40
+    paddingBottom: 10,
   },
   classicDrinksContainer: {},
   classicDrinksText: {
-    fontSize: 25,
+    textAlign: 'center',
+    color: colors.black,
+    fontSize: 26,
     fontWeight: "bold",
     marginTop: 10,
-    marginLeft: 10,
-    marginBottom: 10
+    //marginLeft: 10,
+    //marginBottom: 5,
   },
 
   baseSpiritImageContainer: {
@@ -343,9 +358,9 @@ const styles = StyleSheet.create({
   baseSpiritsText: {
     textAlign: 'center',
     width: '90%',
-    fontSize: 25,
+    fontSize: 24,
     fontWeight: "bold",
-    color: "white",
+    color: colors.white,
     opacity: 1
   }
 });
