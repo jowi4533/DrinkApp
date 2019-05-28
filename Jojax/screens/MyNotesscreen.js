@@ -27,7 +27,7 @@ class MyNotesscreen extends Component {
         fontSize: 25,
         color: "black"
       },
-      headerTintColor: "rgb(205,133,63)",
+      //headerTintColor: "black",
       headerRight: (
         <NewNoteButton onPress={navigation.getParam("handleNewNotepress")} />
       ),
@@ -219,17 +219,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1
   },
-  headline: {
-    textAlign: "center", // <-- the magic
-    fontWeight: "bold",
-    fontSize: 25
-  },
-  headerBox: {
-    height: 40,
-    width: WIDTH,
-    borderBottomColor: "#dddddd",
-    borderBottomWidth: 1
-  },
   footer: {
     backgroundColor: "rgba(255,255,255,0.1)",
     alignItems: "flex-end",
@@ -254,13 +243,14 @@ const styles = StyleSheet.create({
     height:'100%'
   },
   noteTextHeading: {
-    fontWeight: "bold",
     color: "rgba(46, 49, 49, 1)",
-    fontSize: 16
+    fontSize: 16,
+    fontFamily: 'Quicksand-Bold'
   },
   noteTextEnding: {
     color: "rgba(46, 49, 49, 1)",
-    fontSize: 14
+    fontSize: 14,
+    fontFamily: 'Quicksand-Regular'
   },
   notesTouch: {
     width: "100%",

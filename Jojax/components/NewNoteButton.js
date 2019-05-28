@@ -15,7 +15,7 @@ const NewNoteButton =( { onPress } ) => {
     <SimpleLineIcons
       name={'note'}
       size={28}
-      color={'rgb(205,133,63)'}
+      color={'black'}
     />
   </View>
 </TouchableOpacity>

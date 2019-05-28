@@ -411,7 +411,8 @@ const styles = StyleSheet.create({
   },
   textDrinkName: {
     fontSize: 18,
-    fontWeight: "bold",
+    //fontWeight: "bold",
+    fontFamily: 'Quicksand-Medium',
     marginLeft: 15,
     marginTop: 15,
     color: "rgba(46, 49, 49, 1)",
@@ -419,19 +420,14 @@ const styles = StyleSheet.create({
   },
   textDrinkIngredients: {
     fontSize: 14,
-    color: "rgba(108, 122, 137, 1)"
+    color: "rgba(108, 122, 137, 1)",
+    fontFamily: 'Quicksand-Medium',
   },
   textBoxContainer: {
     width: WIDTH - 105,
     flexDirection: "row",
     justifyContent: 'space-between',
   },
-  //addToFavoriteButton:{
-  //  position: 'absolute',
-  //  right:12,
-  //  top:7,
-  //  zIndex:2
-  //},
 
   modalContainer: {
     justifyContent: 'center',

@@ -137,7 +137,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     paddingVertical: 17,
-    
+
 
   },
 
@@ -153,7 +153,8 @@ const styles = StyleSheet.create({
   loginButtonText: {
     color: "black",
     fontSize: 18,
-    fontWeight: 'bold',
+    //fontWeight: 'bold',
+    fontFamily: 'Quicksand-Bold',
     textAlign: "center"
   },
 
@@ -192,7 +193,8 @@ const styles = StyleSheet.create({
   },
 
   myBarButtonTextHeading: {
-    fontWeight: "bold",
+    //fontWeight: "bold",
+    fontFamily: 'Quicksand-Bold',
     fontSize: 18,
     marginLeft: 15,
     //marginTop:  12,
@@ -201,6 +203,7 @@ const styles = StyleSheet.create({
   },
 
   myBarButtonTextBody: {
+    fontFamily: 'Quicksand-Medium',
     fontSize: 14,
     marginLeft: 15,
     //marginTop:  8,
@@ -241,7 +244,8 @@ const styles = StyleSheet.create({
   },
 
   myFavoritesButtonTextHeading: {
-    fontWeight: "bold",
+    //fontWeight: "bold",
+    fontFamily: 'Quicksand-Bold',
     fontSize: 18,
     marginLeft: 15,
     //marginTop:  12,
@@ -250,6 +254,7 @@ const styles = StyleSheet.create({
   },
 
   myFavoritesButtonTextBody: {
+    fontFamily: 'Quicksand-Medium',
     fontSize: 14,
     marginLeft: 15,
     //marginTop:  8,
@@ -286,7 +291,8 @@ const styles = StyleSheet.create({
   },
 
   myNotesButtonTextHeading: {
-    fontWeight: "bold",
+    //fontWeight: "bold",
+    fontFamily: 'Quicksand-Bold',
     fontSize: 18,
     marginLeft: 15,
     //marginTop:  12,
@@ -295,6 +301,7 @@ const styles = StyleSheet.create({
   },
 
   myNotesButtonTextBody: {
+    fontFamily: 'Quicksand-Medium',
     fontSize: 14,
     marginLeft: 15,
     //marginTop:  8,
