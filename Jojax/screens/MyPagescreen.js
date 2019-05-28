@@ -25,6 +25,18 @@ import {colors} from "../assets/colors.js";
 const { width: WIDTH, height: HEIGHT } = Dimensions.get("window");
 
 class MyPagescreen extends Component {
+  constructor(props){
+    super(props)
+
+    this.state = {
+      userAuth : props.screenProps.userAuth,
+      loggedIn : null,
+    }
+
+    this.setUpNavigationListener()
+    this.initiateListener()
+  }
+
   static navigationOptions = {
     title: 'My Page',
     headerTitleStyle: {
@@ -33,22 +45,73 @@ class MyPagescreen extends Component {
       fontSize: 25
     },
   };
-  constructor(props){
-    super(props)
+
+  setUpNavigationListener() {
+    this.props.navigation.addListener('didFocus', () => {
+      this.checkUserLoggedIn()
+      // get your new data here and then set state it will rerender
+      console.log("In navigationlistener (MYPAGESCREEN)")
+    });
   }
+
+  checkUserLoggedIn(){
+    if(this.state.userAuth.currentUser === null){
+      //this.state.loggedIn = false
+      this.setState({loggedIn: false})
+    } else{
+      //this.state.loggedIn = true
+      this.setState({loggedIn: true})
+    }
+  }
+
+  initiateListener(){
+    this.state.userAuth.onAuthStateChanged(function(user) {
+      if (user) {
+        console.log("In listener, user online (MYPAGESCREEN)")
+        // User is signed in.
+        var displayName = user.displayName;
+        var email = user.email;
+      } else {
+        console.log("In listener, user offline (MYPAGESCREEN)")
+      }
+    });
+  }
+
+  logOutUser(){
+    this.state.userAuth.signOut()
+    this.setState({loggedIn: false})
+  }
+
+  loadUserFramework(){
+    if(this.state.loggedIn){
+      return(
+        <View>
+        <Text> sup bish ur logged in as {this.state.userAuth.currentUser.email} </Text>
+        <TouchableOpacity
+        onPress= {this.logOutUser.bind(this)}>
+        <Text>SIGN OUT</Text>
+        </TouchableOpacity>
+        </View>
+      )
+    } else{
+      return (
+        <TouchableOpacity
+          style={styles.loginButton}
+          onPress={() => this.props.navigation.navigate("Login")}
+        >
+          <Text style={styles.loginButtonText}> Log in or Register to sync your data </Text>
+        </TouchableOpacity>
+      )
+    }
+  }
+
   render() {
+
     return (
       <ImageBackground style={styles.backgroundContainer}>
-
         <View style={styles.loginButtonContainer}>
-          <TouchableOpacity
-            style={styles.loginButton}
-            onPress={() => this.props.navigation.navigate("Login")}
-          >
-            <Text style={styles.loginButtonText}> Log in or Register to sync your data </Text>
-          </TouchableOpacity>
+        {this.loadUserFramework()}
         </View>
-
 
         <View style={styles.container}>
 
@@ -69,8 +132,6 @@ class MyPagescreen extends Component {
               </View>
             </TouchableOpacity>
           </View>
-
-
           <View style={styles.myFavoritesButtonContainer}>
             <TouchableOpacity
               style={styles.myFavoritesButton}
@@ -88,7 +149,6 @@ class MyPagescreen extends Component {
               </View>
             </TouchableOpacity>
           </View>
-
           <View style={styles.myNotesButtonContainer}>
             <TouchableOpacity
               style={styles.myNotesButton}
@@ -106,9 +166,7 @@ class MyPagescreen extends Component {
               </View>
             </TouchableOpacity>
           </View>
-
         </View>
-
       </ImageBackground>
     );
   }

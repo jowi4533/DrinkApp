@@ -17,6 +17,22 @@ const { width:WIDTH, height:HEIGHT } = Dimensions.get('window');
 
 
 class Registerscreen extends Component {
+  constructor(props){
+    super(props)
+    this.state = {
+      email: "Email",
+      password: "Password",
+
+      userAuth : props.screenProps.userAuth,
+      loggedIn : false,
+
+      userEmail: null,
+
+    }
+    this.checkUserLoggedIn()
+    this.initiateListener()
+  }
+
   static navigationOptions = {
     title: 'Login',
     headerTitleStyle: {
@@ -24,9 +40,48 @@ class Registerscreen extends Component {
       fontWeight: 'bold',
       fontSize: 25
     },
-
   };
+
+  checkUserLoggedIn(){
+    if(this.state.userAuth.currentUser === null){
+      this.state.loggedIn = false
+    } else{
+      this.state.loggedIn = true
+      this.state.userEmail = this.state.userAuth.currentUser.email
+    }
+  }
+
+  logOutUser(){
+    this.state.userAuth.signOut()
+    this.setState({loggedIn: false})
+  }
+
+  loginUser(){
+
+    const promise = this.state.userAuth.signInWithEmailAndPassword(this.state.email, this.state.password)
+    promise.catch(e => console.log(e.message))
+    this.checkUserLoggedIn()
+    this.setState({loggedIn : true})
+  }
+
+  initiateListener(){
+    this.state.userAuth.onAuthStateChanged(function(user) {
+      if (user) {
+        console.log("In listener, user online (LOGINSCREEN)")
+        // User is signed in.
+        var displayName = user.displayName;
+        var email = user.email;
+
+      } else {
+        console.log("In listener, user offline (LOGINSCREEN)")
+      }
+    });
+  }
+
+
   render(){
+
+    if(this.state.loggedIn === false)
     return (
       <ImageBackground source={bgImage} style={styles.backgroundContainer}>
           <View style = {styles.textContainer}>
@@ -45,6 +100,7 @@ class Registerscreen extends Component {
           placeholder = {'Email'}
           placeholderTextColor = {'rgba(0,0,0,0.5)'}
           underlineColorAndroid = 'transparent'
+          onChangeText = {email => this.setState({email})}
           />
           </View>
           <View style= {styles.input2}>
@@ -54,9 +110,12 @@ class Registerscreen extends Component {
           secureTextEntry= {true}
           placeholderTextColor = {'rgba(0,0,0,0.5)'}
           underlineColorAndroid = 'transparent'
+          onChangeText = {password => this.setState({password})}
           />
           </View>
-          <TouchableOpacity style={styles.loginButton}>
+          <TouchableOpacity
+          style={styles.loginButton}
+          onPress= {this.loginUser.bind(this)}>
           <Text style = {styles.textLoginButton}>SIGN IN</Text>
           </TouchableOpacity>
 
@@ -70,6 +129,19 @@ class Registerscreen extends Component {
 
       </ImageBackground>
     );
+    else{
+      return(
+        <View>
+        <Text> Ur logged in! {this.state.userEmail} </Text>
+
+        <TouchableOpacity
+        style={styles.loginButton}
+        onPress= {this.logOutUser.bind(this)}>
+        <Text style = {styles.textLoginButton}>SIGN OUT</Text>
+        </TouchableOpacity>
+        </View>
+      )
+    }
   }
 }
 export default Registerscreen;

@@ -20,6 +20,35 @@ import NoteStatusButton from "../components/NoteStatusButton.js";
 import {colors} from "../assets/colors.js";
 
 class MyNotesscreen extends Component {
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      userAuth : props.screenProps.userAuth,
+      loggedIn : null,
+
+      personalNotes: [
+        { id: 1, text: "Hej jag heter Jonas och detta är ett test på en note",noteStatus:"green" },
+        { id: 2, text: "Hej jag heter Axel och detta är ett test på en note", noteStatus:"orange" },
+        { id: 3, text: "Hej jag heter Jakob och detta är ett test på en note", noteStatus:"green" },
+        { id: 4, text: "Hej jag heter Jons och på en note som är bra", noteStatus:"green" },
+        { id: 5, text: "Hej jag heter Axel och detta är ett test på en note", noteStatus:"green" },
+        { id: 6, text: "Hej jag heter Jakob och detta är ett test på en note", noteStatus:"green" },
+        { id: 7, text: "Hej jag heter Jons och på en note som är bra", noteStatus:"green" },
+        { id: 8, text: "Hej jag heter Axel och detta är ett test på en note", noteStatus:"red" },
+        { id: 9, text: "Hej jag heter Jakob och detta är ett test på en note", noteStatus:"orange" },
+        { id: 10, text: "Hej jag heter Jons och på en note som är bra", noteStatus:"green" }
+      ],
+    }
+
+    this.props.navigation.setParams({
+      handleNewNotepress: this.handleNewNotepress
+    });
+
+    this.setUpNavigationListener()
+    this.initiateListener()
+  }
+
   static navigationOptions = ({ navigation }) => {
     return {
       title: "My Notes",
@@ -38,6 +67,38 @@ class MyNotesscreen extends Component {
       }
     };
   };
+
+  setUpNavigationListener() {
+    this.props.navigation.addListener('didFocus', () => {
+      this.checkUserLoggedIn()
+      // get your new data here and then set state it will rerender
+      console.log("In navigationlistener (MyNotesScreen)")
+    });
+  }
+
+  checkUserLoggedIn(){
+    if(this.state.userAuth.currentUser === null){
+      //this.state.loggedIn = false
+      this.setState({loggedIn: false})
+    } else{
+      //this.state.loggedIn = true
+      this.setState({loggedIn: true})
+    }
+  }
+
+  initiateListener(){
+    this.state.userAuth.onAuthStateChanged(function(user) {
+      if (user) {
+        console.log("In listener, user online (MyNotesScreen)")
+        // User is signed in.
+        var displayName = user.displayName;
+        var email = user.email;
+      } else {
+        console.log("In listener, user offline (MyNotesScreen)")
+      }
+    });
+  }
+
   createNoteHeader(string) {
     var pixelWidth = require("string-pixel-width");
     const stringWidth = pixelWidth(string, { size: 16 });
@@ -77,27 +138,6 @@ class MyNotesscreen extends Component {
       }
     }
     return string;
-  }
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      personalNotes: [
-        { id: 1, text: "Hej jag heter Jonas och detta är ett test på en note",noteStatus:"green" },
-        { id: 2, text: "Hej jag heter Axel och detta är ett test på en note", noteStatus:"orange" },
-        { id: 3, text: "Hej jag heter Jakob och detta är ett test på en note", noteStatus:"green" },
-        { id: 4, text: "Hej jag heter Jons och på en note som är bra", noteStatus:"green" },
-        { id: 5, text: "Hej jag heter Axel och detta är ett test på en note", noteStatus:"green" },
-        { id: 6, text: "Hej jag heter Jakob och detta är ett test på en note", noteStatus:"green" },
-        { id: 7, text: "Hej jag heter Jons och på en note som är bra", noteStatus:"green" },
-        { id: 8, text: "Hej jag heter Axel och detta är ett test på en note", noteStatus:"red" },
-        { id: 9, text: "Hej jag heter Jakob och detta är ett test på en note", noteStatus:"orange" },
-        { id: 10, text: "Hej jag heter Jons och på en note som är bra", noteStatus:"green" }
-      ]
-    };
-    this.props.navigation.setParams({
-      handleNewNotepress: this.handleNewNotepress
-    });
   }
 
   getNoteHeader(item) {
