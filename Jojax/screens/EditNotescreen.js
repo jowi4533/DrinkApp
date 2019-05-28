@@ -126,11 +126,13 @@ const styles = StyleSheet.create({
     marginBottom:65
   },
   textInputSize:{
+    fontFamily: 'Quicksand-Medium',
     fontSize: 20,
     flex:1
   },
   wordCountText:{
     color: colors.darkgray,
+    fontFamily: 'Quicksand-Medium',
   },
   wordCountTextBox:{
     //backgroundColor: 'pink',

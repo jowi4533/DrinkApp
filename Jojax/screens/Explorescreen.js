@@ -247,8 +247,9 @@ const styles = StyleSheet.create({
   discoverWeeklyText: {
     textAlign: 'center',
     color: colors.black,
+    fontFamily: 'Quicksand-Bold',
     fontSize: 26,
-    fontWeight: "bold",
+    //fontWeight: "bold",
     marginTop: 15,
     //marginBottom: 5,
     //marginLeft: 10,
@@ -263,7 +264,8 @@ const styles = StyleSheet.create({
     color: colors.black,
     textAlign:'center',
     fontSize: 16,
-    fontWeight: "bold"
+    //fontWeight: "bold",
+    fontFamily: 'Quicksand-Bold'
   },
   drinkNameTextContainer: {
     //backgroundColor: 'blue',
@@ -287,8 +289,9 @@ const styles = StyleSheet.create({
   seasonalDrinksText: {
     textAlign: 'center',
     color: colors.black,
+    fontFamily: 'Quicksand-Bold',
     fontSize: 26,
-    fontWeight: "bold",
+    //fontWeight: "bold",
     marginTop: 15,
     marginBottom: 5,
     //marginLeft: 10,
@@ -304,9 +307,10 @@ const styles = StyleSheet.create({
   seasonalText: {
     color: colors.black,
     fontSize: 20,
-    fontWeight: "bold",
+    //fontWeight: "bold",
     textAlign: "center",
-    paddingLeft: 40
+    paddingLeft: 40,
+    fontFamily: 'Quicksand-Bold',
   },
   seasonalBox: {
     backgroundColor: colors.white,
@@ -320,8 +324,9 @@ const styles = StyleSheet.create({
   classicDrinksText: {
     textAlign: 'center',
     color: colors.black,
+    fontFamily: 'Quicksand-Bold',
     fontSize: 26,
-    fontWeight: "bold",
+    //fontWeight: "bold",
     marginTop: 10,
     //marginLeft: 10,
     //marginBottom: 5,
@@ -359,7 +364,8 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     width: '90%',
     fontSize: 24,
-    fontWeight: "bold",
+    fontFamily: 'Quicksand-Bold',
+    //fontWeight: "bold",
     color: colors.white,
     opacity: 1
   }

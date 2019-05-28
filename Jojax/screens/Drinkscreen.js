@@ -47,11 +47,23 @@ class Drinkscreen extends Component {
       drinks: props.screenProps.drinks,
       drinksDisplayed: [],
       filteredDrinks: [],
-      searchBarDrinks: []
+      searchBarDrinks: [],
 
+      userAuth : props.screenProps.userAuth,
+      loggedIn : null,
 
     };
 
+    this.setUpNavigationListener()
+    this.initiateListener()
+  }
+
+  setUpNavigationListener() {
+    this.props.navigation.addListener('didFocus', () => {
+      this.checkUserLoggedIn()
+      // get your new data here and then set state it will rerender
+      console.log("In navigationlistener (DRINKSCREEN)")
+    });
   }
 
   setModalVisible(visible) {
@@ -107,6 +119,8 @@ _keyExtractor = (item, index) => item.name;
       .catch(error => {
         //console.log(error);
       });
+
+      this.checkUserLoggedIn()
   }
   _onButtonPress = item => {
     if (item.selected !== true) {
@@ -126,6 +140,31 @@ _keyExtractor = (item, index) => item.name;
     }
 
     this.filterDrinks()
+}
+
+//User related
+
+checkUserLoggedIn(){
+  if(this.state.userAuth.currentUser === null){
+    //this.state.loggedIn = false
+    this.setState({loggedIn: false})
+  } else{
+    //this.state.loggedIn = true
+    this.setState({loggedIn: true})
+  }
+}
+
+initiateListener(){
+  this.state.userAuth.onAuthStateChanged(function(user) {
+    if (user) {
+      console.log("In listener, user online (DRINKSCREEN)")
+      // User is signed in.
+      var displayName = user.displayName;
+      var email = user.email;
+    } else {
+      console.log("In listener, user offline (DRINKSCREEN)")
+    }
+  });
 }
 
 
@@ -425,7 +464,8 @@ const styles = StyleSheet.create({
   textDrinkName: {
     width: '78%',
     fontSize: 18,
-    fontWeight: "bold",
+    //fontWeight: "bold",
+    fontFamily: 'Quicksand-Medium',
     marginLeft: 15,
     marginTop: 15,
     color: colors.black,
@@ -433,6 +473,7 @@ const styles = StyleSheet.create({
   },
   // textDrinkIngredients: {
   //   fontSize: 14,
+  //   fontFamily: 'Quicksand-Medium',
   //   color: colors.darkgray
   // },
   textHeadingContainer: {

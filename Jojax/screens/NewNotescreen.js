@@ -106,10 +106,12 @@ const styles = StyleSheet.create({
     padding: 10
   },
   textInputSize:{
-    fontSize: 20
+    fontSize: 20,
+    fontFamily: 'Quicksand-Medium'
   },
   wordCountText:{
-    color: 'rgba(108, 122, 137, 1)'
+    color: 'rgba(108, 122, 137, 1)',
+    fontFamily: 'Quicksand-Medium'
   },
   wordCountTextBox:{
     flexDirection: 'row',
