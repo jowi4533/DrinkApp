@@ -226,12 +226,19 @@ _keyExtractor = (item, index) => item.name;
         </TouchableOpacity>
     );
   };
-  renderItemIngredients = ({ item, index }) => {
-    return (
-      <View>
-        <Text style={styles.textDrinkIngredients}>{item}, </Text>
-      </View>
-    );
+
+  // renderItemIngredients = ({ item, index }) => {
+  //   return (
+  //     <View>
+  //       <Text style={styles.textDrinkIngredients}>{item}, </Text>
+  //     </View>
+  //   );
+  // };
+
+  getIngredients = (data) => {
+    var string = data.toString();
+    string = string.replace(/,/g, ", ");
+    return (string)
   };
 
   renderItem1 = ({item, index}) => {
@@ -247,20 +254,19 @@ _keyExtractor = (item, index) => item.name;
               style={styles.imageDrink}
             />
           </View>
-          <View>
-          <View style={styles.textBoxContainer}>
-            <Text style={styles.textDrinkName}>{item.name}</Text>
-            <FlatList
-            data={Object.keys(item.allIngredients)}
-            renderItem={this.renderItemIngredients}
-            keyExtractor={item => item.name}
-            horizontal= {true}
-            extraData={this.state}
-          />
-            <View style={styles.SmallFavoriteButtonContainer}>
-            <SmallFavoriteButton>
-            </SmallFavoriteButton>
+          <View style={styles.itemTextContainer}>
+            <View style={styles.textHeadingContainer}>
+              <Text style={styles.textDrinkName}>{item.name}</Text>
+              <View style={styles.SmallFavoriteButtonContainer}>
+                <SmallFavoriteButton>
+                </SmallFavoriteButton>
               </View>
+            </View>
+
+            <View style={styles.ingredientsTextContainer}>
+              <Text style={styles.ingredientsText}>
+                {this.getIngredients(Object.keys(item.allIngredients))}
+              </Text>
             </View>
           </View>
         </TouchableOpacity>
@@ -295,6 +301,7 @@ _keyExtractor = (item, index) => item.name;
             extraData={this.state}
           />
         </View>
+
         <View style={styles.modalContainer}>
         <Modal
           style={styles.modal}
@@ -319,7 +326,7 @@ _keyExtractor = (item, index) => item.name;
                   renderItem={this.renderItem}
                   keyExtractor={this._keyExtractor}
                 >
-              </FlatList>
+                </FlatList>
               </View>
             <View style={styles.modalButtonContainer}>
               <View style={styles.resetButtonContainer}>
@@ -422,10 +429,21 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: "rgba(108, 122, 137, 1)"
   },
-  textBoxContainer: {
+  textHeadingContainer: {
     width: WIDTH - 105,
     flexDirection: "row",
     justifyContent: 'space-between',
+  },
+
+  ingredientsTextContainer: {
+    marginLeft: 15,
+    width: '80%',
+  },
+
+  ingredientsText: {
+    textTransform: 'uppercase',
+    fontSize: 14,
+    color: "rgba(108, 122, 137, 1)"
   },
   //addToFavoriteButton:{
   //  position: 'absolute',

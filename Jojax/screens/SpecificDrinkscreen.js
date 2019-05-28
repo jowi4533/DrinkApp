@@ -49,7 +49,7 @@ class SpecificDrinkscreen extends Component {
       ingredients.push(ingredient)
     }
     this.state.ingredients = ingredients
-    console.log(this.state.ingredients)
+    //console.log(this.state.ingredients)
   }
 
   //renders ingredients
@@ -63,7 +63,7 @@ class SpecificDrinkscreen extends Component {
 
   //Renders servings together with 4
   renderItem2 = ({ item, index }) => {
-    console.log(item)
+    //console.log(item)
     ingredientAmount = Object.values(item)
     ingredientName = Object.keys(item)
 
@@ -77,7 +77,7 @@ class SpecificDrinkscreen extends Component {
 
 
   render() {
-    console.log(this.state.specificDrink.ingredients)
+    //console.log(this.state.specificDrink.ingredients)
     return (
       <ScrollView>
         <View style={{ height: HEIGHT / 2.6 }}>
