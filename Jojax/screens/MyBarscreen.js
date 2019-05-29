@@ -36,14 +36,18 @@ import {colors} from "../assets/colors.js";
 // };
 
 
-const numColumns = 3;
+const numColumns = 2;
 
 class MyBarscreen extends Component {
   constructor(props) {
     super(props)
 
     this.state = {
-      data: [{name:"Amaretto",selected: false, img:require("../pictures/mybarSpirits/dark_rum_bottle.png")}, {name:"Blue Curacau Liqueur",selected: false, img:require("../pictures/mybarSpirits/amaretto_bottle.png")},{name:"Brandy",selected: false, img:require("../pictures/mybarSpirits/ginger_beer_bottle.png")},{name:"Champange",selected: false, img:require("../pictures/mybarSpirits/blue_curacao_liqueur_bottle.png")},
+      data: [
+      {name:"Amaretto",selected: false, img:require("../pictures/mybarSpirits/dark_rum_bottle.png")},
+      {name:"Blue Curacau Liqueur",selected: false, img:require("../pictures/mybarSpirits/amaretto_bottle.png")},
+      {name:"Brandy",selected: false, img:require("../pictures/mybarSpirits/ginger_beer_bottle.png")},
+      {name:"Champange",selected: false, img:require("../pictures/mybarSpirits/blue_curacao_liqueur_bottle.png")},
       {name:"Coconut Liqueur",selected: false, img:require("../pictures/mybarSpirits/brandy_bottle.png")},
       {name:"Coffe Liqueur",selected: false, img:require("../pictures/mybarSpirits/champange_bottle.png")},
       {name:"Cointreau",selected: false, img:require("../pictures/mybarSpirits/coconut_liqueur_bottle.png")},
@@ -167,7 +171,7 @@ _keyExtractor = (item, index) => item.name;
           <View style={styles.borderView}>
             <ImageBackground source={item.img} style={styles.itemPicture}>
               <View style={styles.itemTextContainer}>
-                <Text style={styles.itemText}> {item.name} </Text>
+                <Text style={styles.itemText}>{item.name}</Text>
               </View>
             </ImageBackground>
           </View>
@@ -248,23 +252,26 @@ const styles = StyleSheet.create({
   item: {
     elevation: 20,
     borderRadius: 10,
-    backgroundColor: 'rgba(189, 195, 199, 1)',
+    //backgroundColor: 'rgba(189, 195, 199, 1)',
     alignItems: 'center',
     justifyContent: 'center',
     flex: 1,
     margin: 15,
     height: Dimensions.get('window').width / numColumns,
+    backgroundColor: 'white'
   },
 
   itemSelected: {
     elevation: 20,
     borderRadius: 10,
-    backgroundColor: 'rgba(218, 223, 225, 1)',
+    //backgroundColor: 'rgba(218, 223, 225, 1)',
     alignItems: 'center',
     justifyContent: 'center',
     flex: 1,
     margin: 15,
     height: Dimensions.get('window').width / numColumns,
+    backgroundColor: 'white'
+
   },
 
   itemPicture: {
@@ -277,23 +284,26 @@ const styles = StyleSheet.create({
 
   itemTextContainer: {
     alignItems: 'center',
-    backgroundColor: 'rgba(108, 122, 137, 0.5)',
+    //backgroundColor: 'rgba(108, 122, 137, 0.5)',
     opacity: 1,
     width: '100%',
     borderRadius: 8,
+    backgroundColor: 'lightblue'
   },
 
   itemTextContainer2: {
     alignItems: 'center',
-    backgroundColor: 'rgba(108, 122, 137, 0.5)',
+    //backgroundColor: 'rgba(108, 122, 137, 0.5)',
     opacity: 1,
     width: '100%',
     borderRadius: 10,
+    backgroundColor: 'lightblue'
   },
 
   itemText: {
+    textAlign: 'center',
     fontSize: 18,
-    color: 'white',
+    color: 'black',
   },
 
   borderView: {

@@ -32,21 +32,44 @@ class SpecificDrinkscreen extends Component {
     instructions: [],
     ingredients: [],
     ImageURL: [],
-    Imageloaded: false,
-    loaded:true
+    userAuth : props.screenProps.userAuth,
+    loggedIn : null,
 
   }
+  this.setUpNavigationListener()
   console.log(this.state.specificDrink.url)
   this.loadIngredients()
 }
-imageloaded(){
-
+setUpNavigationListener() {
+  this.props.navigation.addListener('didFocus', () => {
+    this.checkUserLoggedIn()
+    // get your new data here and then set state it will rerender
+    console.log("In navigationlistener (DRINKSCREEN)")
+  });
 }
+initiateListener(){
+  this.state.userAuth.onAuthStateChanged(function(user) {
+    if (user) {
+      console.log("In listener, user online (DRINKSCREEN)")
+      // User is signed in.
+      var displayName = user.displayName;
+      var email = user.email;
+    } else {
+      console.log("In listener, user offline (DRINKSCREEN)")
+    }
+  });
+}
+checkUserLoggedIn(){
+  if(this.state.userAuth.currentUser === null){
+    //this.state.loggedIn = false
+    this.setState({loggedIn: false})
+  } else{
+    //this.state.loggedIn = true
+    this.setState({loggedIn: true})
+  }
+}
+
 componentWillMount(){
-  //this.setState({
-  //  specificDrink: this.state.specificDrink.url
-  //  loaded: true
-//  })-
 
 }
   loadServings(){
@@ -97,12 +120,15 @@ componentWillMount(){
     return (
 
       <ScrollView>
-        {this.state.loaded ? (
+
         <View>
         <View style={{ height: WIDTH }}>
           <View style={styles.drinkImageContainer}>
             <View style={styles.addToFavoriteButton}>
-              <FavoriteButton />
+                {this.state.loggedIn ? (
+              <FavoriteButton /> ) :
+                ( <View>
+                </View>) }
             </View>
             <ImageBackground style={styles.drinkImage} source={{ uri: this.state.specificDrink.url }} >
               <View style={styles.drinkNameContainer}>
@@ -151,11 +177,7 @@ componentWillMount(){
           </ImageBackground>
         </View>
       </View>
-      )
-      : ( <View style={{justifyContent: 'center', alignItems: 'center'}}>
-        <ActivityIndicator size = 'large'/>
-      </View>
-    )}
+
     </ScrollView>
     );
   }

@@ -298,8 +298,16 @@ initiateListener(){
             <View style={styles.textHeadingContainer}>
               <Text style={styles.textDrinkName}>{item.name}</Text>
               <View style={styles.SmallFavoriteButtonContainer}>
+                {this.state.loggedIn ? (
+
+
                 <SmallFavoriteButton>
                 </SmallFavoriteButton>
+              ) :
+              (<View>
+                  </View>
+
+              )}
               </View>
             </View>
 

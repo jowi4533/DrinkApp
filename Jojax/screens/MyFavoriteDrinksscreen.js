@@ -130,7 +130,6 @@ class MyFavoriteDrinkscreen extends Component {
 
   render() {
     return (
-
           <View>
           <ScrollView>
             <FlatList

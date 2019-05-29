@@ -14,7 +14,7 @@ import {
   Icon,
   Modal,
   Alert,
-  FlatList,
+  FlatList
 } from "react-native";
 import bgImage from "../pictures/236.jpg";
 import barIcon from "../pictures/barIcon.png";
@@ -22,214 +22,130 @@ import heartIcon from "../pictures/heartIcon.png";
 import notesIcon from "../pictures/notesIcon.png";
 import lock2 from "../pictures/lock2.png";
 import lock3 from "../pictures/lock3.png";
-import {colors} from "../assets/colors.js";
+import { colors } from "../assets/colors.js";
 
 const { width: WIDTH, height: HEIGHT } = Dimensions.get("window");
 
 class MyPagescreen extends Component {
-  constructor(props){
-    super(props)
+  constructor(props) {
+    super(props);
 
     this.state = {
-      userAuth : props.screenProps.userAuth,
-      loggedIn : null,
-    }
+      userAuth: props.screenProps.userAuth,
+      loggedIn: null
+    };
 
-    this.setUpNavigationListener()
-    this.initiateListener()
+    this.setUpNavigationListener();
+    this.initiateListener();
   }
 
   static navigationOptions = {
-    title: 'My Page',
+    title: "My Page",
     headerTitleStyle: {
-      width: '100%',
-      fontWeight: 'bold',
+      width: "100%",
+      fontWeight: "bold",
       fontSize: 25
-    },
+    }
   };
 
   setUpNavigationListener() {
-    this.props.navigation.addListener('didFocus', () => {
-      this.checkUserLoggedIn()
+    this.props.navigation.addListener("didFocus", () => {
+      this.checkUserLoggedIn();
       // get your new data here and then set state it will rerender
-      console.log("In navigationlistener (MYPAGESCREEN)")
+      console.log("In navigationlistener (MYPAGESCREEN)");
     });
   }
 
-  checkUserLoggedIn(){
-    if(this.state.userAuth.currentUser === null){
+  checkUserLoggedIn() {
+    if (this.state.userAuth.currentUser === null) {
       //this.state.loggedIn = false
-      this.setState({loggedIn: false})
-    } else{
+      this.setState({ loggedIn: false });
+    } else {
       //this.state.loggedIn = true
-      this.setState({loggedIn: true})
+      this.setState({ loggedIn: true });
     }
   }
 
-  initiateListener(){
+  initiateListener() {
     this.state.userAuth.onAuthStateChanged(function(user) {
       if (user) {
-        console.log("In listener, user online (MYPAGESCREEN)")
+        console.log("In listener, user online (MYPAGESCREEN)");
         // User is signed in.
         var displayName = user.displayName;
         var email = user.email;
       } else {
-        console.log("In listener, user offline (MYPAGESCREEN)")
+        console.log("In listener, user offline (MYPAGESCREEN)");
       }
     });
   }
 
-  logOutUser(){
-    this.state.userAuth.signOut()
-    this.setState({loggedIn: false})
+  logOutUser() {
+    this.state.userAuth.signOut();
+    this.setState({ loggedIn: false });
   }
 
-  loadUserFramework(){
-    if(this.state.loggedIn){
-      return(
+  loadUserFramework() {
+    if (this.state.loggedIn) {
+      return (
         <View>
-        <Text>sup bish ur logged in as{this.state.userAuth.currentUser.email} </Text>
-        <TouchableOpacity
-          style={styles.logoutButton}
-          onPress= {this.logOutUser.bind(this)}>
-        <Text style={styles.logoutButtonText}>SIGN OUT</Text>
-        </TouchableOpacity>
+          <Text>
+            sup bish ur logged in as{this.state.userAuth.currentUser.email}{" "}
+          </Text>
+          <TouchableOpacity
+            style={styles.logoutButton}
+            onPress={this.logOutUser.bind(this)}
+          >
+            <Text style={styles.logoutButtonText}>SIGN OUT</Text>
+          </TouchableOpacity>
         </View>
-      )
-    } else{
+      );
+    } else {
       return (
         <TouchableOpacity
           style={styles.loginButton}
           onPress={() => this.props.navigation.navigate("Login")}
         >
-          <Text style={styles.loginButtonText}>Log in or Register to sync your data</Text>
+          <Text style={styles.loginButtonText}>
+            Log in or Register to sync your data
+          </Text>
         </TouchableOpacity>
-      )
+      );
     }
   }
 
   render() {
-    if (this.state.loggedIn !== true) {
+
       return (
         <View style={styles.backgroundContainer}>
           <View style={styles.loginButtonContainer}>
             {this.loadUserFramework()}
           </View>
 
-
-          <View style={styles.container}>
-
-            <Text style={styles.information}>Login to enable below functionality</Text>
-
-            <View style={styles.myBarButtonContainer}>
-              <TouchableOpacity
-                disabled='true'
-                style={styles.myBarButton}
-                onPress={() => this.props.navigation.navigate("MyBar")}
-              >
-                <View style={styles.myBarButtonImageContainer}>
-                  <Image
-                    source={barIcon}
-                    style={styles.myBarButtonImage}
-                  />
-                </View>
-                <View style={styles.myBarButtonTextContainer}>
-                  <Text style={styles.myBarButtonTextHeading}>My Bar</Text>
-                  <Text style={styles.myBarButtonTextBody}>Select ingredients that you have at home to see what drinks you can make</Text>
-                </View>
-
-                <View style={styles.lockContainer}>
-                  <Image source={lock3} style={styles.lock}>
-                  </Image>
-                </View>
-
-              </TouchableOpacity>
-            </View>
-            <View style={styles.myFavoritesButtonContainer}>
-              <TouchableOpacity
-                disabled='true'
-                style={styles.myFavoritesButton}
-                onPress={() => this.props.navigation.navigate("MyFavoriteDrinks")}
-              >
-                <View style={styles.myFavoritesButtonImageContainer}>
-                  <Image
-                    source={heartIcon}
-                    style={styles.myFavoritesButtonImage}
-                  />
-                </View>
-                <View style={styles.myFavoritesButtonTextContainer}>
-                  <Text style={styles.myFavoritesButtonTextHeading}>My Favorites</Text>
-                  <Text style={styles.myFavoritesButtonTextBody}>Mark your favorite drinks with a heart and you will find them here</Text>
-                </View>
-
-                <View style={styles.lockContainer}>
-                  <Image source={lock3} style={styles.lock}>
-                  </Image>
-                </View>
-
-              </TouchableOpacity>
-            </View>
-            <View style={styles.myNotesButtonContainer}>
-              <TouchableOpacity
-                disabled='true'
-                style={styles.myNotesButton}
-                onPress={() => this.props.navigation.navigate("MyNotes")}
-              >
-                <View style={styles.myNotesButtonImageContainer}>
-                  <Image
-                    source={notesIcon}
-                    style={styles.myNotesButtonImage}
-                  />
-                </View>
-                <View style={styles.myNotesButtonTextContainer}>
-                  <Text style={styles.myNotesButtonTextHeading}>My Notes</Text>
-                  <Text style={styles.myNotesButtonTextBody}>Create notes to make you remember buying that last ingredient for example </Text>
-                </View>
-
-                <View style={styles.lockContainer}>
-                  <Image source={lock3} style={styles.lock}>
-                  </Image>
-                </View>
-
-              </TouchableOpacity>
-            </View>
-          </View>
-
-
-        </View>
-      );
-    }
-
-    else {
-    return (
-      <View style={styles.backgroundContainer}>
-        <View style={styles.loginButtonContainer}>
-        {this.loadUserFramework()}
-        </View>
-
-        <View style={styles.container}>
-
+            {this.state.loggedIn ? (
+              <View style={styles.container}>
           <View style={styles.myBarButtonContainer}>
             <TouchableOpacity
               style={styles.myBarButton}
               onPress={() => this.props.navigation.navigate("MyBar")}
             >
               <View style={styles.myBarButtonImageContainer}>
-                <Image
-                  source={barIcon}
-                  style={styles.myBarButtonImage}
-                />
+                <Image source={barIcon} style={styles.myBarButtonImage} />
               </View>
               <View style={styles.myBarButtonTextContainer}>
                 <Text style={styles.myBarButtonTextHeading}>My Bar</Text>
-                <Text style={styles.myBarButtonTextBody}>Select ingredients that you have at home to see what drinks you can make</Text>
+                <Text style={styles.myBarButtonTextBody}>
+                  Select ingredients that you have at home to see what drinks
+                  you can make
+                </Text>
               </View>
             </TouchableOpacity>
           </View>
           <View style={styles.myFavoritesButtonContainer}>
             <TouchableOpacity
               style={styles.myFavoritesButton}
-              onPress={() => this.props.navigation.navigate("MyFavoriteDrinks")}
+              onPress={() =>
+                this.props.navigation.navigate("MyFavoriteDrinks")
+              }
             >
               <View style={styles.myFavoritesButtonImageContainer}>
                 <Image
@@ -238,8 +154,13 @@ class MyPagescreen extends Component {
                 />
               </View>
               <View style={styles.myFavoritesButtonTextContainer}>
-                <Text style={styles.myFavoritesButtonTextHeading}>My Favorites</Text>
-                <Text style={styles.myFavoritesButtonTextBody}>Mark your favorite drinks with a heart and you will find them here</Text>
+                <Text style={styles.myFavoritesButtonTextHeading}>
+                  My Favorites
+                </Text>
+                <Text style={styles.myFavoritesButtonTextBody}>
+                  Mark your favorite drinks with a heart and you will find
+                  them here
+                </Text>
               </View>
             </TouchableOpacity>
           </View>
@@ -249,107 +170,177 @@ class MyPagescreen extends Component {
               onPress={() => this.props.navigation.navigate("MyNotes")}
             >
               <View style={styles.myNotesButtonImageContainer}>
-                <Image
-                  source={notesIcon}
-                  style={styles.myNotesButtonImage}
-                />
+                <Image source={notesIcon} style={styles.myNotesButtonImage} />
               </View>
               <View style={styles.myNotesButtonTextContainer}>
                 <Text style={styles.myNotesButtonTextHeading}>My Notes</Text>
-                <Text style={styles.myNotesButtonTextBody}>Create notes to make you remember buying that last ingredient for example </Text>
+                <Text style={styles.myNotesButtonTextBody}>
+                  Create notes to make you remember buying that last
+                  ingredient for example{" "}
+                </Text>
               </View>
             </TouchableOpacity>
           </View>
         </View>
+      ) : (
+        <View style={styles.container}>
+        <Text style={styles.information}>
+          Login to enable below functionality
+        </Text>
+        <View style={styles.myBarButtonContainer}>
+          <TouchableOpacity
+            disabled="true"
+            style={styles.myBarButton}
+            onPress={() => this.props.navigation.navigate("MyBar")}
+          >
+            <View style={styles.myBarButtonImageContainer}>
+              <Image source={barIcon} style={styles.myBarButtonImage} />
+            </View>
+            <View style={styles.myBarButtonTextContainer}>
+              <Text style={styles.myBarButtonTextHeading}>My Bar</Text>
+              <Text style={styles.myBarButtonTextBody}>
+                Select ingredients that you have at home to see what drinks
+                you can make
+              </Text>
+            </View>
+            <View style={styles.lockContainer}>
+              <Image source={lock3} style={styles.lock} />
+            </View>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.myFavoritesButtonContainer}>
+          <TouchableOpacity
+            disabled="true"
+            style={styles.myFavoritesButton}
+            onPress={() =>
+              this.props.navigation.navigate("MyFavoriteDrinks")
+            }
+          >
+            <View style={styles.myFavoritesButtonImageContainer}>
+              <Image
+                source={heartIcon}
+                style={styles.myFavoritesButtonImage}
+              />
+            </View>
+            <View style={styles.myFavoritesButtonTextContainer}>
+              <Text style={styles.myFavoritesButtonTextHeading}>
+                My Favorites
+              </Text>
+              <Text style={styles.myFavoritesButtonTextBody}>
+                Mark your favorite drinks with a heart and you will find
+                them here
+              </Text>
+            </View>
+
+            <View style={styles.lockContainer}>
+              <Image source={lock3} style={styles.lock} />
+            </View>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.myNotesButtonContainer}>
+          <TouchableOpacity
+            disabled="true"
+            style={styles.myNotesButton}
+            onPress={() => this.props.navigation.navigate("MyNotes")}
+          >
+            <View style={styles.myNotesButtonImageContainer}>
+              <Image source={notesIcon} style={styles.myNotesButtonImage} />
+            </View>
+            <View style={styles.myNotesButtonTextContainer}>
+              <Text style={styles.myNotesButtonTextHeading}>My Notes</Text>
+              <Text style={styles.myNotesButtonTextBody}>
+                Create notes to make you remember buying that last
+                ingredient for example{" "}
+              </Text>
+            </View>
+
+            <View style={styles.lockContainer}>
+              <Image source={lock3} style={styles.lock} />
+            </View>
+          </TouchableOpacity>
+        </View>
       </View>
-    );
-  }
-  }
+    )}
+    </View>
+
+
+  )}
 }
 export default MyPagescreen;
 
 const styles = StyleSheet.create({
-  notLoggedInContainer: {
-    flex: 1,
-    backgroundColor: "rgba(255, 0, 0, 0.5)",
-    //opacity: 0.5,
-  },
-  notLoggedInLock: {
-    resizeMode: 'contain',
-    flex: 1,
-  },
-
-  backgroundContainer: {
-    flex: 1,
-    width: null,
-    height: null,
-    justifyContent: "center",
-    alignItems: "center"
-  },
+  //
+  // backgroundContainer: {
+  //   flex: 1,
+  //   width: null,
+  //   height: null,
+  //   justifyContent: "center",
+  //   alignItems: "center"
+  // },
 
   loginButtonContainer: {
     width: WIDTH,
     backgroundColor: colors.darkgreen,
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingVertical: 15,
+    justifyContent: "center",
+    alignItems: "center",
+    paddingVertical: 15
   },
 
   loginButton: {
     elevation: 10,
-    width: WIDTH/1.1,
+    width: WIDTH / 1.1,
     height: 45,
     borderRadius: 10,
     //marginTop:  35,
     justifyContent: "center",
-    backgroundColor: colors.white,
+    backgroundColor: colors.white
   },
 
   loginButtonText: {
     color: colors.black,
     fontSize: 18,
     //fontWeight: 'bold',
-    fontFamily: 'Quicksand-Bold',
+    fontFamily: "Quicksand-Bold",
     textAlign: "center"
   },
 
   logoutButton: {
     elevation: 10,
-    width: WIDTH/1.1,
+    width: WIDTH / 1.1,
     height: 45,
     borderRadius: 10,
     //marginTop:  35,
     justifyContent: "center",
-    backgroundColor: colors.white,
+    backgroundColor: colors.white
   },
 
   logoutButtonText: {
     color: colors.black,
     fontSize: 18,
     //fontWeight: 'bold',
-    fontFamily: 'Quicksand-Bold',
+    fontFamily: "Quicksand-Bold",
     textAlign: "center"
   },
 
   container: {
-    flex: 1,
+    flex: 1
     //alignItems: "center",
     //justifyContent: "center"
   },
 
   information: {
     fontSize: 18,
-    fontFamily: 'Quicksand-Medium',
-    textAlign: 'center',
+    fontFamily: "Quicksand-Medium",
+    textAlign: "center",
     borderBottomWidth: 1,
-    borderBottomColor: colors.black,
+    borderBottomColor: colors.black
   },
 
   myBarButtonContainer: {
     height: 135,
     width: WIDTH,
     borderBottomWidth: 1,
-    borderBottomColor: colors.midgray,
+    borderBottomColor: colors.midgray
     //flexDirection: "row"
   },
 
@@ -360,47 +351,47 @@ const styles = StyleSheet.create({
   },
 
   myBarButtonImageContainer: {
-    justifyContent: 'center',
+    justifyContent: "center"
   },
 
   myBarButtonImage: {
     height: 95,
-    width: 95,
+    width: 95
   },
 
   myBarButtonTextContainer: {
     backgroundColor: colors.white,
     width: WIDTH - 165,
-    justifyContent: 'center',
+    justifyContent: "center"
   },
 
   myBarButtonTextHeading: {
     //fontWeight: "bold",
-    fontFamily: 'Quicksand-Bold',
+    fontFamily: "Quicksand-Bold",
     fontSize: 18,
     marginLeft: 15,
     //marginTop:  12,
     marginRight: 10,
-    color: colors.black,
+    color: colors.black
   },
 
   myBarButtonTextBody: {
-    fontFamily: 'Quicksand-Medium',
+    fontFamily: "Quicksand-Medium",
     fontSize: 14,
     marginLeft: 15,
     //marginTop:  8,
-    color: colors.darkgray,
+    color: colors.darkgray
   },
 
   lockContainer: {
     //backgroundColor: colors.lightred,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center"
   },
 
   lock: {
     opacity: 0.5,
-    resizeMode: 'contain',
+    resizeMode: "contain"
     //flex: 1,
   },
 
@@ -408,7 +399,7 @@ const styles = StyleSheet.create({
     height: 135,
     width: WIDTH,
     borderBottomWidth: 1,
-    borderBottomColor: colors.midgray,
+    borderBottomColor: colors.midgray
     //flexDirection: "row"
   },
 
@@ -419,50 +410,46 @@ const styles = StyleSheet.create({
   },
 
   myFavoritesButtonImageContainer: {
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center"
   },
 
   myFavoritesButtonImage: {
     //marginLeft: 5,
     //alignSelf: 'center',
     height: 95,
-    width: 95,
+    width: 95
   },
 
   myFavoritesButtonTextContainer: {
     //marginLeft: 10,
     width: WIDTH - 165,
-    justifyContent: 'center',
+    justifyContent: "center"
   },
 
   myFavoritesButtonTextHeading: {
     //fontWeight: "bold",
-    fontFamily: 'Quicksand-Bold',
+    fontFamily: "Quicksand-Bold",
     fontSize: 18,
     marginLeft: 15,
     //marginTop:  12,
     marginRight: 10,
-    color: colors.black,
+    color: colors.black
   },
-
   myFavoritesButtonTextBody: {
-    fontFamily: 'Quicksand-Medium',
+    fontFamily: "Quicksand-Medium",
     fontSize: 14,
     marginLeft: 15,
     //marginTop:  8,
     color: colors.darkgray
   },
-
-
   myNotesButtonContainer: {
     height: 135,
     width: WIDTH,
     borderBottomWidth: 1,
-    borderBottomColor: colors.midgray,
+    borderBottomColor: colors.midgray
     //flexDirection: "row"
   },
-
   myNotesButton: {
     flex: 1,
     backgroundColor: colors.white,
@@ -470,22 +457,22 @@ const styles = StyleSheet.create({
   },
 
   myNotesButtonImageContainer: {
-    justifyContent: 'center',
+    justifyContent: "center"
   },
 
   myNotesButtonImage: {
     height: 95,
-    width: 95,
+    width: 95
   },
 
   myNotesButtonTextContainer: {
     width: WIDTH - 165,
-    justifyContent: 'center',
+    justifyContent: "center"
   },
 
   myNotesButtonTextHeading: {
     //fontWeight: "bold",
-    fontFamily: 'Quicksand-Bold',
+    fontFamily: "Quicksand-Bold",
     fontSize: 18,
     marginLeft: 15,
     //marginTop:  12,
@@ -494,11 +481,10 @@ const styles = StyleSheet.create({
   },
 
   myNotesButtonTextBody: {
-    fontFamily: 'Quicksand-Medium',
+    fontFamily: "Quicksand-Medium",
     fontSize: 14,
     marginLeft: 15,
     //marginTop:  8,
-    color: colors.darkgray,
-  },
-
+    color: colors.darkgray
+  }
 });
