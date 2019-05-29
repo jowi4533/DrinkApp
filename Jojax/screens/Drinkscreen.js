@@ -442,6 +442,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   textFilterButton: {
+    fontFamily: 'Quicksand-Medium',
     color: colors.black,
     fontSize: 14,
     textAlign: "center"
