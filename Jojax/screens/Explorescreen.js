@@ -15,46 +15,10 @@ import {
 import drImage from "../pictures/long_isle.png";
 import bgImage from "../pictures/236.jpg";
 import aperol from "../pictures/aperol_spritz.png";
+import {colors} from "../assets/colors.js";
 
 const { width: WIDTH, height: HEIGHT } = Dimensions.get("window");
 
-const data = [
-  {
-    id: 1,
-    name: "Long Isle Ice Tea",
-    image: require("../pictures/long_isle.png")
-  },
-  {
-    id: 2,
-    name: "Aperol Spritz",
-    image: require("../pictures/aperol_spritz.png")
-  },
-  {
-    id: 3,
-    name: "Long Isle Ice Tea",
-    image: require("../pictures/long_isle.png")
-  },
-  {
-    id: 4,
-    name: "Aperol Spritz",
-    image: require("../pictures/aperol_spritz.png")
-  },
-  {
-    id: 5,
-    name: "Long Isle Ice Tea",
-    image: require("../pictures/long_isle.png")
-  },
-  {
-    id: 6,
-    name: "Aperol Spritz",
-    image: require("../pictures/aperol_spritz.png")
-  },
-  {
-    id: 7,
-    name: "Long Isle Ice Tea",
-    image: require("../pictures/long_isle.png")
-  }
-];
 
 const data2 = [
   {
@@ -67,7 +31,7 @@ const data2 = [
     id: 2,
     name: "Lavender Lemonade Mojito",
     category: "Spring",
-    image: require("../pictures/lavendel_2.png")
+    image: require("../pictures/lavendel.png")
   },
   {
     id: 3,
@@ -83,31 +47,101 @@ const data2 = [
   }
 ];
 
-class Explorescreen extends Component {
 
+
+class Explorescreen extends Component {
   constructor(props) {
     super(props);
 
+    this.state = {
+      drinks: props.screenProps.drinks,
+
+      //All the categories in which drinks are placed
+      drinksDisplayed: [],
+      discoverWeekly: [],
+      seasonalDrinks: [],
+      classicDrinks: [],
+      baseSpirits: []
+    }
+    //console.log(this.state.drinks[0])
   }
 
+  loopSeasonalDrinks(){
+    let drinksToDisplay = []
+    for(let i = 0; i < this.state.drinks.length; i++){
+      if(this.state.drinks[i].Seasonal_Drink === "spring"){
+        this.seasonalDrinks[0]
+      }
+      if(this.state.drinks[i].Seasonal_Drink === "summer"){
 
+      }
+      if(this.state.drinks[i].Seasonal_Drink === "fall"){
+
+      }
+      if(this.state.drinks[i].Seasonal_Drink === "winter"){
+
+      }
+    }
+  }
+
+  loopClassicDrinks(){
+    let classicDrinks = []
+    for(let i = 0; i < this.state.drinks.length; i++){
+      if(this.state.drinks[i].categories.classic === true){
+        classicDrinks.push(this.state.drinks[i])
+      }
+    }
+    this.setState({classicDrinks: classicDrinks})
+  }
+
+  loopDiscoverWeekly(){
+    let weeklyDrinks = []
+    for(let i = 0; i < this.state.drinks.length; i++){
+      if(this.state.drinks[i].categories.Discover_Weekly === true){
+        weeklyDrinks.push(this.state.drinks[i])
+      }
+    }
+    this.setState({discoverWeekly: weeklyDrinks})
+  }
+
+  componentWillMount(){
+    this.loopDiscoverWeekly()
+    this.loopClassicDrinks()
+  }
+  //componentDidMount(){
+    //this.setState({ loaded: true });
+
+  //}
+
+  static navigationOptions = {
+    title: 'Explore',
+    headerTitleStyle: {
+      width: '100%',
+      fontWeight: 'bold',
+      fontSize: 25
+    },
+  };
+  //Discoverweekly + classic drinks atm
   renderItem1 = ({ item, index }) => {
     return (
       <View style={styles.discoverWeeklyBox}>
-        <Image style={styles.drinkImage} source={item.image} />
+        <Image
+          source={{ uri: item.url }}
+          style={styles.drinkImage}
+        />
         <View style={styles.drinkNameTextContainer}>
           <Text style={styles.drinkNameText}>{item.name}</Text>
         </View>
       </View>
     );
   };
+  //Drink Categories ( not used atm ) -- text below image
   renderItem2 = ({ item, index }) => {
     return (
       <TouchableOpacity
         style={styles.seasonalBox}
-        onPress={() =>
-          this.props.navigation.navigate("DrinkCategory", item.category)
-        }
+        onPress={() => this.props.navigation.navigate('DrinkCategory', {title: item.category})
+      }
       >
         <Image style={styles.seasonalImage} source={item.image} />
         <View style={styles.drinkNameTextContainer}>
@@ -116,28 +150,32 @@ class Explorescreen extends Component {
       </TouchableOpacity>
     );
   };
+  //category boxes -- text ontop of image + opacity
   renderItem3 = ({ item, index }) => {
     return (
       <TouchableOpacity
         style={styles.seasonalBox}
         onPress={() =>
-          this.props.navigation.navigate("DrinkCategory", item.category)
+          this.props.navigation.navigate("DrinkCategory", {title: item.category})
         }
       >
-        <Image style={styles.baseSpiritImage} source={item.image} />
+
+        <ImageBackground style={styles.baseSpiritImage} source={item.image}>
+          <View style={styles.baseSpiritImageContainer}>
         <View style={styles.baseSpiritTextContainer}>
           <Text style={styles.baseSpiritsText}>{item.category}</Text>
         </View>
+        </View>
+      </ImageBackground>
+
       </TouchableOpacity>
     );
   };
 
   render() {
+
     return (
       <ImageBackground source={bgImage} style={styles.backgroundContainer}>
-        <View style={styles.headerBox}>
-          <Text style={styles.headline}>Explore</Text>
-        </View>
         <ScrollView contentContainerStyle={styles.contentContainer}>
           <View style={styles.discoverWeeklyContainer}>
             <View>
@@ -146,7 +184,7 @@ class Explorescreen extends Component {
             <ScrollView horizontal={true} showsVerticalScrollIndicator={false}>
               <View style={styles.scrollviewContainer}>
                 <FlatList
-                  data={data}
+                  data={this.state.discoverWeekly}
                   renderItem={this.renderItem1}
                   keyExtractor={item => item.id}
                   horizontal={true}
@@ -158,10 +196,10 @@ class Explorescreen extends Component {
           <View style={styles.seasonalDrinksContainer}>
             <Text style={styles.seasonalDrinksText}>Seasonal Drinks</Text>
 
-            <View>
+            <View style={styles.seasonalDrinksGrid}>
               <FlatList
                 data={data2}
-                renderItem={this.renderItem2}
+                renderItem={this.renderItem3}
                 keyExtractor={item => item.id}
                 numColumns= {2}
               />
@@ -174,7 +212,7 @@ class Explorescreen extends Component {
             <ScrollView horizontal={true} showsVerticalScrollIndicator={false}>
               <View style={styles.scrollviewContainer}>
                 <FlatList
-                  data={data}
+                  data={this.state.classicDrinks}
                   renderItem={this.renderItem1}
                   keyExtractor={item => item.id}
                   horizontal={true}
@@ -186,7 +224,7 @@ class Explorescreen extends Component {
           <View style={styles.seasonalDrinksContainer}>
             <Text style={styles.seasonalDrinksText}>Base Spirits</Text>
 
-            <View>
+            <View style={styles.seasonalDrinksGrid}>
               <FlatList
                 data={data2}
                 renderItem={this.renderItem3}
@@ -203,29 +241,23 @@ class Explorescreen extends Component {
 export default Explorescreen;
 
 const styles = StyleSheet.create({
-  headline: {
-    textAlign: "center", // <-- the magic
-    fontWeight: "bold",
-    fontSize: 25
+  discoverWeeklyContainer: {
   },
-  headerBox: {
-    height: 40,
-    width: WIDTH,
-    borderBottomWidth: 1,
-    borderBottomColor: "#dddddd"
-  },
-  discoverWeeklyContainer: {},
   discoverWeeklyBox: {
-    backgroundColor: "white",
+    backgroundColor: colors.white,
     marginHorizontal: 5,
-    borderRadius: 5
+    borderRadius: 5,
   },
   discoverWeeklyText: {
-    fontSize: 25,
-    fontWeight: "bold",
-    marginTop: 10,
-    marginLeft: 10,
-    marginBottom: 10
+    textAlign: 'center',
+    color: colors.black,
+    fontFamily: 'Quicksand-Bold',
+    fontSize: 26,
+    //fontWeight: "bold",
+    marginTop: 15,
+    //marginBottom: 5,
+    //marginLeft: 10,
+
   },
   drinkImage: {
     height: WIDTH / 2.6,
@@ -233,28 +265,43 @@ const styles = StyleSheet.create({
     margin: 5
   },
   drinkNameText: {
+    color: colors.black,
+    textAlign:'center',
     fontSize: 16,
-    margin: 5,
-    fontWeight: "bold"
+    //fontWeight: "bold",
+    fontFamily: 'Quicksand-Bold'
   },
   drinkNameTextContainer: {
-    width: WIDTH / 2.6
+    //backgroundColor: 'blue',
+    width: WIDTH / 2.6,
+    marginLeft:5,
+    paddingLeft:5,
+    paddingBottom:5,
+    paddingRight:5
   },
   scrollviewContainer: {
-    marginLeft: 5,
-    marginRight: 5
+    marginTop: 10,
   },
   backgroundContainer: {
     width: null,
     height: null,
     alignItems: "center"
   },
+  seasonalDrinksContainer: {
+
+  },
   seasonalDrinksText: {
-    fontSize: 25,
-    fontWeight: "bold",
-    marginTop: 10,
-    marginLeft: 10,
-    marginBottom: 10
+    textAlign: 'center',
+    color: colors.black,
+    fontFamily: 'Quicksand-Bold',
+    fontSize: 26,
+    //fontWeight: "bold",
+    marginTop: 15,
+    marginBottom: 5,
+    //marginLeft: 10,
+  },
+  seasonalDrinksGrid:  {
+
   },
   seasonalImage: {
     width: (WIDTH - 40) / 2,
@@ -262,48 +309,68 @@ const styles = StyleSheet.create({
     margin: 5
   },
   seasonalText: {
+    color: colors.black,
     fontSize: 20,
-    fontWeight: "bold",
+    //fontWeight: "bold",
     textAlign: "center",
-    paddingLeft: 40
+    paddingLeft: 40,
+    fontFamily: 'Quicksand-Bold',
   },
   seasonalBox: {
-    backgroundColor: "white",
+    backgroundColor: colors.white,
     margin: 5,
     borderRadius: 5
   },
   contentContainer: {
-    paddingBottom: 40
+    paddingBottom: 10,
   },
   classicDrinksContainer: {},
   classicDrinksText: {
-    fontSize: 25,
-    fontWeight: "bold",
+    textAlign: 'center',
+    color: colors.black,
+    fontFamily: 'Quicksand-Bold',
+    fontSize: 26,
+    //fontWeight: "bold",
     marginTop: 10,
-    marginLeft: 10,
-    marginBottom: 10
+    //marginLeft: 10,
+    //marginBottom: 5,
   },
+
+  baseSpiritImageContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(255,255,255,0.25)',
+    width: '100%',
+    height: '100%',
+
+  },
+
   baseSpiritImage: {
     width: (WIDTH - 40) / 2,
     height: (WIDTH - 40) / 2,
     margin: 5,
     justifyContent: "center",
     alignItems: "center",
-    opacity: 0.8
+    //opacity: 0.8,
   },
   baseSpiritTextContainer: {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
+    // position: "absolute",
+    // top: 0,
+    // left: 0,
+    // right: 0,
+    // bottom: 0,
+    width: '90%',
     justifyContent: "center",
-    alignItems: "center"
+    alignItems: "center",
+    //opacity: 1,
   },
   baseSpiritsText: {
-    fontSize: 25,
-    fontWeight: "bold",
-    color: "white",
+    textAlign: 'center',
+    width: '90%',
+    fontSize: 24,
+    fontFamily: 'Quicksand-Bold',
+    //fontWeight: "bold",
+    color: colors.white,
     opacity: 1
   }
 });

@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { Ionicons, FontAwesome, Entypo, EvilIcons } from "@expo/vector-icons";
-import { firebaseStorage } from "../App";
 import {
   View,
   Text,
@@ -9,36 +8,107 @@ import {
   Dimensions,
   TextInput,
   TouchableOpacity,
+  TouchableHighlight,
   ScrollView,
-  Image
+  Image,
+  Modal,
+  Alert,
+  FlatList
 } from "react-native";
 const { width: WIDTH, height: HEIGHT } = Dimensions.get("window");
 
+import SmallFavoriteButton from "../components/SmallFavoriteButton.js";
+import {colors} from "../assets/colors.js";
+
 class Drinkscreen extends Component {
-  constructor(props){
-    super(props)
-    this.state ={
+  static navigationOptions = {
+    title: 'Drinks',
+    headerTitleStyle: {
+      width: '100%',
+      fontWeight: 'bold',
+      fontSize: 25
+    },
+  };
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      data: [
+        {name: 'Gin', selected: false}, {name: 'Vodka', selected: false}, {name: 'Whiskey', selected: false}, {name: 'White Rum', selected: false}, {name: 'Dark Rum', selected: false}, {name: 'Tequila', selected: false},
+        {name: 'White Wine', selected: false}, {name: 'Red Wine', selected: false}, {name: 'Blue Wine', selected: false}, {name: 'Schnaps', selected: false},
+        {name: 'Absinthe', selected: false},
+        {name: 'Rose Wine', selected: false}
+      ],
+      isHighlighted: [],
+      modalVisible: false,
       dataSource: [],
-      dataLoaded: false,
+      searchBarText: "",
 
-      //reference to the drinkImages in the storage
-      drinkImages: props.screenProps.drinkImages,
+      drinks: props.screenProps.drinks,
+      drinksDisplayed: [],
+      filteredDrinks: [],
+      searchBarDrinks: [],
 
-      //Images later to be loaded
-      vodkaIMG: "",
+      userAuth : props.screenProps.userAuth,
+      loggedIn : null,
+
+    };
+
+    this.setUpNavigationListener()
+    this.initiateListener()
+  }
+
+  setUpNavigationListener() {
+    this.props.navigation.addListener('didFocus', () => {
+      this.checkUserLoggedIn()
+      // get your new data here and then set state it will rerender
+      console.log("In navigationlistener (DRINKSCREEN)")
+    });
+  }
+
+  setModalVisible(visible) {
+    this.setState({ modalVisible: visible });
+  }
+
+//----------------      Filter button -------------
+  addToArray(item) {
+    var array = this.state.isHighlighted;
+    array.push(item.name.toLowerCase());
+    this.setState(state => {
+    state.isHighlighted = array;
+    })
+  }
+
+  removeFromArray(item) {
+    let array = this.state.isHighlighted;
+
+    for (let i = 0; i < this.state.isHighlighted.length; i++) {
+      if (this.state.isHighlighted[i] === item.name.toLowerCase()) {
+        array.splice(i, 1);
+      }
     }
+    this.setState({isHighlighted: array})
   }
 
-  renderItem = (item) => {
-    <View style = {styles.drinkContainer}>
-    <TouchableOpacity style = {styles.buttonDrink}>
-    <Image source = {{ uri: item.image }} style = {styles.imageDrink}/>
-    </TouchableOpacity>
-    </View>
-  }
+resetSelected = (selected) => {
+    this.setState(oldState => {
+        return {
+          // create a new item object with the new key
+          data: oldState.data.map((item, index) => Object.assign({}, item,    {
+            selected: false
+          }))
+        }
+    })
+    this.state.isHighlighted = []
+    this.filterDrinks()
+}
 
-  componentDidMount(){
-    const url =''
+_keyExtractor = (item, index) => item.name;
+
+  componentDidMount() {
+    this.setState({drinksDisplayed: this.state.drinks})
+    this.setState({filteredDrinks: this.state.drinks})
+    const url = "";
     fetch(url)
       .then(response => response.json())
       .then(response => {
@@ -47,115 +117,285 @@ class Drinkscreen extends Component {
         });
       })
       .catch(error => {
-        console.log(error);
+        //console.log(error);
       });
 
-    this.loadImages()
-
-    this.forceUpdate()
+      this.checkUserLoggedIn()
   }
+  _onButtonPress = item => {
+    if (item.selected !== true) {
+      this.addToArray(item);
+      this.setState(state => {
+      item.selected = true;
+      return {item}
+      })
+    }
+    else {
 
-  async loadImages() {
-    let referencesArray = [];
-
-    //Here u create all the images you need for the page
-    //Name of the picture is found in the firebase Storage on the website
-    //Give the images simple names when uploading to storage!
-    let vodkaRef = this.state.drinkImages.child('Vodka.jpg')
-
-    //Load these into imagesArray
-    referencesArray = [vodkaRef]
-
-    //Fetch the URL of the images
-     await vodkaRef.getDownloadURL().then((url) =>
-    {
-      this.setState({vodkaIMG : url})
+      this.removeFromArray(item);
+      this.setState(state => {
+      item.selected = false;
+      return {item}
     })
+    }
 
-    //When all data is loaded proceed to next step in componentDidMount
-    this.setState({dataloaded : true})
+    this.filterDrinks()
+}
+
+//User related
+
+checkUserLoggedIn(){
+  if(this.state.userAuth.currentUser === null){
+    //this.state.loggedIn = false
+    this.setState({loggedIn: false})
+  } else{
+    //this.state.loggedIn = true
+    this.setState({loggedIn: true})
+  }
+}
+
+initiateListener(){
+  this.state.userAuth.onAuthStateChanged(function(user) {
+    if (user) {
+      console.log("In listener, user online (DRINKSCREEN)")
+      // User is signed in.
+      var displayName = user.displayName;
+      var email = user.email;
+    } else {
+      console.log("In listener, user offline (DRINKSCREEN)")
+    }
+  });
+}
+
+
+//----------------    END  Filter button -------------
+
+
+//----------------      Choose drinks to Display -------------
+
+  displayDrinks(){
+    drinksToDisplay = []
+
+    if(this.state.searchBarDrinks.length !== 0){
+      for(let i = 0; i < this.state.searchBarDrinks.length; i++){
+        if(this.state.filteredDrinks.length === 0){
+          this.setState({drinksDisplayed: this.state.searchBarDrinks})
+        }
+        else {
+          for(let j = 0; j < this.state.filteredDrinks.length; j++){
+            if(this.state.searchBarDrinks[i] === this.state.filteredDrinks[j]){
+              drinksToDisplay.push(this.state.searchBarDrinks[i])
+            }
+          }
+          this.setState({drinksDisplayed: drinksToDisplay})
+        }
+      }
+    } else{
+      this.setState({drinksDisplayed: this.state.filteredDrinks})
+
+    }
+
   }
 
-  pageContent() {
-    return(
-      <SafeAreaView style={styles.container}>
-      <View style ={styles.headerBox}>
-      <Text style = {styles.textHeader}> Drinks </Text>
-      </View>
-      <View style = {styles.searchBox}>
-      <View style = {styles.innerSearchBox}>
-      <EvilIcons name= 'search' size={30}>
-      </EvilIcons>
-      <TextInput placeholder = 'Search' style={styles.searchInput}>
-      </TextInput>
-      <TouchableOpacity style={styles.buttonFilter}>
-      <Text style = {styles.textFilterButton}>Filter</Text>
-      </TouchableOpacity>
-      </View>
-      </View>
+  loopOverDrinks(searchBarCharacters){
+    searchBarDrinks = []
+    for(let i = 0; i < this.state.drinks.length; i++){
+      let drinkName = this.state.drinks[i].name.toLowerCase()
 
-      <ScrollView scrollEventThrottle = {16}>
-      <View style = {styles.drinkContainer}>
-      <TouchableOpacity style = {styles.buttonDrink} onPress={() => this.props.navigation.navigate('SpecDrinks')}>
-      <View>
-      <Image source = {{ uri: this.state.vodkaIMG}} style = {styles.imageDrink}/>
-      </View>
-      <View style = {styles.textBoxContainer}>
-      <Text style= {styles.textDrinkName}>
-       Long Island Ice Tea
-      </Text>
-      <Text style = {styles.textDrinkIngredients}>
-      Gin, White Rum, Tequila, Triple Sec, Vodka, Syrup, Lemon Juice, Cola, Ice
-      </Text>
-      </View>
-      </TouchableOpacity>
-      </View>
-      </ScrollView>
+      if(drinkName.includes(searchBarCharacters)){
+        searchBarDrinks.push(this.state.drinks[i])
+      }
+    }
 
-
-      </SafeAreaView>
-    )
+    if(searchBarCharacters === ""){
+        this.state.searchBarDrinks = this.state.drinks
+    } else{
+      this.state.searchBarDrinks = searchBarDrinks
+    }
+    this.displayDrinks()
   }
 
-  render(){
+  filterDrinks(){
+    //Filters drinks
+    filteredDrinks = []
+    for (let i = 0; i < this.state.drinks.length; i++){
+      let ingredientsInDrink = 0
+      for(let j = 0; j < this.state.isHighlighted.length; j++){
+        if(this.state.drinks[i].allIngredients.hasOwnProperty(this.state.isHighlighted[j])){
+          if(filteredDrinks.includes(this.state.drinks[i])){
+          } else{
+              filteredDrinks.push(this.state.drinks[i])
+          }
+        }
+      }
+      if(ingredientsInDrink === this.state.isHighlighted.length){
+
+      }
+    }
+
+    if(filteredDrinks.length === 0){
+      if(this.state.isHighlighted.length !== 0){
+        this.state.filteredDrinks = []
+      }
+      else{
+        this.state.filteredDrinks = this.state.drinks
+      }
+    } else{
+      this.state.filteredDrinks = filteredDrinks
+    }
+    this.displayDrinks()
+  }
+
+  renderItem = ({ item, index }) => {
+    if (item.selected === true) {
+      return (
+        <TouchableOpacity style={styles.modalItemSelected} onPress={ () => { this._onButtonPress(item) } }>
+          <View style={styles.modalItemContainer}>
+              <Text style={styles.modalItemText}> {item.name} </Text>
+          </View>
+        </TouchableOpacity>
+      );
+    }
+
     return (
-      <SafeAreaView style={styles.container}>
-        <View style={styles.headerBox}>
-          <Text style={styles.textHeader}> Drinks </Text>
-        </View>
-        <View style={styles.searchBox}>
-          <View style={styles.innerSearchBox}>
-            <EvilIcons name="search" size={30} />
-            <TextInput placeholder="Search" style={styles.searchInput} />
-            <TouchableOpacity style={styles.buttonFilter}>
-              <Text style={styles.textFilterButton}>Filter</Text>
-            </TouchableOpacity>
+        <TouchableOpacity style={styles.modalItem} onPress={ () => { this._onButtonPress(item) } }>
+          <View style={styles.modalItemContainer}>
+              <Text style={styles.modalItemText}> {item.name} </Text>
           </View>
+        </TouchableOpacity>
+    );
+  };
+
+  // renderItemIngredients = ({ item, index }) => {
+  //   return (
+  //     <View>
+  //       <Text style={styles.textDrinkIngredients}>{item}, </Text>
+  //     </View>
+  //   );
+  // };
+
+  getIngredients = (data) => {
+    var string = data.toString();
+    string = string.replace(/,/g, ", ");
+    return (string)
+  };
+
+  renderItem1 = ({item, index}) => {
+    return (
+      <View style={styles.drinkContainer}>
+        <TouchableOpacity
+          style={styles.buttonDrink}
+          onPress={() => this.props.navigation.navigate("SpecDrinks", {drink:item})}
+        >
+          <View>
+            <Image
+              source={{ uri: item.url }}
+              style={styles.imageDrink}
+            />
+          </View>
+          <View style={styles.itemTextContainer}>
+            <View style={styles.textHeadingContainer}>
+              <Text style={styles.textDrinkName}>{item.name}</Text>
+              <View style={styles.SmallFavoriteButtonContainer}>
+                <SmallFavoriteButton>
+                </SmallFavoriteButton>
+              </View>
+            </View>
+
+            <View style={styles.ingredientsTextContainer}>
+              <Text style={styles.ingredientsText}>
+                {this.getIngredients(Object.keys(item.allIngredients))}
+              </Text>
+            </View>
+          </View>
+        </TouchableOpacity>
+      </View>
+    );
+  };
+
+  render() {
+    return (
+      <View style={styles.container}>
+        <View style={styles.searchAndFilterContainer}>
+          <View style={styles.searchContainer}>
+            <EvilIcons name="search" size={30} />
+            <TextInput
+            placeholder="Search"
+            placeholderTextColor='darkgray'
+            style={styles.searchInput}
+            onChangeText = {(text) => this.loopOverDrinks(text.toLowerCase())}
+            />
+          </View>
+          <TouchableOpacity
+            style={styles.buttonFilter}
+            onPress={() => { this.setModalVisible(true); }}
+          >
+            <Text style={styles.textFilterButton}> Filter </Text>
+          </TouchableOpacity>
+        </View>
+        <View style= {{paddingBottom: 70}}>
+          <FlatList
+            data={this.state.drinksDisplayed}
+            renderItem={this.renderItem1}
+            keyExtractor={item => item.name}
+            extraData={this.state}
+          />
         </View>
 
-        <ScrollView scrollEventThrottle={16}>
-          <View style={styles.drinkContainer}>
-            <TouchableOpacity
-              style={styles.buttonDrink}
-              onPress={() => this.props.navigation.navigate("SpecDrinks")}
-            >
-              <View>
-                <Image
-                  source={{ uri: this.state.vodkaIMG }}
-                  style={styles.imageDrink}
-                />
+        <View style={styles.modalContainer}>
+        <Modal
+          style={styles.modal}
+          onRequestClose={() => {
+            Alert.alert('Modal has been closed.');
+          }}
+          animationType="slide"
+          transparent={true}
+          visible={this.state.modalVisible}
+        >
+          <View style={styles.modalContent}>
+            <View style={styles.modalHeadingTextContainer}>
+              <Text style={styles.modalHeadingText}>
+                Ingredients
+              </Text>
+            </View>
+              <View style={styles.modalFlatListContainer}>
+                <FlatList
+                  data={this.state.data}
+                  extraData={this.state}
+                  contentContainerStyle={styles.modalFlatList}
+                  renderItem={this.renderItem}
+                  keyExtractor={this._keyExtractor}
+                >
+                </FlatList>
               </View>
-              <View style={styles.textBoxContainer}>
-                <Text style={styles.textDrinkName}>Long Island Ice Tea</Text>
-                <Text style={styles.textDrinkIngredients}>
-                  Gin, White Rum, Tequila, Triple Sec, Vodka, Syrup, Lemon
-                  Juice, Cola, Ice
+            <View style={styles.modalButtonContainer}>
+              <View style={styles.resetButtonContainer}>
+              <TouchableHighlight style={styles.resetButton}
+                onPress={() => {
+                  this.resetSelected();
+                }}
+                renderItem={this.renderItem}
+              >
+                <Text style={styles.resetButtonText}>
+                  Reset
                 </Text>
+              </TouchableHighlight>
               </View>
-            </TouchableOpacity>
+              <View style={styles.okButtonContainer}>
+              <TouchableHighlight style={styles.okButton}
+                onPress={() => {
+                  this.setModalVisible(!this.state.modalVisible);
+                }}>
+                <Text style={styles.okButtonText}>
+                  OK
+                </Text>
+              </TouchableHighlight>
+              </View>
+            </View>
           </View>
-        </ScrollView>
-      </SafeAreaView>
+        </Modal>
+        </View>
+      </View>
     );
   }
 }
@@ -165,84 +405,233 @@ const styles = StyleSheet.create({
   container: {
     flex: 1
   },
-  textHeader: {
-    marginTop: 2.5,
-    textAlign: "center", // <-- the magic
-    fontWeight: "bold",
-    fontSize: 25
+  searchAndFilterContainer: {
+    height: 75,
+    //borderBottomWidth: 1,
+    //borderBottomColor: colors.midgray,
+    backgroundColor: colors.midblue,
+    justifyContent: "center",
+    alignItems: 'center',
+    flexDirection: 'row',
   },
-  headerBox: {
-    backgroundColor: "white",
+  searchContainer: {
+    elevation: 10,
+    width: WIDTH*0.7118,
     height: 45,
-    borderBottomWidth: 1,
-    borderBottomColor: "#dddddd"
-  },
-  searchBox: {
-    height: 70,
-    borderBottomWidth: 1,
-    borderBottomColor: "#dddddd",
-    backgroundColor: "rgba(236, 236, 236, 1)",
-    justifyContent: "center"
-  },
-  innerSearchBox: {
-    height: 40,
-    backgroundColor: "white",
+    backgroundColor: colors.white,
     alignItems: "center",
-    marginLeft: 10,
     paddingLeft: 5,
     flexDirection: "row",
-    marginRight: WIDTH / 5
+    marginRight: 12,
+    borderRadius: 10,
   },
   searchInput: {
-    backgroundColor: "white",
-    width: WIDTH - WIDTH / 2.9,
-    fontSize: 24,
-    marginLeft: 10
+    backgroundColor: colors.white,
+    width: WIDTH*0.58,
+    fontSize: 20,
+    marginLeft: 6,
+    //marginRight: 1.5,
   },
   buttonFilter: {
-    marginLeft: 20,
-    backgroundColor: "white",
-    height: 40,
+    elevation: 10,
+    backgroundColor: colors.white,
+    height: 45,
     justifyContent: "center",
     padding: 10,
-    borderRadius: 5
+    marginLeft: 12,
+    borderRadius: 10,
   },
   textFilterButton: {
-    color: "rgba(0,0,0,0.9)",
+    fontFamily: 'Quicksand-Medium',
+    color: colors.black,
     fontSize: 14,
     textAlign: "center"
   },
   drinkContainer: {
-    height: 105,
+    height: 105.8,
     width: WIDTH,
-    borderBottomWidth: 1,
-    borderBottomColor: "#dddddd",
+    borderBottomWidth: 0.8,
+    borderBottomColor: colors.midgray,
     flexDirection: "row"
   },
   buttonDrink: {
-    backgroundColor: "white",
     flex: 1,
     flexDirection: "row"
   },
   imageDrink: {
     height: 105,
-    width: 105
+    width: 105,
   },
   textDrinkName: {
+    width: '78%',
     fontSize: 18,
-    fontWeight: "bold",
+    //fontWeight: "bold",
+    fontFamily: 'Quicksand-Medium',
     marginLeft: 15,
     marginTop: 15,
-    color: "rgba(46, 49, 49, 1)",
-    marginRight: 10
+    color: colors.black,
+    //marginRight: 10,
   },
-  textDrinkIngredients: {
+  // textDrinkIngredients: {
+  //   fontSize: 14,
+  //   fontFamily: 'Quicksand-Medium',
+  //   color: colors.darkgray
+  // },
+  textHeadingContainer: {
+    width: WIDTH - 105,
+    flexDirection: "row",
+    justifyContent: 'space-between',
+  },
+
+  ingredientsTextContainer: {
+    marginLeft: 15,
+    width: '80%',
+  },
+
+  ingredientsText: {
+    textTransform: 'capitalize',
     fontSize: 14,
-    marginLeft: 15,
-    marginTop: 15,
-    color: "rgba(108, 122, 137, 1)"
+    color: colors.darkgray,
   },
-  textBoxContainer: {
-    width: WIDTH - 105
-  }
+  //addToFavoriteButton:{
+  //  position: 'absolute',
+  //  right:12,
+  //  top:7,
+  //  zIndex:2
+  //},
+
+  modalContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+
+  modal: {
+    alignSelf: 'center',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+
+  modalContent: {
+    top: '20%',
+    elevation: 10,
+    alignSelf: 'center',
+    height: '50%',
+    width: '80%',
+    backgroundColor: colors.white,
+    opacity: 0.95,
+    //justifyContent: 'center',
+    //alignItems: 'center',
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: colors.darkgray,
+  },
+
+  modalHeadingTextContainer: {
+    marginRight: 15,
+    marginLeft: 15,
+    marginTop: 10,
+    paddingBottom: 5,
+    marginBottom: 5,
+    borderBottomWidth: 1,
+    borderBottomColor: colors.lightgray,
+  },
+
+  modalHeadingText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+
+  modalFlatList: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+  },
+
+  modalFlatListContainer: {
+    flex: 1,
+  },
+
+  modalItem: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    alignSelf: 'flex-start',
+    borderRadius: 12,
+    backgroundColor: colors.midblue,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginHorizontal: 8,
+    marginVertical: 5,
+    width: WIDTH*0.9*0.25,
+  },
+
+  modalItemSelected: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    alignSelf: 'flex-start',
+    borderRadius: 12,
+    backgroundColor: colors.darkgreen,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginHorizontal: 8,
+    marginVertical: 5,
+    width: WIDTH*0.9*0.25,
+  },
+
+  modalItemContainer: {
+    flexDirection: 'row',
+  },
+
+  modalItemText: {
+    flexDirection: 'row',
+    fontSize: 13,
+    color: colors.white,
+    paddingVertical: 8,
+  },
+
+  modalButtonContainer: {
+    //alignItems: 'flex-end',
+    justifyContent: 'space-between',
+    flexDirection: 'row',
+
+  },
+
+  resetButtonContainer: {
+    marginLeft: 10,
+    marginBottom: 10,
+  },
+
+  resetButton: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: colors.verylightred,
+    height: 35,
+    width: 55,
+    borderRadius: 8,
+  },
+
+  resetButtonText: {
+    color: colors.black,
+    fontSize: 12,
+  },
+
+  okButtonContainer: {
+    marginRight: 10,
+    marginBottom: 10,
+  },
+
+  okButton: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: colors.lightgreen,
+    height: 35,
+    width: 55,
+    borderRadius: 8,
+  },
+
+  okButtonText: {
+    color: colors.black,
+    fontSize: 12,
+  },
+  SmallFavoriteButtonContainer:{
+  },
+
 });

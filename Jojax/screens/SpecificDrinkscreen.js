@@ -12,94 +12,95 @@ import {
   Image,
   ImageBackground,
   FlatList,
-  Alert,
-  Button
+  Button,
+  ActivityIndicator
 } from "react-native";
 import drImage from "../pictures/long_isle.png";
 import bgImage from "../pictures/236.jpg";
+import FavoriteButton from "../components/FavoriteButton.js";
+import {colors} from "../assets/colors.js";
 
 const { width: WIDTH, height: HEIGHT } = Dimensions.get("window");
 
-const data = [
-  { name: "Tequila", units: "4cl" },
-  { name: "Rom", units: "4cl" },
-  { name: "Gin", units: "4cl" },
-  { name: "Cointreau", units: "4cl" },
-  { name: "Lemon Juice", units: "4cl" },
-  { name: "Coca Cola", units: "" },
-  { name: "Ice", units: "" },
-  { name: "Lemon", units: "" }
-];
-const data2 = [
-  {
-    instruc:
-      "1.Fill a long glass with ice.,2.Add all ingredients except Coca Cola.,3.Top with a splash of Cola and stir.,4.Garnish with a lemon wedge."
-  },
-  {
-    instruc:
-      "1.Fill a long glass with poop.,2.Add all ingredients except Coca poop.,3.Top with a splash of Cola and poop.,4.Garnish with a lemon poop."
-  }
-];
-const data3 = {name: "Long Island Ice Tea"};
-
 class SpecificDrinkscreen extends Component {
-  modifyPreparations() {
-    const data2 = [
-      {
-        instruc:
-          "1.Fill a long glass with ice.,2.Add all ingredients except Coca Cola.,3.Top with a splash of Cola and stir.,4.Garnish with a lemon wedge."
-      },
-      {
-        instruc:
-          "1.Fill a long glass with poop.,2.Add all ingredients except Coca poop.,3.Top with a splash of Cola and poop.,4.Garnish with a lemon poop."
-      }
-    ];
-    const data3 = data2[0].instruc;
-    let sentence = "";
-    const newPrep = [];
-    for (var i = 0; i < data3.length; i++) {
-      if (data3[i] !== ",") {
-        sentence = sentence + data3[i];
-      } else {
-        newPrep.push({ inst: sentence });
-        sentence = "";
-      }
-    }
-    console.log(newPrep);
-    return newPrep;
+
+  constructor(props){
+  super(props);
+
+  this.state = {
+    specificDrink : this.props.navigation.state.params.drink,
+    instructions: [],
+    ingredients: [],
+    loaded: false
+  }
+  this.loadIngredients()
+}
+componentWillMount(){
+  this.setState({
+    specificDrink: this.props.navigation.state.params.drink,
+    loaded: true
+  })
+
+}
+  loadServings(){
+    //console.log(Object.keys(this.state.specificDrink.ingredients))
   }
 
+  loadIngredients(){
+    allIngredientItems = Object.values(this.state.specificDrink.allIngredients)
+    allIngredientKeys = Object.keys(this.state.specificDrink.allIngredients)
+
+    ingredients = []
+    for(let i = 0; i < allIngredientItems.length; i++){
+      let ingredient = {
+        [allIngredientKeys[i]]: allIngredientItems[i],
+      }
+      ingredients.push(ingredient)
+    }
+    this.state.ingredients = ingredients
+    //console.log(this.state.ingredients)
+  }
+
+  //renders ingredients
   renderItem1 = ({ item, index }) => {
     return (
       <View style={styles.oneIngredientBox}>
-        <Text style={styles.eachIngredientText}>{item.name}</Text>
+        <Text style={styles.eachIngredientText}>{item}</Text>
       </View>
     );
   };
+
+  //Renders servings together with 4
   renderItem2 = ({ item, index }) => {
-    return (
-      <Text style={styles.eachIngredientText}>
-        {item.units} {item.name}
-      </Text>
-    );
+    //console.log(item)
+    ingredientAmount = Object.values(item)
+    ingredientName = Object.keys(item)
+
+    return <Text style={styles.eachIngredientText}>{ingredientAmount}cl of {ingredientName}</Text>;
   };
+
+  //renders preparationinstructions
   renderItem3 = ({ item, index }) => {
-    return <Text style={styles.eachIngredientText}>{item.inst}</Text>;
+    return <Text style={styles.eachIngredientText}>{item}</Text>;
   };
+
 
   render() {
+    //console.log(this.state.specificDrink.ingredients)
     return (
-        <ScrollView>
-        <View style={{ height:HEIGHT/2.6 }}>
+
+      <ScrollView>
+        {this.state.loaded ? (
+        <View>
+        <View style={{ height: WIDTH }}>
           <View style={styles.drinkImageContainer}>
-
-            <ImageBackground style={styles.drinkImage} source={drImage}>
-              <View style ={styles.drinkNameContainer}>
-                <View style={{opacity:1}}>
-
-                  <Text style={styles.drinkNameText}>
-                    {data3.name}
-                  </Text>
+            <View style={styles.addToFavoriteButton}>
+              <FavoriteButton />
+            </View>
+            <ImageBackground style={styles.drinkImage} source={{ uri: this.state.specificDrink.url }} >
+              <View style={styles.drinkNameContainer}>
+                <View style={{ opacity: 1 }}>
+                  <Text style={styles.drinkNameText}>{this.state.specificDrink.name}</Text>
                 </View>
               </View>
             </ImageBackground>
@@ -113,36 +114,42 @@ class SpecificDrinkscreen extends Component {
                 <View style={styles.ingredientOverviewBox}>
                   <FlatList
                     contentContainerStyle={styles.ingredientBox}
-                    data={data}
+                    data={Object.keys(this.state.specificDrink.allIngredients)}
                     renderItem={this.renderItem1}
-                    keyExtractor={item => item.name}
+                    keyExtractor={item => item.eachItem}
                   />
                 </View>
                 <View style={styles.servingsContainer}>
                   <Text style={styles.servingsText}>Servings</Text>
                   <View style={styles.servingsBox}>
-                      <Text style={styles.twoDrinksText}>2 Drinks</Text>
+                    <Text style={styles.twoDrinksText}>2 Drinks</Text>
                     <FlatList
-                      data={data}
+                      data={this.state.ingredients}
                       renderItem={this.renderItem2}
-                      keyExtractor={item => item.name}
+                      keyExtractor={item => item.eachItem}
                     />
+
                   </View>
                 </View>
               </View>
             </View>
-
             <View style={styles.preparationSheet}>
               <Text style={styles.preparationText}>Preparation</Text>
               <FlatList
                 contentContainerStyle={styles.prepBox}
-                data={this.modifyPreparations()}
+                data={Object.values(this.state.specificDrink.instructions)}
                 renderItem={this.renderItem3}
               />
             </View>
           </ImageBackground>
         </View>
-      </ScrollView>
+      </View>
+      )
+      : ( <View style={{justifyContent: 'center', alignItems: 'center'}}>
+        <ActivityIndicator size = 'large'/>
+      </View>
+    )}
+    </ScrollView>
     );
   }
 }
@@ -160,15 +167,13 @@ const styles = StyleSheet.create({
 
   drinkImage: {
     flex: 1,
-    width: undefined,
-    height: undefined,
+    width: WIDTH,
+    height: WIDTH,
     resizeMode: "contain",
-    justifyContent: 'flex-end'
+    justifyContent: "flex-end"
   },
   ingredientsAndPreparationContainer: {
-    flex: 60,
-    //borderWidth: 1,
-    //borderColor: "red"
+    flex: 60
   },
   backgroundContainer: {
     flex: 1,
@@ -178,7 +183,6 @@ const styles = StyleSheet.create({
   },
   ingredientSheet: {
     backgroundColor: "white",
-    //height:HEIGHT/2,
     width: WIDTH - 20,
     margin: 10
   },
@@ -194,10 +198,7 @@ const styles = StyleSheet.create({
     paddingBottom: 12
   },
   ingredientInnerContainer: {
-    marginBottom:10,
-    //marginLeft: 15,
-    //borderBottomWidth: 3,
-    //borderBottomColor: "green"
+    marginBottom: 10
   },
   eachIngredientText: {
     fontSize: 18
@@ -218,15 +219,14 @@ const styles = StyleSheet.create({
     fontSize: 20
   },
   ingredientOverviewBox: {
-    //borderBottomWidth: 1,
     marginLeft: 15,
     marginRight: 15,
-    paddingBottom: 10,
+    paddingBottom: 10
     //borderBottomColor: "rgb(208,208,208)"
   },
   servingsContainer: {},
-  servingsBox:{
-    marginLeft: 15,
+  servingsBox: {
+    marginLeft: 15
   },
   servingsText: {
     fontWeight: "bold",
@@ -239,7 +239,7 @@ const styles = StyleSheet.create({
     //height:HEIGHT/2,
     width: WIDTH - 20,
     margin: 10,
-    paddingBottom:15,
+    paddingBottom: 15
     //borderColor:'purple',
     //borderBottomWidth:3
   },
@@ -253,17 +253,21 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginLeft: 20
   },
-  drinkNameText:{
-    opacity:1,
+  drinkNameText: {
+    opacity: 1,
     paddingVertical: 5,
     textAlign: "center",
     fontWeight: "bold",
     fontSize: 28,
-    color:'black'
+    color: "black"
   },
-  drinkNameContainer:{
-    backgroundColor: 'rgba(189, 195, 199, 0.5)',
-
-
+  drinkNameContainer: {
+    backgroundColor: "rgba(189, 195, 199, 0.5)"
+  },
+  addToFavoriteButton: {
+    position: "absolute",
+    right: 0,
+    top: 0,
+    zIndex: 2
   }
 });

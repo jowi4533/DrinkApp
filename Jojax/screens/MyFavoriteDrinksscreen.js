@@ -14,13 +14,63 @@ import {
 } from "react-native";
 const { width: WIDTH, height: HEIGHT } = Dimensions.get("window");
 
+import FavoriteButton from "../components/FavoriteButton.js";
+import SmallFavoriteButton from "../components/SmallFavoriteButton.js";
+import {colors} from "../assets/colors.js";
+
 class MyFavoriteDrinkscreen extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       dataSource: [],
-      vodkaIMG: ""
+      vodkaIMG: "",
+
+      userAuth : props.screenProps.userAuth,
+      loggedIn : null
     };
+
+    this.setUpNavigationListener()
+    this.initiateListener()
+  }
+
+  static navigationOptions = {
+    title: 'My Favorites',
+    headerTitleStyle: {
+      width: '100%',
+      fontWeight: 'bold',
+      fontSize: 25
+    },
+  };
+
+  setUpNavigationListener() {
+    this.props.navigation.addListener('didFocus', () => {
+      this.checkUserLoggedIn()
+      // get your new data here and then set state it will rerender
+      console.log("In navigationlistener (MyFavoritesScreen)")
+    });
+  }
+
+  checkUserLoggedIn(){
+    if(this.state.userAuth.currentUser === null){
+      //this.state.loggedIn = false
+      this.setState({loggedIn: false})
+    } else{
+      //this.state.loggedIn = true
+      this.setState({loggedIn: true})
+    }
+  }
+
+  initiateListener(){
+    this.state.userAuth.onAuthStateChanged(function(user) {
+      if (user) {
+        console.log("In listener, user online (MyFavoritesScreen)")
+        // User is signed in.
+        var displayName = user.displayName;
+        var email = user.email;
+      } else {
+        console.log("In listener, user offline (MyFavoritesScreen)")
+      }
+    });
   }
 
   renderItem = item => {
@@ -30,14 +80,11 @@ class MyFavoriteDrinkscreen extends Component {
       </TouchableOpacity>
     </View>;
   };
-  
+
 
   render() {
     return (
         <View>
-        <View style={styles.headerBox}>
-          <Text style={styles.headline}>My Favorites</Text>
-        </View>
 
           <ScrollView>
           <View style={styles.drinkContainer}>
@@ -45,6 +92,10 @@ class MyFavoriteDrinkscreen extends Component {
               style={styles.buttonDrink}
               onPress={() => this.props.navigation.navigate("SpecDrinks")}
             >
+            <View style = {styles.addToFavoriteButton}>
+              <SmallFavoriteButton>
+              </SmallFavoriteButton>
+            </View>
               <View>
                 <Image
                   source={{ uri: this.state.vodkaIMG }}
@@ -69,17 +120,6 @@ export default MyFavoriteDrinkscreen;
 
 const styles = StyleSheet.create({
 
-  headline: {
-    textAlign: "center", // <-- the magic
-    fontWeight: "bold",
-    fontSize: 25
-  },
-  headerBox: {
-    height: 40,
-    width: WIDTH,
-    borderBottomWidth: 1,
-    borderBottomColor: "#dddddd"
-  },
   drinkContainer: {
     height: 105,
     width: WIDTH,
@@ -112,5 +152,11 @@ const styles = StyleSheet.create({
   },
   textBoxContainer: {
     width: WIDTH - 105
+  },
+  addToFavoriteButton:{
+    position: 'absolute',
+    right:12,
+    top:7,
+    zIndex:2
   }
 });

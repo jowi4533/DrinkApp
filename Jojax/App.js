@@ -1,21 +1,22 @@
 import React, { Component} from 'react';
 import { Ionicons,FontAwesome,Entypo } from '@expo/vector-icons';
-import { StyleSheet, Text, View, SafeAreaView } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, ActivityIndicator } from 'react-native';
 import { createAppContainer, createBottomTabNavigator, createStackNavigator } from 'react-navigation'
 import Drinkscreen from './screens/Drinkscreen'
 import Explorescreen from './screens/Explorescreen'
 import Morescreen from './screens/Morescreen'
 import  { Asset, Font } from 'expo';
 
+import MyNotesscreen from './screens/MyNotesscreen'
 import MyPagescreen from './screens/MyPagescreen'
 import MyBarscreen from './screens/MyBarscreen'
+import DrinkCategoryScreen from './screens/DrinkCategoryScreen'
 import MyFavoriteDrinksscreen from './screens/MyFavoriteDrinksscreen'
-import MyNotesscreen from './screens/MyNotesscreen'
 import Registerscreen from './screens/Registerscreen'
 import Loginscreen from './screens/Loginscreen'
-import DrinkCategoryscreen from './screens/DrinkCategoryscreen'
 import SpecificDrinkscreen from './screens/SpecificDrinkscreen'
-
+import NewNotescreen from './screens/NewNotescreen'
+import EditNotescreen from './screens/EditNotescreen'
 
 import firebase from 'firebase'
 //-------------------------------//
@@ -34,16 +35,11 @@ if(!firebase.apps.length){
 }
 
 //Everything database related (text, passwords, users etc)
-
 let database = firebase.database();
-let usersDB = database.ref('Users');
-let drinksDB = database.ref('Drinks');
+let drinksDB = database.ref('Drinks')
 
-export {usersDB};
-//Everything Storage (Images) related
-
-let firebaseStorage = firebase.storage();
-let imagesRef = firebaseStorage.ref('Drinkpictures')
+//Everything user related
+const userAuth = firebase.auth()
 
 //-------------------------------//
 
@@ -52,21 +48,34 @@ const MyPageStack = createStackNavigator(
   MyPage: {screen: MyPagescreen},
   MyBar: {screen: MyBarscreen},
   MyFavoriteDrinks: {screen: MyFavoriteDrinksscreen},
-  MyNotes: {screen: MyNotesscreen},
+  MyNotes: {screen: MyNotesscreen },
   Register: {screen: Registerscreen},
   Login: {screen: Loginscreen},
-  SpecDrinks: {screen: SpecificDrinkscreen}
+  SpecDrinks: {screen: SpecificDrinkscreen},
+  NewNote: {screen: NewNotescreen},
+  EditNote: {screen: EditNotescreen}
+  },
+  {
+  headerLayoutPreset: 'center'
   }
 );
 const DrinkStack = createStackNavigator({
   AllDrinks: {screen: Drinkscreen},
-  SpecDrinks: {screen: SpecificDrinkscreen}
-});
+  SpecDrinks: {screen: SpecificDrinkscreen},
+  },
+  {
+    headerLayoutPreset: 'center'
+  }
+);
 const ExploreStack = createStackNavigator({
   Explore: {screen: Explorescreen},
   SpecDrinks: {screen: SpecificDrinkscreen},
-  DrinkCategory: {screen:DrinkCategoryscreen}
-});
+  DrinkCategory: {screen: DrinkCategoryScreen}
+  },
+  {
+    headerLayoutPreset: 'center'
+  }
+);
 
 const TabNavigator = createBottomTabNavigator({
   Explore:{
@@ -102,6 +111,7 @@ const TabNavigator = createBottomTabNavigator({
   More:{
     screen: Morescreen,
     navigationOptions: {
+      title: "More",
       tabBarLabel: 'MORE',
       tabBarIcon: ({tintColor}) => (
         <Ionicons name='md-more' color={tintColor} size={28}>
@@ -128,38 +138,102 @@ class App extends Component {
   constructor(props){
     super(props)
     this.state = {
-      keys: null,
-      firebaseStorage: firebaseStorage,
-      drinkImages: imagesRef,
+      userAuth : userAuth,
+      allDrinkItems: null,
+      allDrinkKeys: null,
+      drinks: [],
+      loaded: false,
+
+      fontLoaded: false
+
     }
+    this.loadResources()
   }
 
-  componentDidMount(){
+  async componentDidMount(){
+  await Font.loadAsync({
+    'Quicksand-Bold' : require('./fonts/Quicksand-Bold.ttf'),
+      'Quicksand-Light' : require('./fonts/Quicksand-Light.ttf'),
+        'Quicksand-Medium' : require('./fonts/Quicksand-Medium.ttf'),
+         'Quicksand-Regular' : require('./fonts/Quicksand-Regular.ttf'),
+
+    'Barlow-Bold' : require('./fonts/Barlow-Bold.ttf'),
+    'Barlow-Light' : require('./fonts/Barlow-Light.ttf'),
+    'Barlow-Medium' : require('./fonts/Barlow-Medium.ttf'),
+    'Barlow-Regular' : require('./fonts/Barlow-Regular.ttf'),
+    'Barlow-SemiBold' : require('./fonts/Barlow-SemiBold.ttf'),
+
+    'Maitree-Bold' : require('./fonts/Maitree-Bold.ttf'),
+    'Maitree-Medium' : require('./fonts/Maitree-Medium.ttf'),
+    'Maitree-Regular' : require('./fonts/Maitree-Regular.ttf'),
+    'Maitree-Light' : require('./fonts/Maitree-Light.ttf'),
+
+
+
+
+
+  }).then(()=>{
+        this.setState({ fontLoaded: true });
+  })
+};
+
+  loadResources(){
     this.initailizeListener()
   }
 
-  initailizeListener = () => {
-    usersDB.once("value", this.retrieveUserKeys, this.errData);
+  initailizeListener () {
+    drinksDB.once("value", this.retriveDrinkItems.bind(this), this.errData)
   }
 
-  retrieveUserKeys = (data) => {
-    this.setState({keys: Object.keys(data.val())});
-    //console.log(this.state.keys);
-    //console.log("testingkeys")
+  retriveDrinkItems (data)  {
+    this.setState({allDrinkItems: data.val()});
+    this.setState({allDrinkKeys: Object.keys(data.val())});
+
+    this.loadDrinks()
+    this.setState({loaded:true})
 
   }
 
   errData = (err) =>{
-    //console.log('Error!');
-    //console.log(err);
+    console.log('Error!');
+    console.log(err);
+  }
+
+  loadDrinks(){
+
+    let allDrinks = []
+    for (let i = 0; i < this.state.allDrinkKeys.length; i++){
+      let k = this.state.allDrinkKeys[i];
+
+      let drink = {
+        name: this.state.allDrinkItems[k].name,
+        url: this.state.allDrinkItems[k].URL,
+        spirits: this.state.allDrinkItems[k].Ingredients.spirits,
+        otherIngredients: this.state.allDrinkItems[k].Ingredients.otherIngredients,
+        allIngredients: Object.assign({}, this.state.allDrinkItems[k].Ingredients.spirits, this.state.allDrinkItems[k].Ingredients.otherIngredients),
+        categories: this.state.allDrinkItems[k].Categories,
+        instructions: this.state.allDrinkItems[k].Preparation_instructions,
+      }
+      allDrinks.push(drink)
+    }
+    this.setState({drinks: allDrinks})
   }
 
 
   render(){
-    return (
-      <AppContainer screenProps ={this.state}>
-      </AppContainer>
-    );
+    if(this.state.loaded === true){
+      return (
+
+          <AppContainer screenProps ={this.state}>
+          </AppContainer>
+
+
+      );
+    }
+    else{
+      return null
+    }
+
   }
 }
 export default App;

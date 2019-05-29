@@ -7,20 +7,15 @@ import {
 } from "react-native";
 
 class Morescreen extends Component {
+
   render(){
     return (
-      <SafeAreaView style={{ flex: 1 }}>
-          <View style={{flex:1}}>
-            <View style={styles.headerbox}>
-              <Text style={styles.headline}>
-              More
+          <View style={{flex:1, justifyContent: 'center', alignItems:'center'}}>
+            <Text>
+            This App has been created by the Slytherin Corp.
+            xoxo
               </Text>
-            </View>
-            <Text style={{textAlign: 'center',marginTop:55}}>
-            test
-            </Text>
           </View>
-      </SafeAreaView>
     );
   }
 }
@@ -32,18 +27,5 @@ const styles = StyleSheet.create({
     alignItems:'center',
     justifyContent:'center'
   },
-  headline: {
-    marginTop: 10,
-    textAlign: 'center', // <-- the magic
-    fontWeight: 'bold',
-    fontSize: 25,
 
- },
- headerbox:{
-   backgroundColor: 'white',
-   height: 70,
-   borderBottomWidth: 1,
-   borderBottomColor: '#dddddd'
-
- }
 });
