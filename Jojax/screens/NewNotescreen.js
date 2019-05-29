@@ -19,7 +19,8 @@ class NewNotescreen extends Component {
     super(props);
     this.state ={
       text: "" ,
-      myID: this.props.navigation.state.params.prevID +1
+      myID: this.props.navigation.state.params.prevID +1,
+      status: "green"
 
     }
     this.props.navigation.setParams({
@@ -51,7 +52,7 @@ class NewNotescreen extends Component {
 };
 handleSaveNotepress = () =>{
   if (/\S/.test(this.state.text)){
-    this.props.navigation.state.params.returnNote(this.state.myID, this.state.text);
+    this.props.navigation.state.params.returnNote(this.state.myID, this.state.text, this.state.status);
     this.props.navigation.goBack();
   }
   else{

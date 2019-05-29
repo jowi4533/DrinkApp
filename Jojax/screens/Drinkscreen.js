@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Ionicons, FontAwesome, Entypo, EvilIcons } from "@expo/vector-icons";
+import {StackActions} from 'react-navigation';
 import {
   View,
   Text,
@@ -50,6 +51,8 @@ class Drinkscreen extends Component {
       searchBarDrinks: [],
 
       userAuth : props.screenProps.userAuth,
+      usersDB: props.screenProps.usersDB,
+      users: props.screenProps.users,
       loggedIn : null,
 
     };
@@ -191,14 +194,19 @@ initiateListener(){
         }
       }
     } else{
-      this.setState({drinksDisplayed: this.state.filteredDrinks})
-
+      if(this.state.searchBarCharacters.length !== 0){
+        this.setState({drinksDisplayed: []})
+      }
+      else {
+        this.setState({drinksDisplayed: this.state.filteredDrinks})
+      }
     }
 
   }
 
   loopOverDrinks(searchBarCharacters){
     searchBarDrinks = []
+    this.state.searchBarCharacters = searchBarCharacters
     for(let i = 0; i < this.state.drinks.length; i++){
       let drinkName = this.state.drinks[i].name.toLowerCase()
 
@@ -297,7 +305,12 @@ initiateListener(){
             <View style={styles.textHeadingContainer}>
               <Text style={styles.textDrinkName}>{item.name}</Text>
               <View style={styles.SmallFavoriteButtonContainer}>
-                <SmallFavoriteButton>
+                <SmallFavoriteButton
+                userAuth = {this.state.userAuth}
+                usersDB = {this.state.usersDB}
+                users = {this.state.users}
+                drink = {item}
+                >
                 </SmallFavoriteButton>
               </View>
             </View>
@@ -316,11 +329,12 @@ initiateListener(){
   render() {
     return (
       <View style={styles.container}>
-        <View style={styles.searchBox}>
-          <View style={styles.innerSearchBox}>
+        <View style={styles.searchAndFilterContainer}>
+          <View style={styles.searchContainer}>
             <EvilIcons name="search" size={30} />
             <TextInput
             placeholder="Search"
+            placeholderTextColor='darkgray'
             style={styles.searchInput}
             onChangeText = {(text) => this.loopOverDrinks(text.toLowerCase())}
             />
@@ -376,7 +390,7 @@ initiateListener(){
                 renderItem={this.renderItem}
               >
                 <Text style={styles.resetButtonText}>
-                  RESET
+                  Reset
                 </Text>
               </TouchableHighlight>
               </View>
@@ -404,47 +418,53 @@ const styles = StyleSheet.create({
   container: {
     flex: 1
   },
-  searchBox: {
-    height: 70,
-    borderBottomWidth: 1,
-    borderBottomColor: "#dddddd",
-    backgroundColor: "rgba(236, 236, 236, 1)",
+  searchAndFilterContainer: {
+    height: 75,
+    //borderBottomWidth: 1,
+    //borderBottomColor: colors.midgray,
+    backgroundColor: colors.midblue,
     justifyContent: "center",
     alignItems: 'center',
     flexDirection: 'row',
   },
-  innerSearchBox: {
-    height: 40,
-    backgroundColor: "white",
+  searchContainer: {
+    elevation: 10,
+    width: WIDTH*0.7118,
+    height: 45,
+    backgroundColor: colors.white,
     alignItems: "center",
     paddingLeft: 5,
     flexDirection: "row",
-    marginRight: '4%',
-    borderRadius: 5,
+    marginRight: 12,
+    borderRadius: 10,
   },
   searchInput: {
-    backgroundColor: "white",
-    width: WIDTH - WIDTH / 2.9,
-    fontSize: 24,
-    marginLeft: 10
+    backgroundColor: colors.white,
+    width: WIDTH*0.58,
+    fontSize: 20,
+    marginLeft: 6,
+    //marginRight: 1.5,
   },
   buttonFilter: {
-    backgroundColor: "white",
-    height: 40,
+    elevation: 10,
+    backgroundColor: colors.white,
+    height: 45,
     justifyContent: "center",
     padding: 10,
-    borderRadius: 5,
+    marginLeft: 12,
+    borderRadius: 10,
   },
   textFilterButton: {
-    color: "rgba(0,0,0,0.9)",
+    fontFamily: 'Quicksand-Medium',
+    color: colors.black,
     fontSize: 14,
     textAlign: "center"
   },
   drinkContainer: {
-    height: 105,
+    height: 105.8,
     width: WIDTH,
-    borderBottomWidth: 1,
-    borderBottomColor: "#dddddd",
+    borderBottomWidth: 0.8,
+    borderBottomColor: colors.midgray,
     flexDirection: "row"
   },
   buttonDrink: {
@@ -462,14 +482,14 @@ const styles = StyleSheet.create({
     fontFamily: 'Quicksand-Medium',
     marginLeft: 15,
     marginTop: 15,
-    color: "rgba(46, 49, 49, 1)",
+    color: colors.black,
     //marginRight: 10,
   },
-  textDrinkIngredients: {
-    fontSize: 14,
-    color: "rgba(108, 122, 137, 1)",
-    fontFamily: 'Quicksand-Medium',
-  },
+  // textDrinkIngredients: {
+  //   fontSize: 14,
+  //   fontFamily: 'Quicksand-Medium',
+  //   color: colors.darkgray
+  // },
   textHeadingContainer: {
     width: WIDTH - 105,
     flexDirection: "row",
@@ -482,9 +502,9 @@ const styles = StyleSheet.create({
   },
 
   ingredientsText: {
-    textTransform: 'uppercase',
+    textTransform: 'capitalize',
     fontSize: 14,
-    color: "rgba(108, 122, 137, 1)"
+    color: colors.darkgray,
   },
   //addToFavoriteButton:{
   //  position: 'absolute',
@@ -510,13 +530,13 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     height: '50%',
     width: '80%',
-    backgroundColor: 'white',
+    backgroundColor: colors.white,
     opacity: 0.95,
     //justifyContent: 'center',
     //alignItems: 'center',
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: 'black',
+    borderColor: colors.darkgray,
   },
 
   modalHeadingTextContainer: {
@@ -526,7 +546,7 @@ const styles = StyleSheet.create({
     paddingBottom: 5,
     marginBottom: 5,
     borderBottomWidth: 1,
-    borderBottomColor: 'lightgrey',
+    borderBottomColor: colors.lightgray,
   },
 
   modalHeadingText: {
@@ -548,7 +568,7 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     alignSelf: 'flex-start',
     borderRadius: 12,
-    backgroundColor: 'rgba(52, 152, 219, 1)',
+    backgroundColor: colors.midblue,
     alignItems: 'center',
     justifyContent: 'center',
     marginHorizontal: 8,
@@ -561,7 +581,7 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     alignSelf: 'flex-start',
     borderRadius: 12,
-    backgroundColor: 'green',
+    backgroundColor: colors.darkgreen,
     alignItems: 'center',
     justifyContent: 'center',
     marginHorizontal: 8,
@@ -576,7 +596,7 @@ const styles = StyleSheet.create({
   modalItemText: {
     flexDirection: 'row',
     fontSize: 13,
-    color: 'white',
+    color: colors.white,
     paddingVertical: 8,
   },
 
@@ -595,13 +615,14 @@ const styles = StyleSheet.create({
   resetButton: {
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'lightgrey',
+    backgroundColor: colors.verylightred,
     height: 35,
     width: 55,
     borderRadius: 8,
   },
 
   resetButtonText: {
+    color: colors.black,
     fontSize: 12,
   },
 
@@ -613,19 +634,17 @@ const styles = StyleSheet.create({
   okButton: {
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'lightgrey',
+    backgroundColor: colors.lightgreen,
     height: 35,
     width: 55,
     borderRadius: 8,
   },
 
   okButtonText: {
+    color: colors.black,
     fontSize: 12,
   },
   SmallFavoriteButtonContainer:{
   },
-  ingredientssss:{
-    marginLeft: 15
-  }
 
 });

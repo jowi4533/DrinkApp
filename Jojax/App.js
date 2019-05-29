@@ -37,10 +37,10 @@ if(!firebase.apps.length){
 //Everything database related (text, passwords, users etc)
 let database = firebase.database();
 let drinksDB = database.ref('Drinks')
+let usersDB = database.ref('Users')
 
 //Everything user related
 const userAuth = firebase.auth()
-let usersDB = database.ref('Users')
 //-------------------------------//
 
 const MyPageStack = createStackNavigator(
@@ -140,9 +140,14 @@ class App extends Component {
     this.state = {
       userAuth : userAuth,
       usersDB: usersDB,
+
+      allUsers: null,
+      allUserKeys: null,
       allDrinkItems: null,
       allDrinkKeys: null,
+
       drinks: [],
+      users: [],
       loaded: false,
 
       fontLoaded: false
@@ -153,11 +158,26 @@ class App extends Component {
 
   async componentDidMount(){
   await Font.loadAsync({
-
     'Quicksand-Bold' : require('./fonts/Quicksand-Bold.ttf'),
-      'Quicksand-Light' : require('./fonts/Quicksand-Light.ttf'),
-        'Quicksand-Medium' : require('./fonts/Quicksand-Medium.ttf'),
-         'Quicksand-Regular' : require('./fonts/Quicksand-Regular.ttf'),
+    'Quicksand-Light' : require('./fonts/Quicksand-Light.ttf'),
+    'Quicksand-Medium' : require('./fonts/Quicksand-Medium.ttf'),
+    'Quicksand-Regular' : require('./fonts/Quicksand-Regular.ttf'),
+
+    'Barlow-Bold' : require('./fonts/Barlow-Bold.ttf'),
+    'Barlow-Light' : require('./fonts/Barlow-Light.ttf'),
+    'Barlow-Medium' : require('./fonts/Barlow-Medium.ttf'),
+    'Barlow-Regular' : require('./fonts/Barlow-Regular.ttf'),
+    'Barlow-SemiBold' : require('./fonts/Barlow-SemiBold.ttf'),
+
+    'Maitree-Bold' : require('./fonts/Maitree-Bold.ttf'),
+    'Maitree-Medium' : require('./fonts/Maitree-Medium.ttf'),
+    'Maitree-Regular' : require('./fonts/Maitree-Regular.ttf'),
+    'Maitree-Light' : require('./fonts/Maitree-Light.ttf'),
+
+
+
+
+
   }).then(()=>{
         this.setState({ fontLoaded: true });
   })
@@ -178,16 +198,33 @@ class App extends Component {
 
     this.loadDrinks()
     this.setState({loaded:true})
-
   }
 
-  retrieveUsers(data) {
-    
+  retrieveUsers(data){
+    this.state.allUsers = data.val()
+    this.state.allUserKeys = Object.keys(data.val())
+    this.loadUsers()
   }
 
   errData = (err) =>{
     console.log('Error!');
     console.log(err);
+  }
+
+  loadUsers(){
+    let allUsers = []
+
+    for(let i = 0; i < this.state.allUserKeys.length; i++){
+      let k = this.state.allUserKeys[i];
+
+      let user = {
+        email: this.state.allUsers[k].email,
+        password: this.state.allUsers[k].password,
+      }
+      allUsers.push(user)
+    }
+    this.state.users = allUsers;
+
   }
 
   loadDrinks(){
@@ -204,11 +241,13 @@ class App extends Component {
         allIngredients: Object.assign({}, this.state.allDrinkItems[k].Ingredients.spirits, this.state.allDrinkItems[k].Ingredients.otherIngredients),
         categories: this.state.allDrinkItems[k].Categories,
         instructions: this.state.allDrinkItems[k].Preparation_instructions,
+        id : this.state.allDrinkItems[k].id,
       }
       allDrinks.push(drink)
     }
-    this.setState({drinks: allDrinks})
+    this.state.drinks = allDrinks
   }
+
 
   render(){
     if(this.state.loaded === true){

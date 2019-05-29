@@ -37,7 +37,7 @@ class EditNotescreen extends Component {
       width: '100%',
       fontWeight: 'bold',
       fontSize: 25,
-      color: 'black'
+      color: colors.black,
     },
     headerTintColor: 'rgb(205,133,63)',
     headerRight:
@@ -131,8 +131,8 @@ const styles = StyleSheet.create({
     flex:1
   },
   wordCountText:{
-    color: 'rgba(108, 122, 137, 1)',
-    fontFamily: 'Quicksand-Medium'
+    color: colors.darkgray,
+    fontFamily: 'Quicksand-Medium',
   },
   wordCountTextBox:{
     //backgroundColor: 'pink',

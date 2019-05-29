@@ -12,7 +12,8 @@ import {
   Image,
   ImageBackground,
   FlatList,
-  Button
+  Button,
+  ActivityIndicator
 } from "react-native";
 import drImage from "../pictures/long_isle.png";
 import bgImage from "../pictures/236.jpg";
@@ -29,9 +30,24 @@ class SpecificDrinkscreen extends Component {
   this.state = {
     specificDrink : this.props.navigation.state.params.drink,
     instructions: [],
-    ingredients: []
+    ingredients: [],
+    ImageURL: [],
+    Imageloaded: false,
+    loaded:true
+
   }
+  console.log(this.state.specificDrink.url)
   this.loadIngredients()
+}
+imageloaded(){
+
+}
+componentWillMount(){
+  //this.setState({
+  //  specificDrink: this.state.specificDrink.url
+  //  loaded: true
+//  })-
+
 }
   loadServings(){
     //console.log(Object.keys(this.state.specificDrink.ingredients))
@@ -79,13 +95,16 @@ class SpecificDrinkscreen extends Component {
   render() {
     //console.log(this.state.specificDrink.ingredients)
     return (
+
       <ScrollView>
+        {this.state.loaded ? (
+        <View>
         <View style={{ height: WIDTH }}>
           <View style={styles.drinkImageContainer}>
             <View style={styles.addToFavoriteButton}>
               <FavoriteButton />
             </View>
-            <ImageBackground style={styles.drinkImage} source={{ uri: this.state.specificDrink.url }}>
+            <ImageBackground style={styles.drinkImage} source={{ uri: this.state.specificDrink.url }} >
               <View style={styles.drinkNameContainer}>
                 <View style={{ opacity: 1 }}>
                   <Text style={styles.drinkNameText}>{this.state.specificDrink.name}</Text>
@@ -131,7 +150,13 @@ class SpecificDrinkscreen extends Component {
             </View>
           </ImageBackground>
         </View>
-      </ScrollView>
+      </View>
+      )
+      : ( <View style={{justifyContent: 'center', alignItems: 'center'}}>
+        <ActivityIndicator size = 'large'/>
+      </View>
+    )}
+    </ScrollView>
     );
   }
 }

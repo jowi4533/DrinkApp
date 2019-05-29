@@ -20,6 +20,8 @@ import bgImage from "../pictures/236.jpg";
 import barIcon from "../pictures/barIcon.png";
 import heartIcon from "../pictures/heartIcon.png";
 import notesIcon from "../pictures/notesIcon.png";
+import lock2 from "../pictures/lock2.png";
+import lock3 from "../pictures/lock3.png";
 import {colors} from "../assets/colors.js";
 
 const { width: WIDTH, height: HEIGHT } = Dimensions.get("window");
@@ -86,10 +88,11 @@ class MyPagescreen extends Component {
     if(this.state.loggedIn){
       return(
         <View>
-        <Text> sup bish ur logged in as {this.state.userAuth.currentUser.email} </Text>
+        <Text>sup bish ur logged in as {this.state.userAuth.currentUser.email} </Text>
         <TouchableOpacity
-        onPress= {this.logOutUser.bind(this)}>
-        <Text>SIGN OUT</Text>
+          style={styles.logoutButton}
+          onPress= {this.logOutUser.bind(this)}>
+        <Text style={styles.logoutButtonText}>SIGN OUT</Text>
         </TouchableOpacity>
         </View>
       )
@@ -99,16 +102,107 @@ class MyPagescreen extends Component {
           style={styles.loginButton}
           onPress={() => this.props.navigation.navigate("Login")}
         >
-          <Text style={styles.loginButtonText}> Log in or Register to sync your data </Text>
+          <Text style={styles.loginButtonText}>Log in or Register to sync your data</Text>
         </TouchableOpacity>
       )
     }
   }
 
   render() {
+    if (this.state.loggedIn !== true) {
+      return (
+        <View style={styles.backgroundContainer}>
+          <View style={styles.loginButtonContainer}>
+            {this.loadUserFramework()}
+          </View>
 
+
+          <View style={styles.container}>
+
+            <Text style={styles.information}>Login to enable below functionality</Text>
+
+            <View style={styles.myBarButtonContainer}>
+              <TouchableOpacity
+                disabled='true'
+                style={styles.myBarButton}
+                onPress={() => this.props.navigation.navigate("MyBar")}
+              >
+                <View style={styles.myBarButtonImageContainer}>
+                  <Image
+                    source={barIcon}
+                    style={styles.myBarButtonImage}
+                  />
+                </View>
+                <View style={styles.myBarButtonTextContainer}>
+                  <Text style={styles.myBarButtonTextHeading}>My Bar</Text>
+                  <Text style={styles.myBarButtonTextBody}>Select ingredients that you have at home to see what drinks you can make</Text>
+                </View>
+
+                <View style={styles.lockContainer}>
+                  <Image source={lock3} style={styles.lock}>
+                  </Image>
+                </View>
+
+              </TouchableOpacity>
+            </View>
+            <View style={styles.myFavoritesButtonContainer}>
+              <TouchableOpacity
+                disabled='true'
+                style={styles.myFavoritesButton}
+                onPress={() => this.props.navigation.navigate("MyFavoriteDrinks")}
+              >
+                <View style={styles.myFavoritesButtonImageContainer}>
+                  <Image
+                    source={heartIcon}
+                    style={styles.myFavoritesButtonImage}
+                  />
+                </View>
+                <View style={styles.myFavoritesButtonTextContainer}>
+                  <Text style={styles.myFavoritesButtonTextHeading}>My Favorites</Text>
+                  <Text style={styles.myFavoritesButtonTextBody}>Mark your favorite drinks with a heart and you will find them here</Text>
+                </View>
+
+                <View style={styles.lockContainer}>
+                  <Image source={lock3} style={styles.lock}>
+                  </Image>
+                </View>
+
+              </TouchableOpacity>
+            </View>
+            <View style={styles.myNotesButtonContainer}>
+              <TouchableOpacity
+                disabled='true'
+                style={styles.myNotesButton}
+                onPress={() => this.props.navigation.navigate("MyNotes")}
+              >
+                <View style={styles.myNotesButtonImageContainer}>
+                  <Image
+                    source={notesIcon}
+                    style={styles.myNotesButtonImage}
+                  />
+                </View>
+                <View style={styles.myNotesButtonTextContainer}>
+                  <Text style={styles.myNotesButtonTextHeading}>My Notes</Text>
+                  <Text style={styles.myNotesButtonTextBody}>Create notes to make you remember buying that last ingredient for example </Text>
+                </View>
+
+                <View style={styles.lockContainer}>
+                  <Image source={lock3} style={styles.lock}>
+                  </Image>
+                </View>
+
+              </TouchableOpacity>
+            </View>
+          </View>
+
+
+        </View>
+      );
+    }
+
+    else {
     return (
-      <ImageBackground style={styles.backgroundContainer}>
+      <View style={styles.backgroundContainer}>
         <View style={styles.loginButtonContainer}>
         {this.loadUserFramework()}
         </View>
@@ -167,13 +261,24 @@ class MyPagescreen extends Component {
             </TouchableOpacity>
           </View>
         </View>
-      </ImageBackground>
+      </View>
     );
+  }
   }
 }
 export default MyPagescreen;
 
 const styles = StyleSheet.create({
+  notLoggedInContainer: {
+    flex: 1,
+    backgroundColor: "rgba(255, 0, 0, 0.5)",
+    //opacity: 0.5,
+  },
+  notLoggedInLock: {
+    resizeMode: 'contain',
+    flex: 1,
+  },
+
   backgroundContainer: {
     flex: 1,
     width: null,
@@ -187,7 +292,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.darkgreen,
     justifyContent: 'center',
     alignItems: 'center',
-    paddingVertical: 17,
+    paddingVertical: 15,
   },
 
   loginButton: {
@@ -208,10 +313,36 @@ const styles = StyleSheet.create({
     textAlign: "center"
   },
 
+  logoutButton: {
+    elevation: 10,
+    width: WIDTH/1.1,
+    height: 45,
+    borderRadius: 10,
+    //marginTop:  35,
+    justifyContent: "center",
+    backgroundColor: colors.white,
+  },
+
+  logoutButtonText: {
+    color: colors.black,
+    fontSize: 18,
+    //fontWeight: 'bold',
+    fontFamily: 'Quicksand-Bold',
+    textAlign: "center"
+  },
+
   container: {
     flex: 1,
     //alignItems: "center",
     //justifyContent: "center"
+  },
+
+  information: {
+    fontSize: 18,
+    fontFamily: 'Quicksand-Medium',
+    textAlign: 'center',
+    borderBottomWidth: 1,
+    borderBottomColor: colors.black,
   },
 
   myBarButtonContainer: {
@@ -233,12 +364,12 @@ const styles = StyleSheet.create({
   },
 
   myBarButtonImage: {
-    elevation: 20,
     height: 95,
     width: 95,
   },
 
   myBarButtonTextContainer: {
+    backgroundColor: colors.white,
     width: WIDTH - 165,
     justifyContent: 'center',
   },
@@ -261,6 +392,17 @@ const styles = StyleSheet.create({
     color: colors.darkgray,
   },
 
+  lockContainer: {
+    //backgroundColor: colors.lightred,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+
+  lock: {
+    opacity: 0.5,
+    resizeMode: 'contain',
+    //flex: 1,
+  },
 
   myFavoritesButtonContainer: {
     height: 135,
@@ -282,7 +424,6 @@ const styles = StyleSheet.create({
   },
 
   myFavoritesButtonImage: {
-    elevation: 20,
     //marginLeft: 5,
     //alignSelf: 'center',
     height: 95,
@@ -324,7 +465,7 @@ const styles = StyleSheet.create({
 
   myNotesButton: {
     flex: 1,
-    backgroundColor: colors.white,
+    backgroundColor: colors.midblue,
     flexDirection: "row"
   },
 
@@ -333,7 +474,6 @@ const styles = StyleSheet.create({
   },
 
   myNotesButtonImage: {
-    elevation: 20,
     height: 95,
     width: 95,
   },

@@ -165,9 +165,9 @@ class MyNotesscreen extends Component {
       prevID: this.lastObjectID(this.state.personalNotes)
     });
   };
-  returnNote(id, text) {
+  returnNote(id, text, noteStatus) {
     this.setState(prevState => ({
-      personalNotes: [...prevState.personalNotes, { id: id, text: text }]
+      personalNotes: [...prevState.personalNotes, { id: id, text: text, noteStatus:noteStatus }]
     }));
   }
   removeNote(id) {
