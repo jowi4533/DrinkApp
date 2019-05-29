@@ -70,6 +70,14 @@ class Registerscreen extends Component {
     const email =  this.state.email
     const password =  this.state.password
 
+    const userData = {
+      email: this.state.email,
+      password: this.state.password,
+      myFavourites: {},
+      myBar: {},
+      myNotes: {}
+    }
+
     const promise = this.state.userAuth.createUserWithEmailAndPassword(email, password)
     promise.catch(e => console.log(e.message))
 
