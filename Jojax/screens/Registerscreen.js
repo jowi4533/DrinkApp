@@ -42,14 +42,16 @@ class Registerscreen extends Component {
   createNewUser(){
     const data = {
       email: this.state.email,
-      password: this.state.password
+      password: this.state.password,
+      myFavorites: {},
+      myBar: {},
     }
     usersDB.push(data);
   }
 
 
 
-  render(){
+  render(){ 
     return (
       <ImageBackground source={bgImage} style={styles.backgroundContainer}>
       <View style= {styles.textContainer}>
