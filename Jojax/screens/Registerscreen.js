@@ -26,6 +26,7 @@ class Registerscreen extends Component {
       password: 'Password',
       repeatPassword: 'Repeat Password',
 
+      usersDB: props.screenProps.usersDB,
       userAuth : props.screenProps.userAuth,
       loggedIn: false,
 
@@ -67,11 +68,18 @@ class Registerscreen extends Component {
   }
 
   createNewUser(){
-    const email =  this.state.email
-    const password =  this.state.password
+    let data = {
+      email: this.state.email,
+      password: this.state.password,
+    }
 
-    const promise = this.state.userAuth.createUserWithEmailAndPassword(email, password)
+
+
+    const promise = this.state.userAuth.createUserWithEmailAndPassword(data.email, data.password)
     promise.catch(e => console.log(e.message))
+
+    data.email = this.state.email.toLowerCase()
+    this.state.usersDB.push(data)
 
     this.props.navigation.navigate("AllDrinks")
     this.setState({loggedIn: true})
