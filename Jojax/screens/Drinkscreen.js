@@ -443,9 +443,11 @@ const styles = StyleSheet.create({
   },
 
   ingredientsText: {
-    textTransform: 'uppercase',
+    textTransform: 'capitalize',
     fontSize: 14,
-    color: "rgba(108, 122, 137, 1)"
+    color: "rgba(108, 122, 137, 1)",
+    fontFamily: 'Quicksand-Medium',
+
   },
   //addToFavoriteButton:{
   //  position: 'absolute',

@@ -159,7 +159,6 @@ class App extends Component {
 
   async componentDidMount(){
   await Font.loadAsync({
-
     'Quicksand-Bold' : require('./fonts/Quicksand-Bold.ttf'),
       'Quicksand-Light' : require('./fonts/Quicksand-Light.ttf'),
         'Quicksand-Medium' : require('./fonts/Quicksand-Medium.ttf'),

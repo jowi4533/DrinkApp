@@ -108,6 +108,10 @@ class Explorescreen extends Component {
     this.loopDiscoverWeekly()
     this.loopClassicDrinks()
   }
+  //componentDidMount(){
+    //this.setState({ loaded: true });
+
+  //}
 
   static navigationOptions = {
     title: 'Explore',
