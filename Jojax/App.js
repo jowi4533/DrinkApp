@@ -37,6 +37,7 @@ if(!firebase.apps.length){
 //Everything database related (text, passwords, users etc)
 let database = firebase.database();
 let drinksDB = database.ref('Drinks')
+let usersDB = database.ref('Users')
 
 //Everything user related
 const userAuth = firebase.auth()
@@ -139,9 +140,15 @@ class App extends Component {
     super(props)
     this.state = {
       userAuth : userAuth,
+      usersDB: usersDB,
+
+      allUsers: null,
+      allUserKeys: null,
       allDrinkItems: null,
       allDrinkKeys: null,
+
       drinks: [],
+      users: [],
       loaded: false,
 
       fontLoaded: false
@@ -192,20 +199,43 @@ class App extends Component {
 
   initailizeListener () {
     drinksDB.once("value", this.retriveDrinkItems.bind(this), this.errData)
+    usersDB.on("value", this.retrieveUsers.bind(this), this.errDat)
   }
 
   retriveDrinkItems (data)  {
-    this.setState({allDrinkItems: data.val()});
-    this.setState({allDrinkKeys: Object.keys(data.val())});
+    this.state.allDrinkItems = data.val()
+    this.state.allDrinkKeys = Object.keys(data.val())
 
     this.loadDrinks()
     this.setState({loaded:true})
-
   }
+
+  retrieveUsers(data){
+    this.state.allUsers = data.val()
+    this.state.allUserKeys = Object.keys(data.val())
+    this.loadUsers()
+  }
+
 
   errData = (err) =>{
     console.log('Error!');
     console.log(err);
+  }
+
+  loadUsers(){
+    let allUsers = []
+
+    for(let i = 0; i < this.state.allUserKeys.length; i++){
+      let k = this.state.allUserKeys[i];
+
+      let user = {
+        email: this.state.allUsers[k].email,
+        password: this.state.allUsers[k].password,
+      }
+      allUsers.push(user)
+    }
+    this.state.users = allUsers;
+
   }
 
   loadDrinks(){
@@ -226,8 +256,9 @@ class App extends Component {
       }
       allDrinks.push(drink)
     }
-    this.setState({drinks: allDrinks})
+    this.state.drinks = allDrinks
   }
+
 
   render(){
     if(this.state.loaded === true){

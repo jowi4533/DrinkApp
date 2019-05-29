@@ -88,7 +88,7 @@ class MyPagescreen extends Component {
     if(this.state.loggedIn){
       return(
         <View>
-        <Text>sup bish ur logged in as{this.state.userAuth.currentUser.email} </Text>
+        <Text>sup bish ur logged in as {this.state.userAuth.currentUser.email} </Text>
         <TouchableOpacity
           style={styles.logoutButton}
           onPress= {this.logOutUser.bind(this)}>
@@ -418,7 +418,7 @@ const styles = StyleSheet.create({
 
   myNotesButton: {
     flex: 1,
-    backgroundColor: colors.white,
+    backgroundColor: colors.midblue,
     flexDirection: "row"
   },
 

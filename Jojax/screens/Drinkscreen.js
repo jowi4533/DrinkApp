@@ -51,6 +51,8 @@ class Drinkscreen extends Component {
       searchBarDrinks: [],
 
       userAuth : props.screenProps.userAuth,
+      usersDB: props.screenProps.usersDB,
+      users: props.screenProps.users,
       loggedIn : null,
 
     };
@@ -192,14 +194,19 @@ initiateListener(){
         }
       }
     } else{
-      this.setState({drinksDisplayed: this.state.filteredDrinks})
-
+      if(this.state.searchBarCharacters.length !== 0){
+        this.setState({drinksDisplayed: []})
+      }
+      else {
+        this.setState({drinksDisplayed: this.state.filteredDrinks})
+      }
     }
 
   }
 
   loopOverDrinks(searchBarCharacters){
     searchBarDrinks = []
+    this.state.searchBarCharacters = searchBarCharacters
     for(let i = 0; i < this.state.drinks.length; i++){
       let drinkName = this.state.drinks[i].name.toLowerCase()
 
@@ -298,7 +305,12 @@ initiateListener(){
             <View style={styles.textHeadingContainer}>
               <Text style={styles.textDrinkName}>{item.name}</Text>
               <View style={styles.SmallFavoriteButtonContainer}>
-                <SmallFavoriteButton>
+                <SmallFavoriteButton
+                userAuth = {this.state.userAuth}
+                usersDB = {this.state.usersDB}
+                users = {this.state.users}
+                drink = {item}
+                >
                 </SmallFavoriteButton>
               </View>
             </View>
