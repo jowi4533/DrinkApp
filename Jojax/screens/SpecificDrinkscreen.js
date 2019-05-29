@@ -31,15 +31,22 @@ class SpecificDrinkscreen extends Component {
     specificDrink : this.props.navigation.state.params.drink,
     instructions: [],
     ingredients: [],
-    loaded: false
+    ImageURL: [],
+    Imageloaded: false,
+    loaded:true
+
   }
+  console.log(this.state.specificDrink.url)
   this.loadIngredients()
 }
+imageloaded(){
+
+}
 componentWillMount(){
-  this.setState({
-    specificDrink: this.props.navigation.state.params.drink,
-    loaded: true
-  })
+  //this.setState({
+  //  specificDrink: this.state.specificDrink.url
+  //  loaded: true
+//  })-
 
 }
   loadServings(){
