@@ -35,15 +35,11 @@ if(!firebase.apps.length){
 }
 
 //Everything database related (text, passwords, users etc)
-
 let database = firebase.database();
 let drinksDB = database.ref('Drinks')
-let usersDB = database.ref('Users');
-export {usersDB};
-//Everything Storage (Images) related
 
-let firebaseStorage = firebase.storage();
-let imagesRef = firebaseStorage.ref('Drinkpictures')
+//Everything user related
+const userAuth = firebase.auth()
 
 //-------------------------------//
 
@@ -142,16 +138,13 @@ class App extends Component {
   constructor(props){
     super(props)
     this.state = {
-      fontLoaded: false,
-      userKeys: null,
-      usersDB: usersDB,
-
+      userAuth : userAuth,
       allDrinkItems: null,
       allDrinkKeys: null,
-
       drinks: [],
-
       loaded: false,
+
+      fontLoaded: false
 
     }
     this.loadResources()
@@ -163,6 +156,22 @@ class App extends Component {
       'Quicksand-Light' : require('./fonts/Quicksand-Light.ttf'),
         'Quicksand-Medium' : require('./fonts/Quicksand-Medium.ttf'),
          'Quicksand-Regular' : require('./fonts/Quicksand-Regular.ttf'),
+
+    'Barlow-Bold' : require('./fonts/Barlow-Bold.ttf'),
+    'Barlow-Light' : require('./fonts/Barlow-Light.ttf'),
+    'Barlow-Medium' : require('./fonts/Barlow-Medium.ttf'),
+    'Barlow-Regular' : require('./fonts/Barlow-Regular.ttf'),
+    'Barlow-SemiBold' : require('./fonts/Barlow-SemiBold.ttf'),
+
+    'Maitree-Bold' : require('./fonts/Maitree-Bold.ttf'),
+    'Maitree-Medium' : require('./fonts/Maitree-Medium.ttf'),
+    'Maitree-Regular' : require('./fonts/Maitree-Regular.ttf'),
+    'Maitree-Light' : require('./fonts/Maitree-Light.ttf'),
+
+
+
+
+
   }).then(()=>{
         this.setState({ fontLoaded: true });
   })
@@ -173,7 +182,6 @@ class App extends Component {
   }
 
   initailizeListener () {
-    usersDB.once("value", this.retrieveUserKeys.bind(this), this.errData);
     drinksDB.once("value", this.retriveDrinkItems.bind(this), this.errData)
   }
 
@@ -184,12 +192,6 @@ class App extends Component {
     this.loadDrinks()
     this.setState({loaded:true})
 
-  }
-
-  retrieveUserKeys  (data)  {
-    this.setState({userKeys: Object.keys(data.val())});
-    //console.log(this.state.keys);
-    //console.log("testingkeys")
   }
 
   errData = (err) =>{

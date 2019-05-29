@@ -60,15 +60,6 @@ import {colors} from "../assets/colors.js";
 const numColumns = 3;
 
 class MyBarscreen extends Component {
-  static navigationOptions = {
-    title: 'My Bar',
-    headerLayoutPreset: 'center',
-    headerTitleStyle: {
-      width: '100%',
-      fontWeight: 'bold',
-      fontSize: 25
-    },
-  };
   constructor(props) {
     super(props)
 
@@ -93,8 +84,54 @@ class MyBarscreen extends Component {
       {name:"Vodka",selected: false, img:require("../pictures/mybarSpirits/white_vermouth_bottle.png")},
       {name:"Whiskey",selected: false, img:require("../pictures/mybarSpirits/white_wine_bottle.png")}],
 
-      isHighlighted: [],
+      isHighlighted:[],
+      userAuth : props.screenProps.userAuth,
+      loggedIn : null
     }
+
+    this.setUpNavigationListener()
+    this.initiateListener()
+  }
+
+  static navigationOptions = {
+    title: 'My Bar',
+    headerLayoutPreset: 'center',
+    headerTitleStyle: {
+      width: '100%',
+      fontWeight: 'bold',
+      fontSize: 25
+    },
+  };
+
+  setUpNavigationListener() {
+    this.props.navigation.addListener('didFocus', () => {
+      this.checkUserLoggedIn()
+      // get your new data here and then set state it will rerender
+      console.log("In navigationlistener (MYBARSCREEN)")
+    });
+  }
+
+  checkUserLoggedIn(){
+    if(this.state.userAuth.currentUser === null){
+      //this.state.loggedIn = false
+      this.setState({loggedIn: false})
+    } else{
+      //this.state.loggedIn = true
+      this.setState({loggedIn: true})
+    }
+  }
+
+  initiateListener(){
+    this.state.userAuth.onAuthStateChanged(function(user) {
+      if (user) {
+        console.log("In listener, user online (MYBARSCREEN)")
+        // User is signed in.
+        var displayName = user.displayName;
+        var email = user.email;
+      } else {
+        console.log("In listener, user offline (MYBARSCREEN)")
+      }
+    });
   }
 
   _onButtonPress = item => {

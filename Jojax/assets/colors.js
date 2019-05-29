@@ -7,6 +7,7 @@ export const colors = {
   lightblue: 'rgba(107, 185, 240, 1)',    // name: malibu
   midblue: 'rgba(64, 111, 154, 1)',
   darkblue: 'rgba(31, 58, 147, 1)',       // name: Jacksons purple,
+  verylightred: 'rgba(236, 100, 75, 1)',  // name: Soft red
   lightred: 'rgba(240, 52, 52, 1)',       // name: Pomegranate,
   midred: 'rgba(242, 38, 19, 1)',         // name: Scarlet,
   darkred: 'rgba(207, 0, 15, 1)',         // FavoritesButton

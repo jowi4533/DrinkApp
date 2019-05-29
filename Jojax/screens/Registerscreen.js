@@ -19,6 +19,19 @@ const { width: WIDTH, height: HEIGHT } = Dimensions.get("window");
 
 
 class Registerscreen extends Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      email: 'Email',
+      password: 'Password',
+      repeatPassword: 'Repeat Password',
+
+      userAuth : props.screenProps.userAuth,
+      loggedIn: false,
+
+    }
+  }
+
   static navigationOptions = {
     title: 'Register',
     headerTitleStyle: {
@@ -27,19 +40,8 @@ class Registerscreen extends Component {
       fontSize: 25
     },
   };
-  constructor(props){
-    super(props);
-    this.state = {
-      email: 'Email',
-      password: 'Password',
-      repeatPassword: 'Repeat Password',
-
-    }
-   let usersDB = props.screenProps.usersDB;
-  }
 
   readValues(){
-    console.log(this.usersDB)
     if(this.state.password === this.state.repeatPassword){
       if(this.checkIfUserExist() === false){
         this.createNewUser();
@@ -50,66 +52,104 @@ class Registerscreen extends Component {
     }
   }
 
-  createNewUser(){
-    const data = {
-      email: this.state.email,
-      password: this.state.password
-    }
-    this.usersDB.push(data);
+  initiateListener(){
+    this.state.userAuth.onAuthStateChanged(function(user) {
+      if (user) {
+        console.log(user.displayName)
+        // User is signed in.
+        var displayName = user.displayName;
+        var email = user.email;
+
+      } else {
+        console.log("user is logged out")
+      }
+    });
   }
 
+  createNewUser(){
+    const email =  this.state.email
+    const password =  this.state.password
 
+    const promise = this.state.userAuth.createUserWithEmailAndPassword(email, password)
+    promise.catch(e => console.log(e.message))
+
+    this.props.navigation.navigate("AllDrinks")
+    this.setState({loggedIn: true})
+  }
+
+  checkIfUserExist(){
+    return false;
+  }
+
+  logOutUser(){
+    this.state.userAuth.signOut()
+    this.setState({loggedIn: false})
+  }
 
   render(){
-    return (
-      <ImageBackground source={bgImage} style={styles.backgroundContainer}>
-      <View style= {styles.textContainer}>
-      <Text style = {styles.textRegister}>
-      REGISTER NEW ACCOUNT
-      </Text>
-      </View>
-      <View>
-      <TextInput
-      style={styles.input}
-      placeholder = {'Email'}
-      placeholderTextColor = {'rgba(0,0,0,0.5)'}
-      underlineColorAndroid = 'transparent'
-      onChangeText = {email => this.setState({email})}
-      />
-      </View>
-      <View style= {styles.input2}>
-      <TextInput
-      style={styles.input}
-      placeholder = {"Password"}
-      secureTextEntry= {true}
-      placeholderTextColor = {'rgba(0,0,0,0.5)'}
-      underlineColorAndroid = 'transparent'
-      onChangeText = {password => this.setState({password})}
-      />
-      </View>
-      <View style= {styles.input2}>
-      <TextInput
-      style={styles.input}
-      placeholder = {"Repeat Password"}
-      secureTextEntry= {true}
-      placeholderTextColor = {'rgba(0,0,0,0.5)'}
-      underlineColorAndroid = 'transparent'
-      onChangeText = {repeatPassword => this.setState({repeatPassword})}
-      />
-      </View>
-      <View style ={styles.termsContainer}>
-      <Text style ={styles.textTerms}>
-      By tapping "Register New Account" you agree to the terms & conditions
-      </Text>
-      </View>
+    if(this.state.loggedIn=== false){
+      return (
+        <ImageBackground source={bgImage} style={styles.backgroundContainer}>
+        <View style= {styles.textContainer}>
+        <Text style = {styles.textRegister}>
+        REGISTER NEW ACCOUNT
+        </Text>
+        </View>
+        <View>
+        <TextInput
+        style={styles.input}
+        placeholder = {'Email'}
+        placeholderTextColor = {'rgba(0,0,0,0.5)'}
+        underlineColorAndroid = 'transparent'
+        onChangeText = {email => this.setState({email})}
+        />
+        </View>
+        <View style= {styles.input2}>
+        <TextInput
+        style={styles.input}
+        placeholder = {"Password"}
+        secureTextEntry= {true}
+        placeholderTextColor = {'rgba(0,0,0,0.5)'}
+        underlineColorAndroid = 'transparent'
+        onChangeText = {password => this.setState({password})}
+        />
+        </View>
+        <View style= {styles.input2}>
+        <TextInput
+        style={styles.input}
+        placeholder = {"Repeat Password"}
+        secureTextEntry= {true}
+        placeholderTextColor = {'rgba(0,0,0,0.5)'}
+        underlineColorAndroid = 'transparent'
+        onChangeText = {repeatPassword => this.setState({repeatPassword})}
+        />
+        </View>
+        <View style ={styles.termsContainer}>
+        <Text style ={styles.textTerms}>
+        By tapping "Register New Account" you agree to the terms & conditions
+        </Text>
+        </View>
 
-      <TouchableOpacity
-      onPress={this.readValues.bind(this)}
-      style={styles.registerButton}>
-      <Text style = {styles.textRegisterButton}>REGISTER NEW ACCOUNT</Text>
-      </TouchableOpacity>
-      </ImageBackground>
-    );
+        <TouchableOpacity
+        onPress={this.readValues.bind(this)}
+        style={styles.registerButton}>
+        <Text style = {styles.textRegisterButton}>REGISTER NEW ACCOUNT</Text>
+        </TouchableOpacity>
+        </ImageBackground>
+      );
+    } else{
+      return(
+        <View>
+        <Text> Ur logged in! </Text>
+
+        <TouchableOpacity
+        style={styles.loginButton}
+        onPress= {this.logOutUser.bind(this)}>
+        <Text style = {styles.textLoginButton}>SIGN OUT</Text>
+        </TouchableOpacity>
+        </View>
+      );
+    }
   }
 
 

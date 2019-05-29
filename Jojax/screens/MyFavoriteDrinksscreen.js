@@ -19,6 +19,20 @@ import SmallFavoriteButton from "../components/SmallFavoriteButton.js";
 import {colors} from "../assets/colors.js";
 
 class MyFavoriteDrinkscreen extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      dataSource: [],
+      vodkaIMG: "",
+
+      userAuth : props.screenProps.userAuth,
+      loggedIn : null
+    };
+
+    this.setUpNavigationListener()
+    this.initiateListener()
+  }
+
   static navigationOptions = {
     title: 'My Favorites',
     headerTitleStyle: {
@@ -27,12 +41,36 @@ class MyFavoriteDrinkscreen extends Component {
       fontSize: 25
     },
   };
-  constructor() {
-    super();
-    this.state = {
-      dataSource: [],
-      vodkaIMG: ""
-    };
+
+  setUpNavigationListener() {
+    this.props.navigation.addListener('didFocus', () => {
+      this.checkUserLoggedIn()
+      // get your new data here and then set state it will rerender
+      console.log("In navigationlistener (MyFavoritesScreen)")
+    });
+  }
+
+  checkUserLoggedIn(){
+    if(this.state.userAuth.currentUser === null){
+      //this.state.loggedIn = false
+      this.setState({loggedIn: false})
+    } else{
+      //this.state.loggedIn = true
+      this.setState({loggedIn: true})
+    }
+  }
+
+  initiateListener(){
+    this.state.userAuth.onAuthStateChanged(function(user) {
+      if (user) {
+        console.log("In listener, user online (MyFavoritesScreen)")
+        // User is signed in.
+        var displayName = user.displayName;
+        var email = user.email;
+      } else {
+        console.log("In listener, user offline (MyFavoritesScreen)")
+      }
+    });
   }
 
   renderItem = item => {

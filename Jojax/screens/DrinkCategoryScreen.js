@@ -103,13 +103,13 @@ const styles = StyleSheet.create({
  scrollview: {
    backgroundColor: 'transparent'
  },
- seasonalDrinksText: {
-   fontSize: 25,
-   fontWeight: "bold",
-   marginTop: 10,
-   marginLeft: 10,
-   marginBottom: 10
- },
+ // seasonalDrinksText: {
+ //   fontSize: 25,
+ //   fontWeight: "bold",
+ //   marginTop: 10,
+ //   marginLeft: 10,
+ //   marginBottom: 10
+ // },
  seasonalImage: {
    width: (WIDTH - 40) / 2,
    height: (WIDTH - 40) / 2,
@@ -119,15 +119,16 @@ const styles = StyleSheet.create({
    textAlign: 'center',
    fontSize: 18,
    fontWeight: "bold",
-   marginLeft:10
+   marginLeft:10,
+   color: colors.black,
  },
  seasonalBox: {
    borderRadius: 5,
-   backgroundColor: "white",
+   backgroundColor: colors.white,
    margin: 5
  },
  drinkNameTextContainer:{
-  // backgroundColor:'blue',
+   //backgroundColor:'blue',
    marginLeft:5,
    marginBottom:5,
    width: (WIDTH - 40) / 2,
