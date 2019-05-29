@@ -339,7 +339,7 @@ const styles = StyleSheet.create({
 
   information: {
     fontSize: 18,
-    fontFamily: 'Quicksand-Medium',
+    fontFamily: 'Barlow-Regular',
     textAlign: 'center',
     borderBottomWidth: 1,
     borderBottomColor: colors.black,
@@ -376,7 +376,7 @@ const styles = StyleSheet.create({
 
   myBarButtonTextHeading: {
     //fontWeight: "bold",
-    fontFamily: 'Quicksand-Bold',
+    fontFamily: 'Muli-Bold',
     fontSize: 18,
     marginLeft: 15,
     //marginTop:  12,
@@ -385,7 +385,7 @@ const styles = StyleSheet.create({
   },
 
   myBarButtonTextBody: {
-    fontFamily: 'Quicksand-Medium',
+    fontFamily: 'Muli-Regular',
     fontSize: 14,
     marginLeft: 15,
     //marginTop:  8,
@@ -438,7 +438,7 @@ const styles = StyleSheet.create({
 
   myFavoritesButtonTextHeading: {
     //fontWeight: "bold",
-    fontFamily: 'Quicksand-Bold',
+    fontFamily: 'Krub-Bold',
     fontSize: 18,
     marginLeft: 15,
     //marginTop:  12,
@@ -447,7 +447,7 @@ const styles = StyleSheet.create({
   },
 
   myFavoritesButtonTextBody: {
-    fontFamily: 'Quicksand-Medium',
+    fontFamily: 'Krub-Regular',
     fontSize: 14,
     marginLeft: 15,
     //marginTop:  8,
@@ -494,7 +494,7 @@ const styles = StyleSheet.create({
   },
 
   myNotesButtonTextBody: {
-    fontFamily: 'Quicksand-Medium',
+    fontFamily: 'Quicksand-Regular',
     fontSize: 14,
     marginLeft: 15,
     //marginTop:  8,

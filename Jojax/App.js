@@ -168,6 +168,15 @@ class App extends Component {
     'Maitree-Regular' : require('./fonts/Maitree-Regular.ttf'),
     'Maitree-Light' : require('./fonts/Maitree-Light.ttf'),
 
+    'Krub-Bold' : require('./fonts/Krub-Bold.ttf'),
+    'Krub-Medium' : require('./fonts/Krub-Medium.ttf'),
+    'Krub-Regular' : require('./fonts/Krub-Regular.ttf'),
+    'Krub-Light' : require('./fonts/Krub-Light.ttf'),
+
+    'Muli-Bold' : require('./fonts/Muli-Bold.ttf'),
+    'Muli-Regular' : require('./fonts/Muli-Regular.ttf'),
+    'Muli-Light' : require('./fonts/Muli-Light.ttf'),
+
 
 
 
