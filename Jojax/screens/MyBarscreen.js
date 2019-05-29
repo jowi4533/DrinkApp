@@ -16,28 +16,7 @@ import {
   NativeModules
 } from "react-native";
 const { width: WIDTH, height: HEIGHT } = Dimensions.get("window");
-import one from "../pictures/mybarSpirits/dark_rum_bottle.png";
-import two from "../pictures/mybarSpirits/amaretto_bottle.png";
-import three from "../pictures/mybarSpirits/ginger_beer_bottle.png";
-import four from "../pictures/mybarSpirits/blue_curacao_liqueur_bottle.png";
-import five from "../pictures/mybarSpirits/brandy_bottle.png";
-import six from "../pictures/mybarSpirits/champange_bottle.png";
-import seven from "../pictures/mybarSpirits/coconut_liqueur_bottle.png";
-import eight from "../pictures/mybarSpirits/coffe_liqueur_bottle.png";
-import nine from "../pictures/mybarSpirits/cointreau_bottle.png";
-import ten from "../pictures/mybarSpirits/golden_rum_bottle.png";
-import eleven from "../pictures/mybarSpirits/grand_marnier_bottle.png";
-import twelve from "../pictures/mybarSpirits/melon_liqueur_bottle.jpg";
-import thirteen from "../pictures/mybarSpirits/red_vermouth_bottle.png";
-import fourteen from "../pictures/mybarSpirits/red_wine_bottle.png";
-import fiveteen from "../pictures/mybarSpirits/sparkling_wine_bottle.png";
-import sixteen from "../pictures/mybarSpirits/tequila_bottle.png";
-import seventeen from "../pictures/mybarSpirits/triple_sec_bottle.png";
-import eighteen from "../pictures/mybarSpirits/vodka_bottle.png";
-import nineteen from "../pictures/mybarSpirits/whiskey_bottle.png";
-import twenty from "../pictures/mybarSpirits/white_rum_bottle.png";
-import twentyone from "../pictures/mybarSpirits/white_vermouth_bottle.png";
-import twentytwo from "../pictures/mybarSpirits/white_wine_bottle.png";
+
 
 import bgImage from "../pictures/236.jpg";
 import ginBottle from "../pictures/ginBottle.jpg";
