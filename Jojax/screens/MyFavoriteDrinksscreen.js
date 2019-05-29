@@ -10,7 +10,9 @@ import {
   TextInput,
   TouchableOpacity,
   ScrollView,
-  Image
+  Image,
+  FlatList,
+  ActivityIndicator
 } from "react-native";
 const { width: WIDTH, height: HEIGHT } = Dimensions.get("window");
 
@@ -24,15 +26,20 @@ class MyFavoriteDrinkscreen extends Component {
     this.state = {
       dataSource: [],
       vodkaIMG: "",
-
+      userFavorites: [1,2,3,4,5],
+      drinks: props.screenProps.drinks,
       userAuth : props.screenProps.userAuth,
-      loggedIn : null
+      loggedIn : null,
+      favoriteDrinkArray: [],
     };
 
     this.setUpNavigationListener()
     this.initiateListener()
   }
-
+  componentWillMount(){
+    var favoriteDrinks = this.matchFavoriteDrinks();
+      this.setState({ favoriteDrinkArray: favoriteDrinks });
+  }
   static navigationOptions = {
     title: 'My Favorites',
     headerTitleStyle: {
@@ -41,7 +48,16 @@ class MyFavoriteDrinkscreen extends Component {
       fontSize: 25
     },
   };
+  matchFavoriteDrinks(){
+    var favoriteDrinkArray = [];
+    for (var i = 0; i < this.state.userFavorites.length; i++){
 
+      var test = this.state.drinks.find(item => item.id === this.state.userFavorites[i]);
+      favoriteDrinkArray.push(test);
+      test = null;
+    }
+    return favoriteDrinkArray;
+  }
   setUpNavigationListener() {
     this.props.navigation.addListener('didFocus', () => {
       this.checkUserLoggedIn()
@@ -72,91 +88,106 @@ class MyFavoriteDrinkscreen extends Component {
       }
     });
   }
+  getIngredients = (data) => {
+    var string = data.toString();
+    string = string.replace(/,/g, ", ");
+    return (string)
+  };
 
-  renderItem = item => {
-    <View style={styles.drinkContainer}>
-      <TouchableOpacity style={styles.buttonDrink}>
-        <Image source={{ uri: item.image }} style={styles.imageDrink} />
-      </TouchableOpacity>
-    </View>;
+  renderItem1 = ({item, index}) => {
+    return (
+      <View style={styles.drinkContainer}>
+        <TouchableOpacity
+          style={styles.buttonDrink}
+          onPress={() => this.props.navigation.navigate("SpecDrinks", {drink:item})}
+        >
+          <View>
+            <Image
+              source={{ uri: item.url }}
+              style={styles.imageDrink}
+            />
+          </View>
+          <View style={styles.itemTextContainer}>
+            <View style={styles.textHeadingContainer}>
+              <Text style={styles.textDrinkName}>{item.name}</Text>
+              <View style={styles.SmallFavoriteButtonContainer}>
+                <SmallFavoriteButton>
+                </SmallFavoriteButton>
+              </View>
+            </View>
+
+            <View style={styles.ingredientsTextContainer}>
+              <Text style={styles.ingredientsText}>
+                {this.getIngredients(Object.keys(item.allIngredients))}
+              </Text>
+            </View>
+          </View>
+        </TouchableOpacity>
+      </View>
+    );
   };
 
 
   render() {
     return (
-        <View>
 
+          <View>
           <ScrollView>
-          <View style={styles.drinkContainer}>
-            <TouchableOpacity
-              style={styles.buttonDrink}
-              onPress={() => this.props.navigation.navigate("SpecDrinks")}
-            >
-            <View style = {styles.addToFavoriteButton}>
-              <SmallFavoriteButton>
-              </SmallFavoriteButton>
-            </View>
-              <View>
-                <Image
-                  source={{ uri: this.state.vodkaIMG }}
-                  style={styles.imageDrink}
-                />
-              </View>
-              <View style={styles.textBoxContainer}>
-                <Text style={styles.textDrinkName}>Long Island Ice Tea</Text>
-                <Text style={styles.textDrinkIngredients}>
-                  Gin, White Rum, Tequila, Triple Sec, Vodka, Syrup, Lemon
-                  Juice, Cola, Ice
-                </Text>
-              </View>
-            </TouchableOpacity>
-          </View>
+            <FlatList
+            data={this.state.favoriteDrinkArray}
+            renderItem={this.renderItem1}
+            keyExtractor={item => item.id}
+            extraData={this.state}
+          />
         </ScrollView>
-      </View>
+        </View>
+
     );
   }
 }
 export default MyFavoriteDrinkscreen;
 
 const styles = StyleSheet.create({
-
   drinkContainer: {
-    height: 105,
+    height: 105.8,
     width: WIDTH,
-    borderBottomWidth: 1,
-    borderBottomColor: "#dddddd",
+    borderBottomWidth: 0.8,
+    borderBottomColor: colors.midgray,
     flexDirection: "row"
   },
   buttonDrink: {
-    backgroundColor: "white",
     flex: 1,
     flexDirection: "row"
   },
   imageDrink: {
     height: 105,
-    width: 105
+    width: 105,
   },
   textDrinkName: {
+    width: '78%',
     fontSize: 18,
-    fontWeight: "bold",
+    fontFamily: 'Quicksand-Medium',
     marginLeft: 15,
     marginTop: 15,
-    color: "rgba(46, 49, 49, 1)",
-    marginRight: 10
+    color: colors.black,
   },
-  textDrinkIngredients: {
+
+  textHeadingContainer: {
+    width: WIDTH - 105,
+    flexDirection: "row",
+    justifyContent: 'space-between',
+  },
+
+  ingredientsTextContainer: {
+    marginLeft: 15,
+    width: '80%',
+  },
+
+  ingredientsText: {
+    textTransform: 'capitalize',
     fontSize: 14,
-    marginLeft: 15,
-    marginTop: 15,
-    color: "rgba(108, 122, 137, 1)"
+    color: colors.darkgray,
   },
-  textBoxContainer: {
-    width: WIDTH - 105
-  },
-  addToFavoriteButton:{
-    position: 'absolute',
-    right:12,
-    top:7,
-    zIndex:2
-  }
+
+
 });

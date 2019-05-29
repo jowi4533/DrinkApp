@@ -153,9 +153,9 @@ class App extends Component {
   async componentDidMount(){
   await Font.loadAsync({
     'Quicksand-Bold' : require('./fonts/Quicksand-Bold.ttf'),
-      'Quicksand-Light' : require('./fonts/Quicksand-Light.ttf'),
-        'Quicksand-Medium' : require('./fonts/Quicksand-Medium.ttf'),
-         'Quicksand-Regular' : require('./fonts/Quicksand-Regular.ttf'),
+    'Quicksand-Light' : require('./fonts/Quicksand-Light.ttf'),
+    'Quicksand-Medium' : require('./fonts/Quicksand-Medium.ttf'),
+    'Quicksand-Regular' : require('./fonts/Quicksand-Regular.ttf'),
 
     'Barlow-Bold' : require('./fonts/Barlow-Bold.ttf'),
     'Barlow-Light' : require('./fonts/Barlow-Light.ttf'),
@@ -222,6 +222,7 @@ class App extends Component {
         allIngredients: Object.assign({}, this.state.allDrinkItems[k].Ingredients.spirits, this.state.allDrinkItems[k].Ingredients.otherIngredients),
         categories: this.state.allDrinkItems[k].Categories,
         instructions: this.state.allDrinkItems[k].Preparation_instructions,
+        id : this.state.allDrinkItems[k].id,
       }
       allDrinks.push(drink)
     }

@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Ionicons, FontAwesome, Entypo, EvilIcons } from "@expo/vector-icons";
+import {StackActions} from 'react-navigation';
 import {
   View,
   Text,
