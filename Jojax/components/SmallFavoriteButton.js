@@ -11,15 +11,36 @@ import {colors} from "../assets/colors.js";
 export default class SmallFavoriteButton extends Component {
   constructor(props) {
     super(props);
-    this.state = {addedToFavorite: false};
+    this.state = {
+      addedToFavorite: false,
+      userAuth: props.userAuth,
+      usersDB: props.usersDB,
+      users: props.users,
+      drink: props.drink,
+    };
+
     this.addToFavorite = this.addToFavorite.bind(this);
   }
 addToFavorite(){
-  this.setState({
-    addedToFavorite: !this.state.addedToFavorite
-  });
+  this.setState({addedToFavorite: !this.state.addedToFavorite});
+
+  this.state.usersDB.orderByChild("email").equalTo(this.state.userAuth.currentUser.email).on("child_added",
+    (loggedInUser) =>{
+
+      if(loggedInUser.myFavourites === undefined){
+        let myFavourites = [this.state.drink]
+//        this.state.usersDB.child(loggedInUser.key).push(
+//          {myFavourites: myFravourites})
+      }
+      else {
+        console.log("finns redan, hora")
+      }
+
+    }
+  )
 
 }
+
 render(){
   const {addedToFavorite} = this.state
   return(
@@ -34,13 +55,9 @@ render(){
     />
   </View>
 </TouchableOpacity>
-
-
   );
 }
   }
-
-
 
 const styles = StyleSheet.create({
   favoriteButton:{
