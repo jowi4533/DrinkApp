@@ -120,7 +120,6 @@ componentWillMount(){
     return (
 
       <ScrollView>
-
         <View>
         <View style={{ height: WIDTH }}>
           <View style={styles.drinkImageContainer}>
@@ -177,7 +176,6 @@ componentWillMount(){
           </ImageBackground>
         </View>
       </View>
-
     </ScrollView>
     );
   }
