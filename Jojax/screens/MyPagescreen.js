@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import {Ionicons} from '@expo/vector-icons';
 import {
   View,
   Text,
@@ -84,48 +85,45 @@ class MyPagescreen extends Component {
     this.setState({ loggedIn: false });
   }
 
-  loadUserFramework() {
-    if (this.state.loggedIn) {
-      return (
-        <View>
-        <Text>sup bish ur logged in as {this.state.userAuth.currentUser.email} </Text>
-        <TouchableOpacity
-          style={styles.logoutButton}
-          onPress= {this.logOutUser.bind(this)}>
-        <Text style={styles.logoutButtonText}>SIGN OUT</Text>
-        </TouchableOpacity>
-        </View>
-      );
-    } else {
-      return (
-        <TouchableOpacity
-          style={styles.loginButton}
-          onPress={() => this.props.navigation.navigate("Login")}
-        >
-          <Text style={styles.loginButtonText}>
-            Log in or Register to sync your data
-          </Text>
-        </TouchableOpacity>
-      );
-    }
-  }
+  // loadUserFramework() {
+  //     return (
+  //
+  //
+  //     );
+  //
+  // }
 
   render() {
 
       return (
         <View style={styles.backgroundContainer}>
           <View style={styles.loginButtonContainer}>
-            {this.loadUserFramework()}
+
+            {this.state.loggedIn ? (
+              <TouchableOpacity
+                style={styles.logoutButton}
+                onPress= {this.logOutUser.bind(this)}
+              >
+                <Text style={styles.loginButtonText}>
+                  Sign out
+                </Text>
+              </TouchableOpacity>
+            ) : (
+              <TouchableOpacity
+                style={styles.loginButton}
+                onPress={() => this.props.navigation.navigate("Login")}
+              >
+                <Text style={styles.loginButtonText}>
+                  Log in or Register to sync your data
+                </Text>
+              </TouchableOpacity>
+            )}
+
           </View>
 
 
           <View style={styles.container}>
-            {this.state.loggedIn ? (
-              <View></View>
-            ) :
-            (
-              <Text style={styles.information}>Login to enable below functionality</Text>
-            )}
+
 
             <View style={styles.myBarButtonContainer}>
               <TouchableOpacity
@@ -149,8 +147,10 @@ class MyPagescreen extends Component {
                     <View>
                     </View>
                   ) : (
-                    <Image source={lock3} style={styles.lock}>
-                    </Image>
+                    <View style={styles.iconContainer}>
+                      <Ionicons name='md-lock' size={65}>
+                      </Ionicons>
+                    </View>
                   )}
                 </View>
 
@@ -178,8 +178,10 @@ class MyPagescreen extends Component {
                     <View>
                     </View>
                   ) : (
-                    <Image source={lock3} style={styles.lock}>
-                    </Image>
+                    <View style={styles.iconContainer}>
+                      <Ionicons name='md-lock' size={65}>
+                      </Ionicons>
+                    </View>
                   )}
                 </View>
 
@@ -207,8 +209,10 @@ class MyPagescreen extends Component {
                     <View>
                     </View>
                   ) : (
-                    <Image source={lock3} style={styles.lock}>
-                    </Image>
+                    <View style={styles.iconContainer}>
+                      <Ionicons name='md-lock' size={65}>
+                      </Ionicons>
+                    </View>
                   )}
                 </View>
 
@@ -344,10 +348,9 @@ const styles = StyleSheet.create({
     justifyContent: "center"
   },
 
-  lock: {
+  iconContainer: {
+    marginLeft: 12,
     opacity: 0.5,
-    resizeMode: "contain"
-    //flex: 1,
   },
 
   myFavoritesButtonContainer: {
@@ -407,7 +410,7 @@ const styles = StyleSheet.create({
   },
   myNotesButton: {
     flex: 1,
-    backgroundColor: colors.midblue,
+    backgroundColor: colors.white,
     flexDirection: "row"
   },
 

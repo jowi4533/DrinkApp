@@ -15,6 +15,7 @@ import {
 import drImage from "../pictures/long_isle.png";
 import bgImage from "../pictures/236.jpg";
 import aperol from "../pictures/aperol_spritz.png";
+import winter from "../pictures/asd.png";
 import {colors} from "../assets/colors.js";
 
 const { width: WIDTH, height: HEIGHT } = Dimensions.get("window");
@@ -43,7 +44,7 @@ const data2 = [
     id: 4,
     name: "Very Merry Bourbon Alexander",
     category: "Winter",
-    image: require("../pictures/very_merry_bourbon_alexander.png")
+    image: require("../pictures/asd.png")
   }
 ];
 
