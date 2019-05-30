@@ -13,45 +13,45 @@ export default class SmallFavoriteButton extends Component {
     super(props);
     this.state = {
       addedToFavorite: false,
-      userAuth: props.userAuth,
-      usersDB: props.usersDB,
-      users: props.users,
+      myFavourites: props.myFavourites,
       drink: props.drink,
+      loggedIn: props.loggedIn,
     };
 
     this.addToFavorite = this.addToFavorite.bind(this);
+
+    this.userFavorited()
   }
 addToFavorite(){
+
   this.setState({addedToFavorite: !this.state.addedToFavorite});
+  this.props.updateFavourites(this.state.drink, !this.state.addedToFavorite)
+}
 
-  this.state.usersDB.orderByChild("email").equalTo(this.state.userAuth.currentUser.email).on("child_added",
-    (loggedInUser) =>{
-
-      if(loggedInUser.myFavourites === undefined){
-        let myFavourites = [this.state.drink]
-//        this.state.usersDB.child(loggedInUser.key).push(
-//          {myFavourites: myFravourites})
+userFavorited(){
+  if(this.state.loggedIn){
+    console.log("Checking if pre-Favorited")
+    for(let drinkKey in this.state.myFavourites){
+      let aDrink = this.state.myFavourites[drinkKey]
+      if(aDrink.name === this.state.drink.name){
+        console.log("Drink is preFavorited")
+        this.state.addedToFavorite = true
       }
-      else {
-        console.log("finns redan, hora")
-      }
-
     }
-  )
+  }
 
 }
 
 render(){
-  const {addedToFavorite} = this.state
   return(
 <TouchableOpacity
   onPress={this.addToFavorite}
   style= {styles.favoriteButton}>
   <View>
     <FontAwesome
-      name={addedToFavorite ? 'heart': "heart-o"}
+      name={this.state.addedToFavorite ? 'heart': "heart-o"}
       size={24}
-      color={addedToFavorite ? "rgba(207, 0, 15, 1)": "rgba(207, 0, 15, 1)"}
+      color={this.state.addedToFavorite ? "rgba(207, 0, 15, 1)": "rgba(207, 0, 15, 1)"}
     />
   </View>
 </TouchableOpacity>
