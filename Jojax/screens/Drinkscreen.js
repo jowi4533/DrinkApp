@@ -57,6 +57,7 @@ class Drinkscreen extends Component {
       drinksDisplayed: [],
       filteredDrinks: [],
       searchBarDrinks: [],
+      allFavourites: {},
 
       userAuth: props.screenProps.userAuth,
       usersDB: props.screenProps.usersDB,
@@ -64,8 +65,47 @@ class Drinkscreen extends Component {
       loggedIn: null
     };
 
-    this.setUpNavigationListener();
-    this.initiateListener();
+    this.loadResources()
+  }
+
+  loadResources(){
+    this.checkUserLoggedIn2()
+    this.setUpNavigationListener()
+    this.setUpDatabaseListeners()
+    this.initiateListener()
+  }
+
+  checkUserLoggedIn2(){
+    if(this.state.userAuth.currentUser === null){
+      //this.state.loggedIn = false
+      this.state.loggedIn = false
+    } else{
+      //this.state.loggedIn = true
+      this.state.loggedIn = true
+    }
+  }
+
+  setUpDatabaseListeners(){
+    if(this.state.loggedIn){
+      this.state.usersDB.orderByChild("email").equalTo(this.state.userAuth.currentUser.email).on("child_added",
+        (loggedInUser) =>{
+
+        let currentUser = loggedInUser.val()
+        let myFavouritesRef = this.state.usersDB.child(loggedInUser.key).child("myFavourites")
+
+        myFavouritesRef.on("child_added", (aDrink, prevChildKey) =>{
+          console.log("Child added!!!!")
+          let drink = aDrink.val()
+
+          this.state.allFavourites[drink.name] = drink
+        })
+        // myFavouritesRef.on("child_removed", (aDrink) => {
+        //   console.log("child removed!!!!!")
+        //   let drink = aDrink.val()
+        // })
+      })
+    }
+
   }
 
   setUpNavigationListener() {
@@ -73,6 +113,32 @@ class Drinkscreen extends Component {
       this.checkUserLoggedIn();
       // get your new data here and then set state it will rerender
       console.log("In navigationlistener (DRINKSCREEN)");
+    });
+  }
+
+  checkUserLoggedIn(){
+    if(this.state.userAuth.currentUser === null){
+      //this.state.loggedIn = false
+      this.setState({loggedIn: false})
+    } else{
+      //this.state.loggedIn = true
+      this.setState({loggedIn: true})
+    }
+  }
+
+  initiateListener(){
+    this.state.userAuth.onAuthStateChanged((user) => {
+      if (user) {
+        console.log("In listener, user online (DRINKSCREEN)")
+        // User is signed in.
+        this.state.loggedIn = true
+        this.setUpDatabaseListeners()
+
+      } else {
+        this.state.loggedIn = false
+        this.state.allFavourites = {}
+        console.log("In listener, user offline (DRINKSCREEN)")
+      }
     });
   }
 
@@ -149,20 +215,9 @@ class Drinkscreen extends Component {
       });
     }
 
-    this.filterDrinks();
-  };
+    this.filterDrinks()
+}
 
-  //User related
-
-  checkUserLoggedIn() {
-    if (this.state.userAuth.currentUser === null) {
-      //this.state.loggedIn = false
-      this.setState({ loggedIn: false });
-    } else {
-      //this.state.loggedIn = true
-      this.setState({ loggedIn: true });
-    }
-  }
 
   initiateListener() {
     this.state.userAuth.onAuthStateChanged(function(user) {
@@ -260,6 +315,34 @@ class Drinkscreen extends Component {
     this.displayDrinks();
   }
 
+  updateFavourites = (drinkData, favourited) => {
+
+    let drinkName = drinkData.name;
+    this.state.allFavourites[drinkData.name] = drinkData
+    if(this.state.loggedIn){
+    if(favourited){
+      this.state.usersDB.orderByChild("email").equalTo(this.state.userAuth.currentUser.email).on("child_added",
+        (loggedInUser) =>{
+
+        let currentUser = loggedInUser.val()
+        let myFavouritesRef = this.state.usersDB.child(loggedInUser.key).child("myFavourites")
+
+        myFavouritesRef.set(this.state.allFavourites)
+        })
+    }
+      else{
+        this.state.usersDB.orderByChild("email").equalTo(this.state.userAuth.currentUser.email).on("child_added",
+          (loggedInUser) =>{
+
+          let currentUser = loggedInUser.val()
+          let removeFavouriteRef = this.state.usersDB.child(loggedInUser.key).child("myFavourites").child(drinkData.name)
+          removeFavouriteRef.remove()
+          delete this.state.allFavourites[drinkData.name]
+          })
+    }
+    }
+  }
+
   renderItem = ({ item, index }) => {
     if (item.selected === true) {
       return (
@@ -321,13 +404,12 @@ class Drinkscreen extends Component {
               <Text style={styles.textDrinkName}>{item.name}</Text>
               <View style={styles.SmallFavoriteButtonContainer}>
                 <SmallFavoriteButton
-                  userAuth={this.state.userAuth}
-                  usersDB={this.state.usersDB}
-                  users={this.state.users}
-                  drink={item}
-                />
-                ) : (<View />
-                )}
+                drink = {item}
+                myFavourites = {this.state.allFavourites}
+                loggedIn = {this.state.loggedIn}
+                updateFavourites = {this.updateFavourites}
+                >
+                </SmallFavoriteButton>
               </View>
             </View>
 

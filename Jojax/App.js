@@ -41,7 +41,6 @@ let usersDB = database.ref('Users')
 
 //Everything user related
 const userAuth = firebase.auth()
-
 //-------------------------------//
 
 const MyPageStack = createStackNavigator(
@@ -198,13 +197,13 @@ class App extends Component {
   }
 
   initailizeListener () {
-    drinksDB.once("value", this.retriveDrinkItems.bind(this), this.errData)
-    usersDB.on("value", this.retrieveUsers.bind(this), this.errDat)
+    drinksDB.once("value", this.retrieveDrinkItems.bind(this), this.errData)
+    usersDB.on("value", this.retrieveUsers.bind(this), this.errData)
   }
 
-  retriveDrinkItems (data)  {
-    this.state.allDrinkItems = data.val()
-    this.state.allDrinkKeys = Object.keys(data.val())
+  retrieveDrinkItems (data)  {
+    this.setState({allDrinkItems: data.val()});
+    this.setState({allDrinkKeys: Object.keys(data.val())});
 
     this.loadDrinks()
     this.setState({loaded:true})
@@ -215,7 +214,6 @@ class App extends Component {
     this.state.allUserKeys = Object.keys(data.val())
     this.loadUsers()
   }
-
 
   errData = (err) =>{
     console.log('Error!');
@@ -231,6 +229,7 @@ class App extends Component {
       let user = {
         email: this.state.allUsers[k].email,
         password: this.state.allUsers[k].password,
+        myFavourites: this.state.allUsers[k].myFavourites
       }
       allUsers.push(user)
     }
