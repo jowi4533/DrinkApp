@@ -92,11 +92,6 @@ class Drinkscreen extends Component {
 
           this.state.allFavourites[drink.name] = drink
         })
-
-        console.log(this.state.allFavourites
-        )
-
-
         // myFavouritesRef.on("child_removed", (aDrink) => {
         //   console.log("child removed!!!!!")
         //   let drink = aDrink.val()
@@ -131,7 +126,6 @@ class Drinkscreen extends Component {
         // User is signed in.
         this.state.loggedIn = true
         this.setUpDatabaseListeners()
-        console.log(this.state.loggedIn)
 
       } else {
         this.state.loggedIn = false
