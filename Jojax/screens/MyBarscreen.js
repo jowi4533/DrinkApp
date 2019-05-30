@@ -9,6 +9,7 @@ import {
   Button,
   TouchableOpacity,
   TouchableHighlight,
+  TouchableNativeFeedback,
   FlatList,
   ScrollView,
   Dimensions,
@@ -36,32 +37,37 @@ import {colors} from "../assets/colors.js";
 // };
 
 
-const numColumns = 3;
+const numColumns = 2;
 
 class MyBarscreen extends Component {
   constructor(props) {
     super(props)
 
     this.state = {
-      data: [{name:"Amaretto",selected: false, img:require("../pictures/mybarSpirits/dark_rum_bottle.png")}, {name:"Blue Curacau Liqueur",selected: false, img:require("../pictures/mybarSpirits/amaretto_bottle.png")},{name:"Brandy",selected: false, img:require("../pictures/mybarSpirits/ginger_beer_bottle.png")},{name:"Champange",selected: false, img:require("../pictures/mybarSpirits/blue_curacao_liqueur_bottle.png")},
-      {name:"Coconut Liqueur",selected: false, img:require("../pictures/mybarSpirits/brandy_bottle.png")},
-      {name:"Coffe Liqueur",selected: false, img:require("../pictures/mybarSpirits/champange_bottle.png")},
-      {name:"Cointreau",selected: false, img:require("../pictures/mybarSpirits/coconut_liqueur_bottle.png")},
-      {name:"Dark Rum",selected: false, img:require("../pictures/mybarSpirits/coffe_liqueur_bottle.png")},
-      {name:"White Rum",selected: false, img:require("../pictures/mybarSpirits/cointreau_bottle.png")},
-      {name:"Golden Rum",selected: false, img:require("../pictures/mybarSpirits/golden_rum_bottle.png")},
-      {name:"Ginger Beer",selected: false, img:require("../pictures/mybarSpirits/grand_marnier_bottle.png")},
-      {name:"Grand Marnier",selected: false, img:require("../pictures/mybarSpirits/melon_liqueur_bottle.jpg")},
-      {name:"Melon Liqueur",selected: false, img:require("../pictures/mybarSpirits/red_vermouth_bottle.png")},
-      {name:"Red Vermouth",selected: false, img:require("../pictures/mybarSpirits/red_wine_bottle.png")},
-      {name:"White Vemouth",selected: false, img:require("../pictures/mybarSpirits/sparkling_wine_bottle.png")},
-      {name:"Red Wine",selected: false, img:require("../pictures/mybarSpirits/tequila_bottle.png")},
-      {name:"White Wine",selected: false, img:require("../pictures/mybarSpirits/triple_sec_bottle.png")},
-      {name:"Sparkling Wine",selected: false, img:require("../pictures/mybarSpirits/vodka_bottle.png")},
-      {name:"Tequila",selected: false, img:require("../pictures/mybarSpirits/whiskey_bottle.png")},
-      {name:"Triple Sec",selected: false, img:require("../pictures/mybarSpirits/white_rum_bottle.png")},
-      {name:"Vodka",selected: false, img:require("../pictures/mybarSpirits/white_vermouth_bottle.png")},
-      {name:"Whiskey",selected: false, img:require("../pictures/mybarSpirits/white_wine_bottle.png")}],
+      data: [{name:"Amaretto",selected: false, img:require("../pictures/systembolagetPics/1.png")},
+      {name:"Blue Curacau",selected: false, img:require("../pictures/systembolagetPics/2.jpg")},
+      {name:"Brandy",selected: false, img:require("../pictures/systembolagetPics/3.jpg")},
+      {name:"Champange",selected: false, img:require("../pictures/systembolagetPics/4.jpg")},
+      {name:"Coconut Liqueur",selected: false, img:require("../pictures/systembolagetPics/5.jpg")},
+      {name:"Coffe Liqueur",selected: false, img:require("../pictures/systembolagetPics/6.jpg")},
+      {name:"Cointreau",selected: false, img:require("../pictures/systembolagetPics/7.jpg")},
+      {name:"Dark Rum",selected: false, img:require("../pictures/systembolagetPics/8.jpg")},
+      {name:"White Rum",selected: false, img:require("../pictures/systembolagetPics/9.jpg")},
+      {name:"Golden Rum",selected: false, img:require("../pictures/systembolagetPics/10.jpg")},
+      {name:"Ginger Beer",selected: false, img:require("../pictures/systembolagetPics/11.jpg")},
+      {name:"Grand Marnier",selected: false, img:require("../pictures/systembolagetPics/12.jpg")},
+      {name:"Melon Liqueur",selected: false, img:require("../pictures/systembolagetPics/13.jpg")},
+      {name:"Red Vermouth",selected: false, img:require("../pictures/systembolagetPics/14.jpg")},
+      {name:"White Vemouth",selected: false, img:require("../pictures/systembolagetPics/15.jpg")},
+      {name:"Red Wine",selected: false, img:require("../pictures/systembolagetPics/16.jpg")},
+      {name:"White Wine",selected: false, img:require("../pictures/systembolagetPics/17.jpg")},
+      {name:"Sparkling Wine",selected: false, img:require("../pictures/systembolagetPics/18.jpg")},
+      {name:"Tequila",selected: false, img:require("../pictures/systembolagetPics/19.jpg")},
+      {name:"Triple Sec",selected: false, img:require("../pictures/systembolagetPics/20.jpg")},
+      {name:"Vodka",selected: false, img:require("../pictures/systembolagetPics/21.jpg")},
+      {name:"Whiskey",selected: false, img:require("../pictures/systembolagetPics/22.jpg")},
+      {name:"Gin",selected: false, img:require("../pictures/systembolagetPics/23.jpg")},
+      {name:"Kiss",selected: false, img:require("../pictures/systembolagetPics/23.jpg")}],
 
       isHighlighted:[],
       userAuth : props.screenProps.userAuth,
@@ -136,7 +142,6 @@ _addToArray(item) {
   this.setState(state => {
   state.isHighlighted = array;
   })
-
 }
 
 _removeFromArray(item) {
@@ -160,32 +165,17 @@ _removeFromArray(item) {
 _keyExtractor = (item, index) => item.name;
 
   renderItem = ({ item, index }) => {
-    if (item.selected === true) {
-      return (
-      <View style={styles.itemContainer}>
-        <TouchableOpacity style={styles.itemSelected} onPress={ () => { this._onButtonPress(item) } }>
-          <View style={styles.borderView}>
-            <ImageBackground source={item.img} style={styles.itemPicture}>
-              <View style={styles.itemTextContainer}>
-                <Text style={styles.itemText}> {item.name} </Text>
-              </View>
-            </ImageBackground>
-          </View>
-        </TouchableOpacity>
-      </View>
-
-      );
-    }
-
     return (
       <View style={styles.itemContainer}>
         <TouchableOpacity style={styles.item} onPress={ () => { this._onButtonPress(item) } }>
-          <View style={styles.itemPictureContainer}>
-            <ImageBackground source={item.img} style={styles.itemPicture}>
-              <View style={styles.itemTextContainer}>
-                <Text style={styles.itemText}> {item.name} </Text>
-              </View>
+          <View style={[item.selected ? styles.borderViewSelected : styles.borderView]}>
+            <View style={styles.itemPictureContainer}>
+            <ImageBackground resizeMode='contain' source={item.img} style={styles.itemPicture}>
             </ImageBackground>
+            </View>
+            <View style={styles.itemTextContainer}>
+              <Text style={styles.itemText}> {item.name} </Text>
+            </View>
           </View>
         </TouchableOpacity>
       </View>
@@ -248,55 +238,27 @@ const styles = StyleSheet.create({
   item: {
     elevation: 20,
     borderRadius: 10,
-    backgroundColor: 'rgba(189, 195, 199, 1)',
+    backgroundColor: 'white',
     alignItems: 'center',
     justifyContent: 'center',
     flex: 1,
     margin: 15,
-    height: Dimensions.get('window').width / numColumns,
-  },
-
-  itemSelected: {
-    elevation: 20,
-    borderRadius: 10,
-    backgroundColor: 'rgba(218, 223, 225, 1)',
-    alignItems: 'center',
-    justifyContent: 'center',
-    flex: 1,
-    margin: 15,
-    height: Dimensions.get('window').width / numColumns,
-  },
-
-  itemPicture: {
-    justifyContent: 'flex-end',
-    alignItems: 'center',
-    width: '100%',
-    height: '100%',
-
-  },
-
-  itemTextContainer: {
-    alignItems: 'center',
-    backgroundColor: 'rgba(108, 122, 137, 0.5)',
-    opacity: 1,
-    width: '100%',
-    borderRadius: 8,
-  },
-
-  itemTextContainer2: {
-    alignItems: 'center',
-    backgroundColor: 'rgba(108, 122, 137, 0.5)',
-    opacity: 1,
-    width: '100%',
-    borderRadius: 10,
-  },
-
-  itemText: {
-    fontSize: 18,
-    color: 'white',
+    //height: HEIGHT/3,
+    height: Dimensions.get('window').width / numColumns, //.width can be changed to .height
   },
 
   borderView: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 10,
+    height: '100%',
+    width: '100%',
+    borderWidth: 2,
+    borderColor: 'transparent',
+    flex: 1,
+  },
+
+  borderViewSelected: {
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 10,
@@ -305,19 +267,36 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: 'rgba(240, 52, 52, 1)',
     flex: 1,
-
   },
 
   itemPictureContainer: {
-    borderWidth: 2,
-    borderColor: 'transparent',
-    alignItems: 'center',
-    justifyContent: 'center',
     flex: 1,
-    height: '100%',
     width: '100%',
+  },
 
+  itemPicture: {
+    paddingTop: 2,
+    justifyContent: 'flex-end',
+    //borderRadius: 10,
+    alignItems: 'center',
+    flex: 1,
+    // width: '100%',
+    // height: '100%',
+    resizeMode: 'stretch',
+  },
 
+  itemTextContainer: {
+    alignItems: 'center',
+    backgroundColor: 'dimgray',
+    opacity: 1,
+    width: '100%',
+    borderRadius: 8,
+  },
+
+  itemText: {
+    textAlign: 'center',
+    fontSize: 18,
+    color: 'white',
   },
 
 });

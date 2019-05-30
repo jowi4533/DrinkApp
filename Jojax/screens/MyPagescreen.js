@@ -109,7 +109,7 @@ class MyPagescreen extends Component {
   }
 
   render() {
-    if (this.state.loggedIn !== true) {
+
       return (
         <View style={styles.backgroundContainer}>
           <View style={styles.loginButtonContainer}>
@@ -118,12 +118,16 @@ class MyPagescreen extends Component {
 
 
           <View style={styles.container}>
-
-            <Text style={styles.information}>Login to enable below functionality</Text>
+            {this.state.loggedIn ? (
+              <View></View>
+            ) :
+            (
+              <Text style={styles.information}>Login to enable below functionality</Text>
+            )}
 
             <View style={styles.myBarButtonContainer}>
               <TouchableOpacity
-                disabled='true'
+                disabled={!this.state.loggedIn}
                 style={styles.myBarButton}
                 onPress={() => this.props.navigation.navigate("MyBar")}
               >
@@ -139,15 +143,20 @@ class MyPagescreen extends Component {
                 </View>
 
                 <View style={styles.lockContainer}>
-                  <Image source={lock3} style={styles.lock}>
-                  </Image>
+                  {this.state.loggedIn ? (
+                    <View>
+                    </View>
+                  ) : (
+                    <Image source={lock3} style={styles.lock}>
+                    </Image>
+                  )}
                 </View>
 
               </TouchableOpacity>
             </View>
             <View style={styles.myFavoritesButtonContainer}>
               <TouchableOpacity
-                disabled='true'
+                disabled={!this.state.loggedIn}
                 style={styles.myFavoritesButton}
                 onPress={() => this.props.navigation.navigate("MyFavoriteDrinks")}
               >
@@ -163,15 +172,20 @@ class MyPagescreen extends Component {
                 </View>
 
                 <View style={styles.lockContainer}>
-                  <Image source={lock3} style={styles.lock}>
-                  </Image>
+                  {this.state.loggedIn ? (
+                    <View>
+                    </View>
+                  ) : (
+                    <Image source={lock3} style={styles.lock}>
+                    </Image>
+                  )}
                 </View>
 
               </TouchableOpacity>
             </View>
             <View style={styles.myNotesButtonContainer}>
               <TouchableOpacity
-                disabled='true'
+                disabled={!this.state.loggedIn}
                 style={styles.myNotesButton}
                 onPress={() => this.props.navigation.navigate("MyNotes")}
               >
@@ -187,8 +201,13 @@ class MyPagescreen extends Component {
                 </View>
 
                 <View style={styles.lockContainer}>
-                  <Image source={lock3} style={styles.lock}>
-                  </Image>
+                  {this.state.loggedIn ? (
+                    <View>
+                    </View>
+                  ) : (
+                    <Image source={lock3} style={styles.lock}>
+                    </Image>
+                  )}
                 </View>
 
               </TouchableOpacity>
@@ -198,72 +217,6 @@ class MyPagescreen extends Component {
 
         </View>
       );
-    }
-
-    else {
-    return (
-      <View style={styles.backgroundContainer}>
-        <View style={styles.loginButtonContainer}>
-        {this.loadUserFramework()}
-        </View>
-
-        <View style={styles.container}>
-
-          <View style={styles.myBarButtonContainer}>
-            <TouchableOpacity
-              style={styles.myBarButton}
-              onPress={() => this.props.navigation.navigate("MyBar")}
-            >
-              <View style={styles.myBarButtonImageContainer}>
-                <Image
-                  source={barIcon}
-                  style={styles.myBarButtonImage}
-                />
-              </View>
-              <View style={styles.myBarButtonTextContainer}>
-                <Text style={styles.myBarButtonTextHeading}>My Bar</Text>
-                <Text style={styles.myBarButtonTextBody}>Select ingredients that you have at home to see what drinks you can make</Text>
-              </View>
-            </TouchableOpacity>
-          </View>
-          <View style={styles.myFavoritesButtonContainer}>
-            <TouchableOpacity
-              style={styles.myFavoritesButton}
-              onPress={() => this.props.navigation.navigate("MyFavoriteDrinks")}
-            >
-              <View style={styles.myFavoritesButtonImageContainer}>
-                <Image
-                  source={heartIcon}
-                  style={styles.myFavoritesButtonImage}
-                />
-              </View>
-              <View style={styles.myFavoritesButtonTextContainer}>
-                <Text style={styles.myFavoritesButtonTextHeading}>My Favorites</Text>
-                <Text style={styles.myFavoritesButtonTextBody}>Mark your favorite drinks with a heart and you will find them here</Text>
-              </View>
-            </TouchableOpacity>
-          </View>
-          <View style={styles.myNotesButtonContainer}>
-            <TouchableOpacity
-              style={styles.myNotesButton}
-              onPress={() => this.props.navigation.navigate("MyNotes")}
-            >
-              <View style={styles.myNotesButtonImageContainer}>
-                <Image
-                  source={notesIcon}
-                  style={styles.myNotesButtonImage}
-                />
-              </View>
-              <View style={styles.myNotesButtonTextContainer}>
-                <Text style={styles.myNotesButtonTextHeading}>My Notes</Text>
-                <Text style={styles.myNotesButtonTextBody}>Create notes to make you remember buying that last ingredient for example </Text>
-              </View>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </View>
-    );
-  }
   }
 }
 export default MyPagescreen;
@@ -339,7 +292,7 @@ const styles = StyleSheet.create({
 
   information: {
     fontSize: 18,
-    fontFamily: 'Quicksand-Medium',
+    fontFamily: 'Barlow-Regular',
     textAlign: 'center',
     borderBottomWidth: 1,
     borderBottomColor: colors.black,
@@ -376,7 +329,7 @@ const styles = StyleSheet.create({
 
   myBarButtonTextHeading: {
     //fontWeight: "bold",
-    fontFamily: 'Quicksand-Bold',
+    fontFamily: 'Muli-Bold',
     fontSize: 18,
     marginLeft: 15,
     //marginTop:  12,
@@ -385,7 +338,7 @@ const styles = StyleSheet.create({
   },
 
   myBarButtonTextBody: {
-    fontFamily: 'Quicksand-Medium',
+    fontFamily: 'Muli-Regular',
     fontSize: 14,
     marginLeft: 15,
     //marginTop:  8,
@@ -438,7 +391,7 @@ const styles = StyleSheet.create({
 
   myFavoritesButtonTextHeading: {
     //fontWeight: "bold",
-    fontFamily: 'Quicksand-Bold',
+    fontFamily: 'Krub-Bold',
     fontSize: 18,
     marginLeft: 15,
     //marginTop:  12,
@@ -447,7 +400,7 @@ const styles = StyleSheet.create({
   },
 
   myFavoritesButtonTextBody: {
-    fontFamily: 'Quicksand-Medium',
+    fontFamily: 'Krub-Regular',
     fontSize: 14,
     marginLeft: 15,
     //marginTop:  8,
@@ -494,7 +447,7 @@ const styles = StyleSheet.create({
   },
 
   myNotesButtonTextBody: {
-    fontFamily: 'Quicksand-Medium',
+    fontFamily: 'Quicksand-Regular',
     fontSize: 14,
     marginLeft: 15,
     //marginTop:  8,
