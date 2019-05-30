@@ -403,6 +403,7 @@ class Drinkscreen extends Component {
             <View style={styles.textHeadingContainer}>
               <Text style={styles.textDrinkName}>{item.name}</Text>
               <View style={styles.SmallFavoriteButtonContainer}>
+                {this.state.loggedIn ? (
                 <SmallFavoriteButton
                 drink = {item}
                 myFavourites = {this.state.allFavourites}
@@ -410,6 +411,12 @@ class Drinkscreen extends Component {
                 updateFavourites = {this.updateFavourites}
                 >
                 </SmallFavoriteButton>
+              ):(
+                <View>
+                </View>
+              )
+            }
+
               </View>
             </View>
 
