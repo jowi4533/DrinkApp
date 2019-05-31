@@ -42,128 +42,6 @@ class MyBarscreen extends Component {
     super(props);
 
     this.state = {
-      data: [
-        {
-          name: "Amaretto",
-          selected: false,
-          img: require("../pictures/systembolagetPics/1.png")
-        },
-        {
-          name: "Blue Curacau",
-          selected: false,
-          img: require("../pictures/systembolagetPics/2.jpg")
-        },
-        {
-          name: "Brandy",
-          selected: false,
-          img: require("../pictures/systembolagetPics/3.jpg")
-        },
-        {
-          name: "Champange",
-          selected: false,
-          img: require("../pictures/systembolagetPics/4.jpg")
-        },
-        {
-          name: "Coconut Liqueur",
-          selected: false,
-          img: require("../pictures/systembolagetPics/5.jpg")
-        },
-        {
-          name: "Coffe Liqueur",
-          selected: false,
-          img: require("../pictures/systembolagetPics/6.jpg")
-        },
-        {
-          name: "Cointreau",
-          selected: false,
-          img: require("../pictures/systembolagetPics/7.jpg")
-        },
-        {
-          name: "Dark Rum",
-          selected: false,
-          img: require("../pictures/systembolagetPics/8.jpg")
-        },
-        {
-          name: "White Rum",
-          selected: false,
-          img: require("../pictures/systembolagetPics/9.jpg")
-        },
-        {
-          name: "Golden Rum",
-          selected: false,
-          img: require("../pictures/systembolagetPics/10.jpg")
-        },
-        {
-          name: "Ginger Beer",
-          selected: false,
-          img: require("../pictures/systembolagetPics/11.jpg")
-        },
-        {
-          name: "Grand Marnier",
-          selected: false,
-          img: require("../pictures/systembolagetPics/12.jpg")
-        },
-        {
-          name: "Melon Liqueur",
-          selected: false,
-          img: require("../pictures/systembolagetPics/13.jpg")
-        },
-        {
-          name: "Red Vermouth",
-          selected: false,
-          img: require("../pictures/systembolagetPics/14.jpg")
-        },
-        {
-          name: "White Vemouth",
-          selected: false,
-          img: require("../pictures/systembolagetPics/15.jpg")
-        },
-        {
-          name: "Red Wine",
-          selected: false,
-          img: require("../pictures/systembolagetPics/16.jpg")
-        },
-        {
-          name: "White Wine",
-          selected: false,
-          img: require("../pictures/systembolagetPics/17.jpg")
-        },
-        {
-          name: "Sparkling Wine",
-          selected: false,
-          img: require("../pictures/systembolagetPics/18.jpg")
-        },
-        {
-          name: "Tequila",
-          selected: false,
-          img: require("../pictures/systembolagetPics/19.jpg")
-        },
-        {
-          name: "Triple Sec",
-          selected: false,
-          img: require("../pictures/systembolagetPics/20.jpg")
-        },
-        {
-          name: "Vodka",
-          selected: false,
-          img: require("../pictures/systembolagetPics/21.jpg")
-        },
-        {
-          name: "Whiskey",
-          selected: false,
-          img: require("../pictures/systembolagetPics/22.jpg")
-        },
-        {
-          name: "Gin",
-          selected: false,
-          img: require("../pictures/systembolagetPics/23.jpg")
-        },
-        {
-          name: "Kiss",
-          selected: false,
-          img: require("../pictures/systembolagetPics/23.jpg")
-        }
-      ],
 
       isHighlighted: [],
       activeIndex: 0,
@@ -173,6 +51,9 @@ class MyBarscreen extends Component {
       userAuth: props.screenProps.userAuth,
       usersDB: props.screenProps.usersDB,
       users: props.screenProps.users,
+
+      barSpirits: props.screenProps.allBarSpirits,
+
       loggedIn: null
     };
 
@@ -334,7 +215,7 @@ updateFavourites = (drinkData, favourited) => {
             <View style={styles.itemPictureContainer}>
               <ImageBackground
                 resizeMode="contain"
-                source={item.img}
+                source={{ uri: item.img }}
                 style={styles.itemPicture}
               />
             </View>
@@ -427,7 +308,7 @@ updateFavourites = (drinkData, favourited) => {
               </Text>
             </View>
             <FlatList
-              data={this.state.data}
+              data={this.state.barSpirits}
               extraData={this.state}
               style={styles.container}
               renderItem={this.renderItem}

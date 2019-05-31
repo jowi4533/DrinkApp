@@ -49,6 +49,7 @@ let database = firebase.database();
 let drinksDB = database.ref("Drinks");
 let usersDB = database.ref("Users");
 let categoriesDB = database.ref("Explorecategories");
+let barSpiritsDB = database.ref("Barspirits");
 
 //Everything user related
 const userAuth = firebase.auth();
@@ -168,6 +169,10 @@ class App extends Component {
       tasteCategories: null,
       tasteCategoriesKeys: null,
 
+      barSpirits: null,
+      barSpiritsKeys: null,
+
+      allBarSpirits: [],
       spirits: [],
       seasons: [],
       tastes: [],
@@ -178,6 +183,7 @@ class App extends Component {
       fontLoaded: false
     };
     this.loadResources();
+    console.log(this.state.allBarSpirits)
   }
 
   async componentDidMount() {
@@ -223,6 +229,15 @@ class App extends Component {
       this.errData
     );
     drinksDB.once("value", this.retrieveDrinkItems.bind(this), this.errData);
+    barSpiritsDB.once("value", this.retrieveBarSpirits.bind(this), this.errData);
+  }
+
+  retrieveBarSpirits(data) {
+    this.setState({ barSpirits: data.val() });
+    this.setState({ barSpiritsKeys: Object.keys(data.val()) });
+    //console.log('inuti retrieve, här är this.state.barSpirits: ')
+    //console.log(this.state.barSpirits)
+    this.loadBarSpirits();
   }
 
   retrieveDrinkItems(data) {
@@ -296,6 +311,25 @@ class App extends Component {
     }
     this.state.drinks = allDrinks;
   }
+
+  loadBarSpirits() {
+    let allBarSpirits = [];
+    for (let i = 0; i < this.state.barSpiritsKeys.length; i++) {
+      let k = this.state.barSpiritsKeys[i];
+      console.log('barspiritskeys är : ')
+      console.log(k)
+      console.log('inuti for-loop i loadBarSpirits()')
+      let barSpirit = {
+        name: this.state.barSpirits[k].name,
+        img: this.state.barSpirits[k].img,
+        id: this.state.barSpirits[k].id
+      };
+      console.log('precis före jag pushar saker till allbarspirits, här är barSpirit: ' + barSpirit)
+      allBarSpirits.push(barSpirit);
+    }
+    this.state.allBarSpirits = allBarSpirits;
+  }
+
   loadCategories(category) {
     if (category == "Spirits") {
       let Allspirits = this.state.spiritCategories;
@@ -327,7 +361,6 @@ class App extends Component {
 
     }
     else if(category =="Tastes"){
-      console.log("inside Tastes")
       let Alltastes = this.state.tasteCategories;
       let tastesarray = [];
       for (let i = 0; i < this.state.tasteCategoriesKeys.length; i++) {
