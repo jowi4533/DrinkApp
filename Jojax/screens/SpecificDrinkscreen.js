@@ -37,7 +37,7 @@ class SpecificDrinkscreen extends Component {
 
   }
   this.setUpNavigationListener()
-  console.log(this.state.specificDrink.url)
+  //console.log(this.state.specificDrink.url)
   this.loadIngredients()
 }
 setUpNavigationListener() {

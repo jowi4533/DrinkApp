@@ -205,6 +205,7 @@ updateFavourites = (drinkData, favourited) => {
       <View style={styles.itemContainer}>
         <TouchableOpacity
           style={styles.item}
+          activeOpacity={0.98}
           onPress={() => {
             this._onButtonPress(item);
           }}
@@ -355,7 +356,7 @@ const styles = StyleSheet.create({
     color: colors.darkgray,
     fontSize: 18,
     fontFamily: "Quicksand-Regular",
-    paddingVertical: 20,
+    paddingVertical: 10,
     paddingHorizontal: 20
   },
 
@@ -441,6 +442,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     height: 50,
+    borderBottomWidth: 2,
+    borderBottomColor: 'transparent',
     backgroundColor: colors.white,
     flexDirection: 'row'
   },
