@@ -112,17 +112,14 @@ class Explorescreen extends Component {
     this.loopDiscoverWeekly()
     this.loopClassicDrinks()
   }
-  //componentDidMount(){
-    //this.setState({ loaded: true });
-
-  //}
 
   static navigationOptions = {
     title: 'Explore',
     headerTitleStyle: {
       width: '100%',
-      fontWeight: 'bold',
-      fontSize: 25
+      fontFamily: "Quicksand-Medium",
+      fontSize: 25,
+      color: colors.black
     },
   };
   //Discoverweekly + classic drinks atm
@@ -293,11 +290,7 @@ const styles = StyleSheet.create({
     color: colors.black,
     fontFamily: 'Quicksand-Bold',
     fontSize: 26,
-    //fontWeight: "bold",
     marginTop: 15,
-    //marginBottom: 5,
-    //marginLeft: 10,
-
   },
   drinkImage: {
     height: WIDTH / 2.6,
@@ -308,11 +301,9 @@ const styles = StyleSheet.create({
     color: colors.black,
     textAlign:'center',
     fontSize: 16,
-    //fontWeight: "bold",
     fontFamily: 'Quicksand-Bold'
   },
   drinkNameTextContainer: {
-    //backgroundColor: 'blue',
     width: WIDTH / 2.6,
     marginLeft:5,
     paddingLeft:5,
@@ -335,10 +326,9 @@ const styles = StyleSheet.create({
     color: colors.black,
     fontFamily: 'Quicksand-Bold',
     fontSize: 26,
-    //fontWeight: "bold",
     marginTop: 15,
     marginBottom: 5,
-    //marginLeft: 10,
+
   },
   categoryGrid:  {
 
@@ -351,7 +341,6 @@ const styles = StyleSheet.create({
   seasonalText: {
     color: colors.black,
     fontSize: 20,
-    //fontWeight: "bold",
     textAlign: "center",
     paddingLeft: 40,
     fontFamily: 'Quicksand-Bold',
@@ -370,46 +359,32 @@ const styles = StyleSheet.create({
     color: colors.black,
     fontFamily: 'Quicksand-Bold',
     fontSize: 26,
-    //fontWeight: "bold",
     marginTop: 10,
-    //marginLeft: 10,
-    //marginBottom: 5,
   },
-
   baseSpiritImageContainer: {
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'rgba(255,255,255,0.25)',
     width: '100%',
     height: '100%',
-
   },
-
   baseSpiritImage: {
     width: (WIDTH - 40) / 2,
     height: (WIDTH - 40) / 2,
     margin: 5,
     justifyContent: "center",
     alignItems: "center",
-    //opacity: 0.8,
   },
   baseSpiritTextContainer: {
-    // position: "absolute",
-    // top: 0,
-    // left: 0,
-    // right: 0,
-    // bottom: 0,
     width: '90%',
     justifyContent: "center",
     alignItems: "center",
-    //opacity: 1,
   },
   baseSpiritsText: {
     textAlign: 'center',
     width: '90%',
     fontSize: 24,
     fontFamily: 'Quicksand-Bold',
-    //fontWeight: "bold",
     color: colors.white,
     opacity: 1
   }

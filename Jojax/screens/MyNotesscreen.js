@@ -54,11 +54,11 @@ class MyNotesscreen extends Component {
       title: "My Notes",
       headerTitleStyle: {
         width: "100%",
-        fontWeight: "bold",
+        fontFamily: "Quicksand-Medium",
         fontSize: 25,
-        color: "black"
+        color: colors.black
       },
-      //headerTintColor: "black",
+
       headerRight: (
         <NewNoteButton onPress={navigation.getParam("handleNewNotepress")} />
       ),
@@ -285,12 +285,12 @@ const styles = StyleSheet.create({
     height:'100%'
   },
   noteTextHeading: {
-    color: "rgba(46, 49, 49, 1)",
+    color: colors.black,
     fontSize: 16,
     fontFamily: 'Quicksand-Bold'
   },
   noteTextEnding: {
-    color: "rgba(46, 49, 49, 1)",
+    color: colors.black,
     fontSize: 14,
     fontFamily: 'Quicksand-Regular'
   },

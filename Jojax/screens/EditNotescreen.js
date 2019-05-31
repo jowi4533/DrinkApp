@@ -35,11 +35,11 @@ class EditNotescreen extends Component {
     title: 'Edit Note',
     headerTitleStyle: {
       width: '100%',
-      fontWeight: 'bold',
+      fontFamily: "Quicksand-Medium",
       fontSize: 25,
       color: colors.black,
     },
-    headerTintColor: 'rgb(205,133,63)',
+    headerTintColor: colors.black,
     headerRight:
     <SaveNoteButton
       onPress={navigation.getParam('handleUpdateNotepress')
@@ -126,7 +126,8 @@ const styles = StyleSheet.create({
     marginBottom:65
   },
   textInputSize:{
-    fontFamily: 'Quicksand-Medium',
+    color:colors.black,
+    fontFamily: 'Quicksand-Regular',
     fontSize: 20,
     flex:1
   },

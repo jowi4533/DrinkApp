@@ -32,7 +32,7 @@ const SaveNoteButton =( { onPress } ) => {
 const styles = StyleSheet.create({
 saveText:{
   fontSize: 20,
-  color: 'rgb(205,133,63)'
+  color: colors.black
 }
 
 

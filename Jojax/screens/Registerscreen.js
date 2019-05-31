@@ -39,7 +39,8 @@ class Registerscreen extends Component {
     headerTitleStyle: {
       width: '100%',
       fontWeight: 'bold',
-      fontSize: 25
+      fontSize: 25,
+      color:colors.black
     },
   };
 

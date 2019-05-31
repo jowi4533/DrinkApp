@@ -39,8 +39,9 @@ class Registerscreen extends Component {
     title: 'Login',
     headerTitleStyle: {
       width: '100%',
-      fontWeight: 'bold',
-      fontSize: 25
+      fontFamily: "Quicksand-Medium",
+      fontSize: 25,
+      color: colors.black
     },
   };
 
@@ -176,13 +177,11 @@ const styles = StyleSheet.create({
    flex:1,
    width: null,
    height: null,
-   //justifyContent:'center',
    alignItems:'center'
  },
 
  marginViewTop: {
-   //borderWidth: 2,
-   //borderColor: 'pink',
+
    flex: 20,
  },
 
