@@ -1,4 +1,5 @@
 import React, { Component} from "react";
+import {Ionicons} from '@expo/vector-icons';
 import {Alert} from 'react-native'
 import App from '../App'
 import {
@@ -74,7 +75,15 @@ class Registerscreen extends Component {
     }
 
     const promise = this.state.userAuth.createUserWithEmailAndPassword(data.email, data.password)
-    promise.catch(e => console.log(e.message))
+    promise.catch(function(error) {
+      var errorCode = error.code;
+      var errorMessage = error.message;
+      if (errorCode === 'auth/wrong-password') {
+        Alert.alert('Wrong Password', errorMessage);
+      } else {
+        Alert.alert(errorCode, errorMessage)
+      } console.log(error);
+    });
 
     data.email = this.state.email.toLowerCase()
     this.state.usersDB.push(data)
@@ -96,52 +105,81 @@ class Registerscreen extends Component {
     if(this.state.loggedIn=== false){
       return (
         <ImageBackground source={bgImage} style={styles.backgroundContainer}>
-        <View style= {styles.textContainer}>
-        <Text style = {styles.textRegister}>
-        REGISTER NEW ACCOUNT
-        </Text>
-        </View>
-        <View>
-        <TextInput
-        style={styles.input}
-        placeholder = {'Email'}
-        placeholderTextColor = {'rgba(0,0,0,0.5)'}
-        underlineColorAndroid = 'transparent'
-        onChangeText = {email => this.setState({email})}
-        />
-        </View>
-        <View style= {styles.input2}>
-        <TextInput
-        style={styles.input}
-        placeholder = {"Password"}
-        secureTextEntry= {true}
-        placeholderTextColor = {'rgba(0,0,0,0.5)'}
-        underlineColorAndroid = 'transparent'
-        onChangeText = {password => this.setState({password})}
-        />
-        </View>
-        <View style= {styles.input2}>
-        <TextInput
-        style={styles.input}
-        placeholder = {"Repeat Password"}
-        secureTextEntry= {true}
-        placeholderTextColor = {'rgba(0,0,0,0.5)'}
-        underlineColorAndroid = 'transparent'
-        onChangeText = {repeatPassword => this.setState({repeatPassword})}
-        />
-        </View>
-        <View style ={styles.termsContainer}>
-        <Text style ={styles.textTerms}>
-        By tapping "Register New Account" you agree to the terms & conditions
-        </Text>
+          <View style={styles.marginView}>
+          </View>
+          <View style={styles.mainContent}>
+          <View style= {styles.registerTextContainer}>
+            <Text style = {styles.registerText}>
+              REGISTER
+            </Text>
+            <View style ={styles.descTextContainer}>
+              <Text style = {styles.descText}>
+              Register an account to be able to sync and save your bar, notes and favorite drinks between devices
+              </Text>
+            </View>
+          </View>
+
+        <View style={styles.textInputContainer}>
+          <View style={styles.inputIconContainer}>
+            <Ionicons name='md-person' size={24}></Ionicons>
+          </View>
+          <TextInput
+            style={styles.input}
+            autoCapitalize = 'none'
+            placeholder = {'Email'}
+            placeholderTextColor = 'darkgray'
+            underlineColorAndroid = 'transparent'
+            onChangeText = {email => this.setState({email})}
+          />
         </View>
 
-        <TouchableOpacity
-        onPress={this.readValues.bind(this)}
-        style={styles.registerButton}>
-        <Text style = {styles.textRegisterButton}>REGISTER NEW ACCOUNT</Text>
-        </TouchableOpacity>
-        </ImageBackground>
+        <View style= {styles.textInputContainer}>
+          <View style={styles.inputIconContainer}>
+            <Ionicons name='md-lock' size={24}></Ionicons>
+          </View>
+          <TextInput
+            style={styles.input}
+            placeholder = {"Password"}
+            secureTextEntry= {true}
+            placeholderTextColor = 'darkgray'
+            underlineColorAndroid = 'transparent'
+            onChangeText = {password => this.setState({password})}
+          />
+        </View>
+
+        <View style= {styles.textInputContainer}>
+          <View style={styles.inputIconContainer}>
+            <Ionicons name='md-lock' size={24}></Ionicons>
+          </View>
+          <TextInput
+            style={styles.input}
+            placeholder = {"Repeat Password"}
+            secureTextEntry= {true}
+            placeholderTextColor = 'darkgray'
+            underlineColorAndroid = 'transparent'
+            onChangeText = {repeatPassword => this.setState({repeatPassword})}
+          />
+        </View>
+
+        <View style ={styles.termsTextContainer}>
+          <Text style ={styles.termsText}>
+            By registering you agree to the terms & conditions
+          </Text>
+        </View>
+
+        <View style={styles.registerButtonContainer}>
+          <TouchableOpacity
+            onPress={this.readValues.bind(this)}
+            style={styles.registerButton}>
+            <Text style = {styles.registerButtonText}>REGISTER</Text>
+          </TouchableOpacity>
+        </View>
+
+        </View>
+
+        <View style={styles.marginViewBottom}>
+        </View>
+      </ImageBackground>
       );
     } else{
       return(
@@ -168,53 +206,111 @@ const styles = StyleSheet.create({
     flex: 1,
     width: null,
     height: null,
-    justifyContent: "center",
+    //justifyContent: "center",
     alignItems: "center"
   },
-  textContainer: {
-    marginBottom: 40,
-    width: WIDTH / 2,
-    justifyContent: "flex-start"
+
+  marginView: {
+    //borderWidth: 2,
+    //borderColor: 'pink',
+    flex: 20,
   },
-  textRegister: {
+
+  mainContent: {
+    flex: 60
+  },
+
+  registerTextContainer: {
+    //borderWidth: 2,
+    //borderColor: colors.midblue,
+    alignItems: 'center',
+  },
+  registerText: {
+    fontFamily: 'Quicksand-Bold',
+    textAlign: 'center',
+    width: WIDTH,
+    color: colors.black,
     fontSize: 20,
-    textAlign: "center",
-    fontWeight: "bold",
-    color: "rgba(0,0,0,0.7)"
   },
-  input: {
-    width: WIDTH - 55,
+
+  descTextContainer: {
+    width: WIDTH/1.15,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+
+  descText:{
+    fontSize: 14,
+    //textAlign: 'center',
+    color: colors.darkgray,
+    fontFamily: 'Quicksand-Regular',
+    paddingVertical: 20,
+  },
+
+  textInputContainer: {
+    elevation: 5,
+    flexDirection: 'row',
+    width: WIDTH/1.12,
     height: 40,
     borderRadius: 25,
-    fontSize: 16,
-    paddingLeft: 45,
-    backgroundColor: "white",
-    color: "rgba(0,0,0,0.9)",
-    marginHorizontal: 25
+    backgroundColor: colors.white,
+    marginHorizontal: 25,
+    marginBottom: 10,
   },
-  input2: {
-    marginTop: 10
+
+  inputIconContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    //backgroundColor: colors.lightred,
+    width: WIDTH/9,
+    borderRadius: 25,
+    marginRight: 5,
+  },
+
+  input: {
+    width: WIDTH/1.5,
+    height: 40,
+    //borderRadius: 25,
+    fontSize: 16,
+    //paddingLeft: 45,
+    //backgroundColor: colors.midblue,
+    color: colors.black,
+    //marginHorizontal: 25,
+    //marginTop: 25,
+    fontFamily: 'Quicksand-Regular',
+  },
+
+  termsTextContainer: {
+    marginTop: 10,
+  },
+  termsText: {
+    marginHorizontal: 10,
+    fontFamily: 'Quicksand-Regular',
+    fontSize: 14,
+    color: colors.darkgray,
+    justifyContent: 'center',
+    textAlign: "center",
+  },
+
+  registerButtonContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   registerButton: {
-    width: WIDTH - 55,
+    elevation: 5,
+    backgroundColor: colors.orange,
+    justifyContent:'center',
+    marginTop: 10,
+    //alignSelf: 'flex-end',
+    width: WIDTH/1.12,
     height: 40,
     borderRadius: 25,
-    marginTop: 35,
-    justifyContent: "center",
-    backgroundColor: "#07757D"
   },
-  textRegisterButton: {
-    color: "rgba(255,255,255,0.9)",
+  registerButtonText: {
+    fontFamily: 'Quicksand-Medium',
+    color: colors.white,
     fontSize: 16,
-    textAlign: "center"
+    textAlign: 'center'
   },
-  termsContainer: {
-    justifyContent: "center",
-    width: WIDTH / 1.65,
-    marginTop: 10
-  },
-  textTerms: {
-    textAlign: "center",
-    fontSize: 12
-  }
+
 });

@@ -326,7 +326,7 @@ class Drinkscreen extends Component {
           }}
         >
           <View style={styles.modalItemContainer}>
-            <Text style={styles.modalItemText}> {item.name} </Text>
+            <Text style={styles.modalItemText}>{item.name}</Text>
           </View>
         </TouchableOpacity>
       );
