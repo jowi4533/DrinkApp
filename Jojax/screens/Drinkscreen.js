@@ -373,10 +373,8 @@ class Drinkscreen extends Component {
                 </View>
               )
             }
-
               </View>
             </View>
-
             <View style={styles.ingredientsTextContainer}>
               <Text style={styles.ingredientsText}>
                 {this.getIngredients(Object.keys(item.allIngredients))}

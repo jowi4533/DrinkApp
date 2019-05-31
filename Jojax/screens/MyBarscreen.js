@@ -21,6 +21,7 @@ const { width: WIDTH, height: HEIGHT } = Dimensions.get("window");
 import bgImage from "../pictures/236.jpg";
 import ginBottle from "../pictures/ginBottle.jpg";
 import { colors } from "../assets/colors.js";
+import SmallFavoriteButton from "../components/SmallFavoriteButton.js";
 
 // const formatData = (data, numColumns) => {
 //   const numberOfFullRows = Math.floor(data.length / numColumns);
@@ -165,9 +166,14 @@ class MyBarscreen extends Component {
       ],
 
       isHighlighted: [],
+      activeIndex: 0,
+      drinks: props.screenProps.drinks,
+      allFavourites: {},
+
       userAuth: props.screenProps.userAuth,
-      loggedIn: null,
-      activeIndex: 0
+      usersDB: props.screenProps.usersDB,
+      users: props.screenProps.users,
+      loggedIn: null
     };
 
     this.setUpNavigationListener();
@@ -262,6 +268,55 @@ class MyBarscreen extends Component {
 
   _keyExtractor = (item, index) => item.name;
 
+  hasAllIngredients(drinkIngredientsArr, myBarArr){
+  return drinkIngredientsArr.every(i => myBarArr.includes(i));
+}
+
+  findBarDrinks(){
+    var myBarArr = ["aperol","spritz","gin"];
+    var myPossibleDrinksArr = [];
+    for (let i = 0; i < this.state.drinks.length; i++){
+      var drinkIngredientsArr = Object.keys(this.state.drinks[i].spirits);
+      var hasIngredient = this.hasAllIngredients(drinkIngredientsArr,myBarArr);
+      if (hasIngredient==true){
+        myPossibleDrinksArr.push(this.state.drinks[i]);
+      }
+
+    }
+    return myPossibleDrinksArr
+  }
+  getIngredients = data => {
+    var string = data.toString();
+    string = string.replace(/,/g, ", ");
+    return string;
+  };
+
+updateFavourites = (drinkData, favourited) => {
+    this.state.allFavourites[drinkData.name] = drinkData
+    if(this.state.loggedIn){
+    if(favourited){
+      this.state.usersDB.orderByChild("email").equalTo(this.state.userAuth.currentUser.email).on("child_added",
+        (loggedInUser) =>{
+
+        let currentUser = loggedInUser.val()
+        let myFavouritesRef = this.state.usersDB.child(loggedInUser.key).child("myFavourites")
+
+        myFavouritesRef.set(this.state.allFavourites)
+        })
+    }
+      else{
+        this.state.usersDB.orderByChild("email").equalTo(this.state.userAuth.currentUser.email).on("child_added",
+          (loggedInUser) =>{
+
+          let currentUser = loggedInUser.val()
+          let removeFavouriteRef = this.state.usersDB.child(loggedInUser.key).child("myFavourites").child(drinkData.name)
+          removeFavouriteRef.remove()
+          delete this.state.allFavourites[drinkData.name]
+          })
+    }
+    }
+  }
+
   renderItem = ({ item, index }) => {
     return (
       <View style={styles.itemContainer}>
@@ -291,6 +346,48 @@ class MyBarscreen extends Component {
       </View>
     );
   };
+  // --- this is all the drinks the user can make with their ingredients-- //
+  renderItem1 = ({ item, index }) => {
+    return (
+      <View style={styles.drinkContainer}>
+        <TouchableOpacity
+          style={styles.buttonDrink}
+          onPress={() =>
+            this.props.navigation.navigate("SpecDrinks", { drink: item })
+          }
+        >
+          <View>
+            <Image source={{ uri: item.url }} style={styles.imageDrink} />
+          </View>
+          <View style = {{backgroundColor: 'white'}}>
+            <View style={styles.textHeadingContainer}>
+              <Text style={styles.textDrinkName}>{item.name}</Text>
+              <View style={styles.SmallFavoriteButtonContainer}>
+                {this.state.loggedIn ? (
+                <SmallFavoriteButton
+                drink = {item}
+                myFavourites = {this.state.allFavourites}
+                loggedIn = {this.state.loggedIn}
+                updateFavourites = {this.updateFavourites}
+                >
+                </SmallFavoriteButton>
+              ):(
+                <View>
+                </View>
+              )
+            }
+              </View>
+            </View>
+            <View style={styles.ingredientsTextContainer}>
+              <Text style={styles.ingredientsText}>
+                {this.getIngredients(Object.keys(item.allIngredients))}
+              </Text>
+            </View>
+          </View>
+        </TouchableOpacity>
+      </View>
+    );
+  };
 
   render() {
     return (
@@ -305,6 +402,10 @@ class MyBarscreen extends Component {
             onPress={() => this.handleGoToBar()}
           >
             <Text style={styles.tabText}>Bar</Text>
+            <View style = {styles.barCounterBox}>
+               <Text style= {{fontSize:16}}> {this.state.isHighlighted.length}
+               </Text>
+            </View>
           </TouchableOpacity>
           <TouchableOpacity
             style={[
@@ -335,7 +436,13 @@ class MyBarscreen extends Component {
             />
         </View>
         ):(
-          <View>
+          <View style= {{flex:1,backgroundColor: 'white'}}>
+            <FlatList
+              data={this.findBarDrinks()}
+              renderItem={this.renderItem1}
+              keyExtractor={item => item.id}
+              extraData={this.state}
+            />
           </View>
         )}
       </ImageBackground>
@@ -423,7 +530,6 @@ const styles = StyleSheet.create({
     // height: '100%',
     resizeMode: "stretch"
   },
-
   itemTextContainer: {
     alignItems: "center",
     backgroundColor: "dimgray",
@@ -446,16 +552,68 @@ const styles = StyleSheet.create({
     height: 50,
     backgroundColor: "white",
     borderBottomColor: colors.midblue ,
-    borderBottomWidth: 2
+    borderBottomWidth: 2,
+    flexDirection: 'row'
   },
   tabButtonInactive: {
     width: WIDTH / 2,
     justifyContent: "center",
     alignItems: "center",
     height: 50,
-    backgroundColor: "white"
+    backgroundColor: "white",
+    flexDirection: 'row'
   },
   tabText: {
-    fontSize: 18
-  }
+    fontSize: 18,
+  },
+  barCounterBox:{
+    marginLeft:5,
+    height: 18,
+    width: 25,
+    backgroundColor:colors.lightred,
+    borderRadius: 5,
+    alignItems:'center',
+    justifyContent: 'flex-end'
+  },
+  drinkContainer: {
+    height: 105.8,
+    width: WIDTH,
+    borderBottomWidth: 0.8,
+    borderBottomColor: colors.midgray,
+    flexDirection: "row"
+  },
+  buttonDrink: {
+    flex: 1,
+    flexDirection: "row"
+  },
+  imageDrink: {
+    height: 105,
+    width: 105
+  },
+  textDrinkName: {
+    width: "78%",
+    fontSize: 18,
+    //fontWeight: "bold",
+    fontFamily: "Quicksand-Medium",
+    marginLeft: 15,
+    marginTop: 15,
+    color: colors.black
+    //marginRight: 10,
+  },
+  textHeadingContainer: {
+    width: WIDTH - 105,
+    flexDirection: "row",
+    justifyContent: "space-between"
+  },
+
+  ingredientsTextContainer: {
+    marginLeft: 15,
+    width: "80%"
+  },
+
+  ingredientsText: {
+    textTransform: "capitalize",
+    fontSize: 14,
+    color: colors.darkgray
+  },
 });

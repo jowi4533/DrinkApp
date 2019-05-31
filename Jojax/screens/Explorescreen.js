@@ -129,6 +129,11 @@ class Explorescreen extends Component {
   renderItem1 = ({ item, index }) => {
     return (
       <View style={styles.discoverWeeklyBox}>
+        <TouchableOpacity
+          onPress={() =>
+            this.props.navigation.navigate("SpecDrinks", { drink: item })
+          }
+        >
         <Image
           source={{ uri: item.url }}
           style={styles.drinkImage}
@@ -136,6 +141,7 @@ class Explorescreen extends Component {
         <View style={styles.drinkNameTextContainer}>
           <Text style={styles.drinkNameText}>{item.name}</Text>
         </View>
+      </TouchableOpacity>
       </View>
     );
   };

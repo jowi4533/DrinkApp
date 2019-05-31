@@ -55,7 +55,7 @@ class DrinkCategoryscreen extends Component {
   renderItem1 = ({ item, index }) => {
     return (
       <TouchableOpacity style={styles.seasonalBox}
-        onPress={() => this.props.navigation.navigate("")}
+        onPress={() => this.props.navigation.navigate("SpecDrinks", { drink: item })}
         >
         <Image style={styles.seasonalImage} source={{uri : item.url}} />
         <View style={styles.drinkNameTextContainer}>
