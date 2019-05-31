@@ -47,12 +47,13 @@ class Drinkscreen extends Component {
         { name: "Blue Wine", selected: false },
         { name: "Schnaps", selected: false },
         { name: "Absinthe", selected: false },
-        { name: "Rose Wine", selected: false }
+
       ],
       isHighlighted: [],
       modalVisible: false,
       dataSource: [],
       searchBarText: "",
+      searchBarCharacters: "",
 
       drinks: props.screenProps.drinks,
       drinksDisplayed: [],
