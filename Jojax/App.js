@@ -187,25 +187,7 @@ class App extends Component {
       "Quicksand-Medium": require("./fonts/Quicksand-Medium.ttf"),
       "Quicksand-Regular": require("./fonts/Quicksand-Regular.ttf"),
 
-      "Barlow-Bold": require("./fonts/Barlow-Bold.ttf"),
-      "Barlow-Light": require("./fonts/Barlow-Light.ttf"),
-      "Barlow-Medium": require("./fonts/Barlow-Medium.ttf"),
-      "Barlow-Regular": require("./fonts/Barlow-Regular.ttf"),
-      "Barlow-SemiBold": require("./fonts/Barlow-SemiBold.ttf"),
 
-      "Maitree-Bold": require("./fonts/Maitree-Bold.ttf"),
-      "Maitree-Medium": require("./fonts/Maitree-Medium.ttf"),
-      "Maitree-Regular": require("./fonts/Maitree-Regular.ttf"),
-      "Maitree-Light": require("./fonts/Maitree-Light.ttf"),
-
-      "Krub-Bold": require("./fonts/Krub-Bold.ttf"),
-      "Krub-Medium": require("./fonts/Krub-Medium.ttf"),
-      "Krub-Regular": require("./fonts/Krub-Regular.ttf"),
-      "Krub-Light": require("./fonts/Krub-Light.ttf"),
-
-      "Muli-Bold": require("./fonts/Muli-Bold.ttf"),
-      "Muli-Regular": require("./fonts/Muli-Regular.ttf"),
-      "Muli-Light": require("./fonts/Muli-Light.ttf")
     }).then(() => {
       this.setState({ fontLoaded: true });
     });
@@ -327,7 +309,6 @@ class App extends Component {
 
     }
     else if(category =="Tastes"){
-      console.log("inside Tastes")
       let Alltastes = this.state.tasteCategories;
       let tastesarray = [];
       for (let i = 0; i < this.state.tasteCategoriesKeys.length; i++) {

@@ -34,22 +34,34 @@ class DrinkCategoryscreen extends Component {
    title: `${navigation.state.params.title}`,
     headerTitleStyle: {
       width: '100%',
-      fontWeight: 'bold',
+      fontFamily: "Quicksand-Medium",
       fontSize: 25,
+      color: colors.black
     },
   });
+  categoryIsSpirit(spirit){
+    var spiritArr = ["gin","rum","tequila","vodka"];
+  return spiritArr.includes(spirit);
+}
 
   componentWillMount(){
     let drinksToRender = []
-
+    if(this.categoryIsSpirit(this.state.title)==true){
+      for(let i = 0; i < this.state.drinks.length; i++){
+        if (this.state.drinks[i].spirits.hasOwnProperty(this.state.title)){
+          drinksToRender.push(this.state.drinks[i])
+        }
+    }
+    this.setState({drinksDisplayed: drinksToRender})
+  }
+    else{
     for(let i = 0; i < this.state.drinks.length; i++){
       if(this.state.drinks[i].categories.hasOwnProperty(this.state.title)){
         drinksToRender.push(this.state.drinks[i])
       }
     }
     this.setState({drinksDisplayed: drinksToRender})
-
-
+  }
   }
 
   renderItem1 = ({ item, index }) => {
@@ -103,13 +115,7 @@ const styles = StyleSheet.create({
  scrollview: {
    backgroundColor: 'transparent'
  },
- // seasonalDrinksText: {
- //   fontSize: 25,
- //   fontWeight: "bold",
- //   marginTop: 10,
- //   marginLeft: 10,
- //   marginBottom: 10
- // },
+
  seasonalImage: {
    width: (WIDTH - 40) / 2,
    height: (WIDTH - 40) / 2,
@@ -118,7 +124,7 @@ const styles = StyleSheet.create({
  seasonalText: {
    textAlign: 'center',
    fontSize: 18,
-   fontWeight: "bold",
+   fontFamily: "Quicksand-Bold",
    marginLeft:10,
    color: colors.black,
  },
@@ -128,12 +134,8 @@ const styles = StyleSheet.create({
    margin: 5
  },
  drinkNameTextContainer:{
-   //backgroundColor:'blue',
    marginLeft:5,
    marginBottom:5,
    width: (WIDTH - 40) / 2,
-   //paddingRight: 5,
  },
-
-
 });

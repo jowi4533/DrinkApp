@@ -33,11 +33,11 @@ class NewNotescreen extends Component {
     title: 'New Note',
     headerTitleStyle: {
       width: '100%',
-      fontWeight: 'bold',
+      fontFamily: "Quicksand-Medium",
       fontSize: 25,
-      color: 'black'
+      color: colors.black
     },
-    headerTintColor: 'rgb(205,133,63)',
+    headerTintColor:colors.black,
     headerRight:
     <SaveNoteButton
       onPress={navigation.getParam('handleSaveNotepress')

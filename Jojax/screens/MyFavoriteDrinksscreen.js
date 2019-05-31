@@ -31,8 +31,14 @@ class MyFavoriteDrinkscreen extends Component {
       userAuth : props.screenProps.userAuth,
       loggedIn : null,
       favoriteDrinkArray: [],
-    };
 
+      drinks: props.screenProps.drinks,
+      allFavourites: {},
+
+      usersDB: props.screenProps.usersDB,
+      users: props.screenProps.users,
+    };
+    console.log(this.state.usersDB)
     this.setUpNavigationListener()
     this.initiateListener()
   }
@@ -44,8 +50,9 @@ class MyFavoriteDrinkscreen extends Component {
     title: 'My Favorites',
     headerTitleStyle: {
       width: '100%',
-      fontWeight: 'bold',
-      fontSize: 25
+      fontFamily: "Quicksand-Medium",
+      fontSize: 25,
+      color:colors.black
     },
   };
   matchFavoriteDrinks(){
@@ -111,8 +118,12 @@ class MyFavoriteDrinkscreen extends Component {
             <View style={styles.textHeadingContainer}>
               <Text style={styles.textDrinkName}>{item.name}</Text>
               <View style={styles.SmallFavoriteButtonContainer}>
-                <SmallFavoriteButton>
-                </SmallFavoriteButton>
+                <SmallFavoriteButton
+                  drink = {item}
+                  myFavourites = {this.state.allFavourites}
+                  loggedIn = {this.state.loggedIn}
+                  updateFavourites = {this.updateFavourites}
+                />
               </View>
             </View>
 
@@ -126,7 +137,31 @@ class MyFavoriteDrinkscreen extends Component {
       </View>
     );
   };
+  updateFavourites = (drinkData, favourited) => {
+    this.state.allFavourites[drinkData.name] = drinkData
+    if(this.state.loggedIn){
+    if(favourited){
+      this.state.usersDB.orderByChild("email").equalTo(this.state.userAuth.currentUser.email).on("child_added",
+        (loggedInUser) =>{
 
+        let currentUser = loggedInUser.val()
+        let myFavouritesRef = this.state.usersDB.child(loggedInUser.key).child("myFavourites")
+
+        myFavouritesRef.set(this.state.allFavourites)
+        })
+    }
+      else{
+        this.state.usersDB.orderByChild("email").equalTo(this.state.userAuth.currentUser.email).on("child_added",
+          (loggedInUser) =>{
+
+          let currentUser = loggedInUser.val()
+          let removeFavouriteRef = this.state.usersDB.child(loggedInUser.key).child("myFavourites").child(drinkData.name)
+          removeFavouriteRef.remove()
+          delete this.state.allFavourites[drinkData.name]
+          })
+    }
+    }
+  }
 
   render() {
     return (
@@ -186,6 +221,7 @@ const styles = StyleSheet.create({
     textTransform: 'capitalize',
     fontSize: 14,
     color: colors.darkgray,
+    fontFamily: "Quicksand-Regular"
   },
 
 

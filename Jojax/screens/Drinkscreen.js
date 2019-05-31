@@ -26,8 +26,9 @@ class Drinkscreen extends Component {
     title: "Drinks",
     headerTitleStyle: {
       width: "100%",
-      fontWeight: "bold",
-      fontSize: 25
+      fontFamily: "Quicksand-Medium",
+      fontSize: 25,
+      color: colors.black
     }
   };
 
@@ -500,8 +501,8 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
     width: WIDTH * 0.58,
     fontSize: 20,
-    marginLeft: 6
-    //marginRight: 1.5,
+    marginLeft: 6,
+    fontFamily: "Quicksand-Regular"
   },
   buttonFilter: {
     elevation: 10,
@@ -536,18 +537,13 @@ const styles = StyleSheet.create({
   textDrinkName: {
     width: "78%",
     fontSize: 18,
-    //fontWeight: "bold",
     fontFamily: "Quicksand-Medium",
     marginLeft: 15,
     marginTop: 15,
     color: colors.black
-    //marginRight: 10,
+
   },
-  // textDrinkIngredients: {
-  //   fontSize: 14,
-  //   fontFamily: 'Quicksand-Medium',
-  //   color: colors.darkgray
-  // },
+
   textHeadingContainer: {
     width: WIDTH - 105,
     flexDirection: "row",
@@ -560,16 +556,11 @@ const styles = StyleSheet.create({
   },
 
   ingredientsText: {
+    fontFamily: "Quicksand-Regular",
     textTransform: "capitalize",
     fontSize: 14,
     color: colors.darkgray
   },
-  //addToFavoriteButton:{
-  //  position: 'absolute',
-  //  right:12,
-  //  top:7,
-  //  zIndex:2
-  //},
 
   modalContainer: {
     justifyContent: "center",

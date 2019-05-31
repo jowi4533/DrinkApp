@@ -178,6 +178,7 @@ class MyBarscreen extends Component {
 
     this.setUpNavigationListener();
     this.initiateListener();
+    console.log(this.state.usersDB);
   }
 
   static navigationOptions = {
@@ -185,8 +186,9 @@ class MyBarscreen extends Component {
     headerLayoutPreset: "center",
     headerTitleStyle: {
       width: "100%",
-      fontWeight: "bold",
-      fontSize: 25
+      fontFamily: "Quicksand-Medium",
+      fontSize: 25,
+      color: colors.black
     }
   };
 
@@ -469,9 +471,9 @@ const styles = StyleSheet.create({
   },
 
   informationText: {
-    color: "rgba(108, 122, 137, 1)",
+    color: colors.darkgray,
     fontSize: 18,
-    //fontWeight: 'bold',
+    fontFamily: "Quicksand-Regular",
     paddingVertical: 20,
     paddingHorizontal: 20
   },
@@ -523,11 +525,8 @@ const styles = StyleSheet.create({
   itemPicture: {
     paddingTop: 2,
     justifyContent: "flex-end",
-    //borderRadius: 10,
     alignItems: "center",
     flex: 1,
-    // width: '100%',
-    // height: '100%',
     resizeMode: "stretch"
   },
   itemTextContainer: {
@@ -538,6 +537,7 @@ const styles = StyleSheet.create({
     borderRadius: 8
   },
   itemText: {
+    fontFamily: "Quicksand-Regular",
     textAlign: "center",
     fontSize: 18,
     color: "white"
@@ -560,13 +560,17 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     height: 50,
-    backgroundColor: "white",
+    backgroundColor: colors.white,
     flexDirection: 'row'
   },
   tabText: {
+      color:colors.black,
+    fontFamily: "Quicksand-Medium",
     fontSize: 18,
   },
   barCounterBox:{
+    color:colors.black,
+    fontFamily: "Quicksand-Medium",
     marginLeft:5,
     height: 18,
     width: 25,
@@ -593,12 +597,10 @@ const styles = StyleSheet.create({
   textDrinkName: {
     width: "78%",
     fontSize: 18,
-    //fontWeight: "bold",
     fontFamily: "Quicksand-Medium",
     marginLeft: 15,
     marginTop: 15,
     color: colors.black
-    //marginRight: 10,
   },
   textHeadingContainer: {
     width: WIDTH - 105,
