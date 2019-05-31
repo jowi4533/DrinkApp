@@ -390,7 +390,8 @@ class Drinkscreen extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <View style={styles.searchAndFilterContainer}>
+        <View style={styles.searchAndFilterBackground}>
+          <View style={styles.searchAndFilterContainer}>
           <View style={styles.searchContainer}>
             <EvilIcons name="search" size={30} />
             <TextInput
@@ -400,6 +401,7 @@ class Drinkscreen extends Component {
               onChangeText={text => this.loopOverDrinks(text.toLowerCase())}
             />
           </View>
+
           <TouchableOpacity
             style={styles.buttonFilter}
             onPress={() => {
@@ -408,6 +410,7 @@ class Drinkscreen extends Component {
           >
             <Text style={styles.textFilterButton}> Filter </Text>
           </TouchableOpacity>
+          </View>
         </View>
         <View style={{ paddingBottom: 70 }}>
           <FlatList
@@ -477,7 +480,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1
   },
-  searchAndFilterContainer: {
+  searchAndFilterBackground: {
     height: 75,
     //borderBottomWidth: 1,
     //borderBottomColor: colors.midgray,
@@ -486,6 +489,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
     flexDirection: "row"
   },
+  searchAndFilterContainer: {
+    flexDirection: "row",
+    width: WIDTH/1.1,
+    justifyContent: 'space-between',
+    alignItems: "center",
+  },
+
   searchContainer: {
     elevation: 10,
     width: WIDTH * 0.7118,
@@ -494,7 +504,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingLeft: 5,
     flexDirection: "row",
-    marginRight: 12,
     borderRadius: 10
   },
   searchInput: {
@@ -502,7 +511,6 @@ const styles = StyleSheet.create({
     width: WIDTH * 0.58,
     fontSize: 20,
     marginLeft: 6
-    //marginRight: 1.5,
   },
   buttonFilter: {
     elevation: 10,
@@ -510,7 +518,6 @@ const styles = StyleSheet.create({
     height: 45,
     justifyContent: "center",
     padding: 10,
-    marginLeft: 12,
     borderRadius: 10
   },
   textFilterButton: {
