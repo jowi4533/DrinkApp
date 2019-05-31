@@ -54,7 +54,7 @@ class Registerscreen extends Component {
   }
 
   initiateListener(){
-    this.state.userAuth.onAuthStateChanged(function(user) {
+    this.state.userAuth.onAuthStateChanged((user) => {
       if (user) {
         console.log(user.displayName)
         // User is signed in.
@@ -72,8 +72,6 @@ class Registerscreen extends Component {
       email: this.state.email,
       password: this.state.password,
     }
-
-
 
     const promise = this.state.userAuth.createUserWithEmailAndPassword(data.email, data.password)
     promise.catch(e => console.log(e.message))

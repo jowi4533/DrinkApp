@@ -65,27 +65,20 @@ class Drinkscreen extends Component {
       loggedIn: null
     };
 
+    this.state.drinksDisplayed = this.state.drinks
+    this.state.filteredDrinks = this.state.drinks
     this.loadResources()
   }
 
   loadResources(){
-    this.checkUserLoggedIn2()
+    this.checkUserLoggedIn();
     this.setUpNavigationListener()
+    this.userListener()
     this.setUpDatabaseListeners()
-    this.initiateListener()
-  }
-
-  checkUserLoggedIn2(){
-    if(this.state.userAuth.currentUser === null){
-      //this.state.loggedIn = false
-      this.state.loggedIn = false
-    } else{
-      //this.state.loggedIn = true
-      this.state.loggedIn = true
-    }
   }
 
   setUpDatabaseListeners(){
+    console.log("In setUpDatabaseListeners")
     if(this.state.loggedIn){
       this.state.usersDB.orderByChild("email").equalTo(this.state.userAuth.currentUser.email).on("child_added",
         (loggedInUser) =>{
@@ -99,10 +92,6 @@ class Drinkscreen extends Component {
 
           this.state.allFavourites[drink.name] = drink
         })
-        // myFavouritesRef.on("child_removed", (aDrink) => {
-        //   console.log("child removed!!!!!")
-        //   let drink = aDrink.val()
-        // })
       })
     }
 
@@ -110,7 +99,6 @@ class Drinkscreen extends Component {
 
   setUpNavigationListener() {
     this.props.navigation.addListener("didFocus", () => {
-      this.checkUserLoggedIn();
       // get your new data here and then set state it will rerender
       console.log("In navigationlistener (DRINKSCREEN)");
     });
@@ -119,20 +107,23 @@ class Drinkscreen extends Component {
   checkUserLoggedIn(){
     if(this.state.userAuth.currentUser === null){
       //this.state.loggedIn = false
-      this.setState({loggedIn: false})
+      this.state.loggedIn = false
+      console.log("In check User logged in:" + this.state.loggedIn)
     } else{
       //this.state.loggedIn = true
-      this.setState({loggedIn: true})
+      this.state.loggedIn = true
+      console.log("In check User logged in:" + this.state.loggedIn)
     }
   }
 
-  initiateListener(){
+  userListener(){
     this.state.userAuth.onAuthStateChanged((user) => {
       if (user) {
         console.log("In listener, user online (DRINKSCREEN)")
         // User is signed in.
         this.state.loggedIn = true
         this.setUpDatabaseListeners()
+        this.forceUpdate()
 
       } else {
         this.state.loggedIn = false
@@ -184,8 +175,6 @@ class Drinkscreen extends Component {
   _keyExtractor = (item, index) => item.name;
 
   componentDidMount() {
-    this.setState({ drinksDisplayed: this.state.drinks });
-    this.setState({ filteredDrinks: this.state.drinks });
     const url = "";
     fetch(url)
       .then(response => response.json())
@@ -197,8 +186,6 @@ class Drinkscreen extends Component {
       .catch(error => {
         //console.log(error);
       });
-
-    this.checkUserLoggedIn();
   }
   _onButtonPress = item => {
     if (item.selected !== true) {
@@ -218,19 +205,6 @@ class Drinkscreen extends Component {
     this.filterDrinks()
 }
 
-
-  initiateListener() {
-    this.state.userAuth.onAuthStateChanged(function(user) {
-      if (user) {
-        console.log("In listener, user online (DRINKSCREEN)");
-        // User is signed in.
-        var displayName = user.displayName;
-        var email = user.email;
-      } else {
-        console.log("In listener, user offline (DRINKSCREEN)");
-      }
-    });
-  }
 
   //----------------    END  Filter button -------------
 
@@ -317,7 +291,6 @@ class Drinkscreen extends Component {
 
   updateFavourites = (drinkData, favourited) => {
 
-    let drinkName = drinkData.name;
     this.state.allFavourites[drinkData.name] = drinkData
     if(this.state.loggedIn){
     if(favourited){
@@ -373,14 +346,6 @@ class Drinkscreen extends Component {
     );
   };
 
-  // renderItemIngredients = ({ item, index }) => {
-  //   return (
-  //     <View>
-  //       <Text style={styles.textDrinkIngredients}>{item}, </Text>
-  //     </View>
-  //   );
-  // };
-
   getIngredients = data => {
     var string = data.toString();
     string = string.replace(/,/g, ", ");
@@ -388,6 +353,7 @@ class Drinkscreen extends Component {
   };
 
   renderItem1 = ({ item, index }) => {
+    console.log("Rendering drinks!!!!!!!!!!!!!!!!!!!!")
     return (
       <View style={styles.drinkContainer}>
         <TouchableOpacity
@@ -432,6 +398,7 @@ class Drinkscreen extends Component {
   };
 
   render() {
+    console.log("In render")
     return (
       <View style={styles.container}>
         <View style={styles.searchAndFilterContainer}>
