@@ -67,9 +67,6 @@ class Explorescreen extends Component {
       seasonCategory: props.screenProps.seasons,
       tasteCategory: props.screenProps.tastes
     }
-    console.log(this.state.seasonCategory)
-    console.log(this.state.spiritCategory)
-    console.log(this.state.tasteCategory)
 
   }
 

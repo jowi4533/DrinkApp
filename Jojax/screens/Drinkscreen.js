@@ -72,14 +72,12 @@ class Drinkscreen extends Component {
 
   loadResources(){
     this.checkUserLoggedIn();
-    this.setUpNavigationListener()
-    this.userListener()
     this.setUpDatabaseListeners()
+    this.userListener()
+    this.setUpNavigationListener()
   }
 
   setUpDatabaseListeners(){
-    console.log("In setUpDatabaseListeners")
-    if(this.state.loggedIn){
       this.state.usersDB.orderByChild("email").equalTo(this.state.userAuth.currentUser.email).on("child_added",
         (loggedInUser) =>{
 
@@ -87,14 +85,11 @@ class Drinkscreen extends Component {
         let myFavouritesRef = this.state.usersDB.child(loggedInUser.key).child("myFavourites")
 
         myFavouritesRef.on("child_added", (aDrink, prevChildKey) =>{
-          console.log("Child added!!!!")
           let drink = aDrink.val()
 
           this.state.allFavourites[drink.name] = drink
         })
       })
-    }
-
   }
 
   setUpNavigationListener() {
@@ -108,11 +103,9 @@ class Drinkscreen extends Component {
     if(this.state.userAuth.currentUser === null){
       //this.state.loggedIn = false
       this.state.loggedIn = false
-      console.log("In check User logged in:" + this.state.loggedIn)
     } else{
       //this.state.loggedIn = true
       this.state.loggedIn = true
-      console.log("In check User logged in:" + this.state.loggedIn)
     }
   }
 
@@ -121,13 +114,12 @@ class Drinkscreen extends Component {
       if (user) {
         console.log("In listener, user online (DRINKSCREEN)")
         // User is signed in.
-        this.state.loggedIn = true
         this.setUpDatabaseListeners()
-        this.forceUpdate()
+        this.setState({loggedIn : true})
 
       } else {
-        this.state.loggedIn = false
         this.state.allFavourites = {}
+        this.setState({loggedIn: false})
         console.log("In listener, user offline (DRINKSCREEN)")
       }
     });
@@ -353,7 +345,6 @@ class Drinkscreen extends Component {
   };
 
   renderItem1 = ({ item, index }) => {
-    console.log("Rendering drinks!!!!!!!!!!!!!!!!!!!!")
     return (
       <View style={styles.drinkContainer}>
         <TouchableOpacity
@@ -398,7 +389,6 @@ class Drinkscreen extends Component {
   };
 
   render() {
-    console.log("In render")
     return (
       <View style={styles.container}>
         <View style={styles.searchAndFilterContainer}>
