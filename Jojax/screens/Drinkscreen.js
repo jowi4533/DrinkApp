@@ -134,7 +134,7 @@ class Drinkscreen extends Component {
   //----------------      Filter button -------------
   addToArray(item) {
     var array = this.state.isHighlighted;
-    array.push(item.name.toLowerCase());
+    array.push(item.name);
     this.setState(state => {
       state.isHighlighted = array;
     });
@@ -144,7 +144,7 @@ class Drinkscreen extends Component {
     let array = this.state.isHighlighted;
 
     for (let i = 0; i < this.state.isHighlighted.length; i++) {
-      if (this.state.isHighlighted[i] === item.name.toLowerCase()) {
+      if (this.state.isHighlighted[i] === item.name) {
         array.splice(i, 1);
       }
     }

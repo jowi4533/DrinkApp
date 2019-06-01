@@ -28,16 +28,7 @@ class MyNotesscreen extends Component {
       loggedIn : null,
 
       personalNotes: [
-        { id: 1, text: "Hej jag heter Jonas och detta är ett test på en note",noteStatus:"green" },
-        { id: 2, text: "Hej jag heter Axel och detta är ett test på en note", noteStatus:"orange" },
-        { id: 3, text: "Hej jag heter Jakob och detta är ett test på en note", noteStatus:"green" },
-        { id: 4, text: "Hej jag heter Jons och på en note som är bra", noteStatus:"green" },
-        { id: 5, text: "Hej jag heter Axel och detta är ett test på en note", noteStatus:"green" },
-        { id: 6, text: "Hej jag heter Jakob och detta är ett test på en note", noteStatus:"green" },
-        { id: 7, text: "Hej jag heter Jons och på en note som är bra", noteStatus:"green" },
-        { id: 8, text: "Hej jag heter Axel och detta är ett test på en note", noteStatus:"red" },
-        { id: 9, text: "Hej jag heter Jakob och detta är ett test på en note", noteStatus:"orange" },
-        { id: 10, text: "Hej jag heter Jons och på en note som är bra", noteStatus:"green" }
+        { id: 1, text: "Buy Sparkling Wine for the Aperol Spritz",noteStatus:"orange" }
       ],
     }
 
