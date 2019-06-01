@@ -185,6 +185,8 @@ class App extends Component {
     this.loadResources();
   }
 
+  //"https://firebasestorage.googleapis.com/v0/b/drinknic-e6779.appspot.com/o/Drinkpictures%2Fsweet_cocktail.png?alt=media&token=4deaf5f3-b803-4f8b-b9dc-32604bb4c585"
+
   async componentDidMount() {
     await Font.loadAsync({
       "Quicksand-Bold": require("./fonts/Quicksand-Bold.ttf"),
