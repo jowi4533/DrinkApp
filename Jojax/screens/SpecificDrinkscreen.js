@@ -37,7 +37,7 @@ class SpecificDrinkscreen extends Component {
 
   }
   this.setUpNavigationListener()
-  console.log(this.state.specificDrink.url)
+  //console.log(this.state.specificDrink.url)
   this.loadIngredients()
 }
 setUpNavigationListener() {
@@ -95,7 +95,7 @@ componentWillMount(){
   renderItem1 = ({ item, index }) => {
     return (
       <View style={styles.oneIngredientBox}>
-        <Text style={styles.eachIngredientText}>{item}</Text>
+        <Text style={styles.oneIngredientBoxText}>{item}</Text>
       </View>
     );
   };
@@ -106,7 +106,7 @@ componentWillMount(){
     ingredientAmount = Object.values(item)
     ingredientName = Object.keys(item)
 
-    return <Text style={styles.eachIngredientText}>{ingredientAmount}cl of {ingredientName}</Text>;
+    return <Text style={styles.eachIngredientText}>{ingredientAmount}{ingredientName}</Text>;
   };
 
   //renders preparationinstructions
@@ -171,6 +171,7 @@ componentWillMount(){
                 contentContainerStyle={styles.prepBox}
                 data={Object.values(this.state.specificDrink.instructions)}
                 renderItem={this.renderItem3}
+                keyExtractor={item => item}
               />
             </View>
           </ImageBackground>
@@ -209,18 +210,20 @@ const styles = StyleSheet.create({
     alignItems: "center"
   },
   ingredientSheet: {
-    backgroundColor: "white",
+    backgroundColor: colors.white,
     width: WIDTH - 20,
     margin: 10
   },
 
   ingredientsText: {
-    fontWeight: "bold",
-    fontSize: 22,
+    color: colors.black,
+    fontFamily:"Quicksand-Bold",
+    fontSize: 24,
     textAlign: "center",
     paddingVertical: 5
   },
   twoDrinksText: {
+    fontFamily: "Quicksand-Medium",
     fontSize: 20,
     paddingBottom: 12
   },
@@ -228,6 +231,7 @@ const styles = StyleSheet.create({
     marginBottom: 10
   },
   eachIngredientText: {
+    fontFamily:"Quicksand-Regular",
     fontSize: 18
   },
   ingredientBox: {
@@ -237,42 +241,42 @@ const styles = StyleSheet.create({
   oneIngredientBox: {
     marginLeft: 5,
     borderRadius: 25,
-    backgroundColor: "rgb(208,208,208)",
+    //backgroundColor: "rgb(208,208,208)",
+    backgroundColor: colors.lightgray,
     alignSelf: "flex-start",
     paddingHorizontal: 5,
     marginBottom: 3
   },
   textOneIngredient: {
-    fontSize: 20
+    fontFamily:"Quicksand-Bold",
+    fontSize: 22
   },
   ingredientOverviewBox: {
     marginLeft: 15,
     marginRight: 15,
     paddingBottom: 10
-    //borderBottomColor: "rgb(208,208,208)"
   },
   servingsContainer: {},
   servingsBox: {
     marginLeft: 15
   },
   servingsText: {
-    fontWeight: "bold",
-    fontSize: 22,
+    color: colors.black,
+    fontFamily: "Quicksand-Bold",
+    fontSize: 24,
     textAlign: "center",
     paddingVertical: 5
   },
   preparationSheet: {
-    backgroundColor: "white",
-    //height:HEIGHT/2,
+    backgroundColor: colors.white,
     width: WIDTH - 20,
     margin: 10,
     paddingBottom: 15
-    //borderColor:'purple',
-    //borderBottomWidth:3
   },
   preparationText: {
-    fontWeight: "bold",
-    fontSize: 22,
+    color: colors.black,
+    fontFamily:"Quicksand-Bold",
+    fontSize: 24,
     textAlign: "center",
     paddingVertical: 5
   },
@@ -284,9 +288,9 @@ const styles = StyleSheet.create({
     opacity: 1,
     paddingVertical: 5,
     textAlign: "center",
-    fontWeight: "bold",
-    fontSize: 28,
-    color: "black"
+    fontFamily: "Quicksand-Bold",
+    fontSize: 32,
+    color: colors.black
   },
   drinkNameContainer: {
     backgroundColor: "rgba(189, 195, 199, 0.5)"
@@ -296,5 +300,11 @@ const styles = StyleSheet.create({
     right: 0,
     top: 0,
     zIndex: 2
+  },
+  oneIngredientBoxText:{
+    fontFamily:"Quicksand-Regular",
+    fontSize: 18,
+    paddingHorizontal: 3
+
   }
 });

@@ -26,8 +26,9 @@ class Drinkscreen extends Component {
     title: "Drinks",
     headerTitleStyle: {
       width: "100%",
-      fontWeight: "bold",
-      fontSize: 25
+      fontFamily: "Quicksand-Medium",
+      fontSize: 25,
+      color: colors.black
     }
   };
 
@@ -46,12 +47,13 @@ class Drinkscreen extends Component {
         { name: "Blue Wine", selected: false },
         { name: "Schnaps", selected: false },
         { name: "Absinthe", selected: false },
-        { name: "Rose Wine", selected: false }
+
       ],
       isHighlighted: [],
       modalVisible: false,
       dataSource: [],
       searchBarText: "",
+      searchBarCharacters: "",
 
       drinks: props.screenProps.drinks,
       drinksDisplayed: [],
@@ -382,10 +384,8 @@ class Drinkscreen extends Component {
                 </View>
               )
             }
-
               </View>
             </View>
-
             <View style={styles.ingredientsTextContainer}>
               <Text style={styles.ingredientsText}>
                 {this.getIngredients(Object.keys(item.allIngredients))}
@@ -400,7 +400,8 @@ class Drinkscreen extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <View style={styles.searchAndFilterContainer}>
+        <View style={styles.searchAndFilterBackground}>
+          <View style={styles.searchAndFilterContainer}>
           <View style={styles.searchContainer}>
             <EvilIcons name="search" size={30} />
             <TextInput
@@ -410,6 +411,7 @@ class Drinkscreen extends Component {
               onChangeText={text => this.loopOverDrinks(text.toLowerCase())}
             />
           </View>
+
           <TouchableOpacity
             style={styles.buttonFilter}
             onPress={() => {
@@ -418,6 +420,7 @@ class Drinkscreen extends Component {
           >
             <Text style={styles.textFilterButton}> Filter </Text>
           </TouchableOpacity>
+          </View>
         </View>
         <View style={{ paddingBottom: 70 }}>
           <FlatList
@@ -487,7 +490,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1
   },
-  searchAndFilterContainer: {
+  searchAndFilterBackground: {
     height: 75,
     //borderBottomWidth: 1,
     //borderBottomColor: colors.midgray,
@@ -496,6 +499,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
     flexDirection: "row"
   },
+  searchAndFilterContainer: {
+    flexDirection: "row",
+    width: WIDTH/1.1,
+    justifyContent: 'space-between',
+    alignItems: "center",
+  },
+
   searchContainer: {
     elevation: 10,
     width: WIDTH * 0.7118,
@@ -504,15 +514,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingLeft: 5,
     flexDirection: "row",
-    marginRight: 12,
     borderRadius: 10
   },
   searchInput: {
     backgroundColor: colors.white,
     width: WIDTH * 0.58,
     fontSize: 20,
-    marginLeft: 6
-    //marginRight: 1.5,
+    marginLeft: 6,
+    fontFamily: "Quicksand-Regular"
   },
   buttonFilter: {
     elevation: 10,
@@ -520,7 +529,6 @@ const styles = StyleSheet.create({
     height: 45,
     justifyContent: "center",
     padding: 10,
-    marginLeft: 12,
     borderRadius: 10
   },
   textFilterButton: {
@@ -547,18 +555,13 @@ const styles = StyleSheet.create({
   textDrinkName: {
     width: "78%",
     fontSize: 18,
-    //fontWeight: "bold",
     fontFamily: "Quicksand-Medium",
     marginLeft: 15,
     marginTop: 15,
     color: colors.black
-    //marginRight: 10,
+
   },
-  // textDrinkIngredients: {
-  //   fontSize: 14,
-  //   fontFamily: 'Quicksand-Medium',
-  //   color: colors.darkgray
-  // },
+
   textHeadingContainer: {
     width: WIDTH - 105,
     flexDirection: "row",
@@ -571,16 +574,11 @@ const styles = StyleSheet.create({
   },
 
   ingredientsText: {
+    fontFamily: "Quicksand-Regular",
     textTransform: "capitalize",
     fontSize: 14,
     color: colors.darkgray
   },
-  //addToFavoriteButton:{
-  //  position: 'absolute',
-  //  right:12,
-  //  top:7,
-  //  zIndex:2
-  //},
 
   modalContainer: {
     justifyContent: "center",

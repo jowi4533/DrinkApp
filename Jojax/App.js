@@ -49,6 +49,7 @@ let database = firebase.database();
 let drinksDB = database.ref("Drinks");
 let usersDB = database.ref("Users");
 let categoriesDB = database.ref("Explorecategories");
+let barSpiritsDB = database.ref("Barspirits");
 
 //Everything user related
 const userAuth = firebase.auth();
@@ -168,6 +169,10 @@ class App extends Component {
       tasteCategories: null,
       tasteCategoriesKeys: null,
 
+      barSpirits: null,
+      barSpiritsKeys: null,
+
+      allBarSpirits: [],
       spirits: [],
       seasons: [],
       tastes: [],
@@ -187,25 +192,7 @@ class App extends Component {
       "Quicksand-Medium": require("./fonts/Quicksand-Medium.ttf"),
       "Quicksand-Regular": require("./fonts/Quicksand-Regular.ttf"),
 
-      "Barlow-Bold": require("./fonts/Barlow-Bold.ttf"),
-      "Barlow-Light": require("./fonts/Barlow-Light.ttf"),
-      "Barlow-Medium": require("./fonts/Barlow-Medium.ttf"),
-      "Barlow-Regular": require("./fonts/Barlow-Regular.ttf"),
-      "Barlow-SemiBold": require("./fonts/Barlow-SemiBold.ttf"),
 
-      "Maitree-Bold": require("./fonts/Maitree-Bold.ttf"),
-      "Maitree-Medium": require("./fonts/Maitree-Medium.ttf"),
-      "Maitree-Regular": require("./fonts/Maitree-Regular.ttf"),
-      "Maitree-Light": require("./fonts/Maitree-Light.ttf"),
-
-      "Krub-Bold": require("./fonts/Krub-Bold.ttf"),
-      "Krub-Medium": require("./fonts/Krub-Medium.ttf"),
-      "Krub-Regular": require("./fonts/Krub-Regular.ttf"),
-      "Krub-Light": require("./fonts/Krub-Light.ttf"),
-
-      "Muli-Bold": require("./fonts/Muli-Bold.ttf"),
-      "Muli-Regular": require("./fonts/Muli-Regular.ttf"),
-      "Muli-Light": require("./fonts/Muli-Light.ttf")
     }).then(() => {
       this.setState({ fontLoaded: true });
     });
@@ -223,6 +210,14 @@ class App extends Component {
       this.errData
     );
     drinksDB.once("value", this.retrieveDrinkItems.bind(this), this.errData);
+    barSpiritsDB.once("value", this.retrieveBarSpirits.bind(this), this.errData);
+  }
+
+  retrieveBarSpirits(data) {
+    this.setState({ barSpirits: data.val() });
+    this.setState({ barSpiritsKeys: Object.keys(data.val()) });
+
+    this.loadBarSpirits();
   }
 
   retrieveDrinkItems(data) {
@@ -235,11 +230,10 @@ class App extends Component {
     this.setState({ spiritCategories: data.val().Spirits });
     this.setState({ tasteCategories: data.val().Tastes });
     this.setState({ seasonCategories: data.val().Seasons });
-    //console.log(this.state.allExploreCategories)
     this.setState({ spiritCategoriesKeys: Object.keys(data.val().Spirits) });
     this.setState({ tasteCategoriesKeys: Object.keys(data.val().Tastes) });
     this.setState({ seasonCategoriesKeys: Object.keys(data.val().Seasons) });
-    //console.log(this.state.allExploreCategorieskeys)
+
     this.loadCategories("Spirits");
     this.loadCategories("Tastes");
     this.loadCategories("Seasons");
@@ -295,6 +289,21 @@ class App extends Component {
     }
     this.state.drinks = allDrinks;
   }
+
+  loadBarSpirits() {
+    let allBarSpirits = [];
+    for (let i = 0; i < this.state.barSpiritsKeys.length; i++) {
+      let k = this.state.barSpiritsKeys[i];
+      let barSpirit = {
+        name: this.state.barSpirits[k].name,
+        img: this.state.barSpirits[k].img,
+        id: this.state.barSpirits[k].id
+      };
+      allBarSpirits.push(barSpirit);
+    }
+    this.state.allBarSpirits = allBarSpirits;
+  }
+
   loadCategories(category) {
     if (category == "Spirits") {
       let Allspirits = this.state.spiritCategories;
@@ -326,7 +335,6 @@ class App extends Component {
 
     }
     else if(category =="Tastes"){
-      console.log("inside Tastes")
       let Alltastes = this.state.tasteCategories;
       let tastesarray = [];
       for (let i = 0; i < this.state.tasteCategoriesKeys.length; i++) {

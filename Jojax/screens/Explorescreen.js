@@ -63,35 +63,36 @@ class Explorescreen extends Component {
       seasonalDrinks: [],
       classicDrinks: [],
       baseSpirits: [],
+      editorsChoice: [],
       spiritCategory : props.screenProps.spirits,
       seasonCategory: props.screenProps.seasons,
       tasteCategory: props.screenProps.tastes
     }
 
   }
-
-  loopSeasonalDrinks(){
-    let drinksToDisplay = []
-    for(let i = 0; i < this.state.drinks.length; i++){
-      if(this.state.drinks[i].Seasonal_Drink === "spring"){
-        this.seasonalDrinks[0]
-      }
-      if(this.state.drinks[i].Seasonal_Drink === "summer"){
-
-      }
-      if(this.state.drinks[i].Seasonal_Drink === "fall"){
-
-      }
-      if(this.state.drinks[i].Seasonal_Drink === "winter"){
-
-      }
-    }
-  }
+  //
+  // loopSeasonalDrinks(){
+  //   let drinksToDisplay = []
+  //   for(let i = 0; i < this.state.drinks.length; i++){
+  //     if(this.state.drinks[i].categories.Spring == true){
+  //       this.seasonalDrinks[0]
+  //     }
+  //     if(this.state.drinks[i].Seasonal_Drink === "Summer"){
+  //
+  //     }
+  //     if(this.state.drinks[i].Seasonal_Drink === "Fall"){
+  //
+  //     }
+  //     if(this.state.drinks[i].Seasonal_Drink === "Winter"){
+  //
+  //     }
+  //   }
+  // }
 
   loopClassicDrinks(){
     let classicDrinks = []
     for(let i = 0; i < this.state.drinks.length; i++){
-      if(this.state.drinks[i].categories.classic === true){
+      if(this.state.drinks[i].categories.Classic === true){
         classicDrinks.push(this.state.drinks[i])
       }
     }
@@ -107,28 +108,41 @@ class Explorescreen extends Component {
     }
     this.setState({discoverWeekly: weeklyDrinks})
   }
+  loopEditorsChoice(){
+    let editorsDrinks = []
+    for(let i = 0; i < this.state.drinks.length; i++){
+      if(this.state.drinks[i].categories.Editors_Choice === true){
+        editorsDrinks.push(this.state.drinks[i])
+      }
+    }
+    this.setState({editorsChoice: editorsDrinks})
+  }
+
 
   componentWillMount(){
     this.loopDiscoverWeekly()
     this.loopClassicDrinks()
+    this.loopEditorsChoice()
   }
-  //componentDidMount(){
-    //this.setState({ loaded: true });
-
-  //}
 
   static navigationOptions = {
     title: 'Explore',
     headerTitleStyle: {
       width: '100%',
-      fontWeight: 'bold',
-      fontSize: 25
+      fontFamily: "Quicksand-Medium",
+      fontSize: 25,
+      color: colors.black
     },
   };
   //Discoverweekly + classic drinks atm
   renderItem1 = ({ item, index }) => {
     return (
       <View style={styles.discoverWeeklyBox}>
+        <TouchableOpacity
+          onPress={() =>
+            this.props.navigation.navigate("SpecDrinks", { drink: item })
+          }
+        >
         <Image
           source={{ uri: item.url }}
           style={styles.drinkImage}
@@ -136,6 +150,7 @@ class Explorescreen extends Component {
         <View style={styles.drinkNameTextContainer}>
           <Text style={styles.drinkNameText}>{item.name}</Text>
         </View>
+      </TouchableOpacity>
       </View>
     );
   };
@@ -246,7 +261,7 @@ class Explorescreen extends Component {
             <ScrollView horizontal={true} showsVerticalScrollIndicator={false}>
               <View style={styles.scrollviewContainer}>
                 <FlatList
-                  data={this.state.discoverWeekly}
+                  data={this.state.editorsChoice}
                   renderItem={this.renderItem1}
                   keyExtractor={item => item.id}
                   horizontal={true}
@@ -287,11 +302,7 @@ const styles = StyleSheet.create({
     color: colors.black,
     fontFamily: 'Quicksand-Bold',
     fontSize: 26,
-    //fontWeight: "bold",
     marginTop: 15,
-    //marginBottom: 5,
-    //marginLeft: 10,
-
   },
   drinkImage: {
     height: WIDTH / 2.6,
@@ -302,11 +313,9 @@ const styles = StyleSheet.create({
     color: colors.black,
     textAlign:'center',
     fontSize: 16,
-    //fontWeight: "bold",
     fontFamily: 'Quicksand-Bold'
   },
   drinkNameTextContainer: {
-    //backgroundColor: 'blue',
     width: WIDTH / 2.6,
     marginLeft:5,
     paddingLeft:5,
@@ -329,10 +338,9 @@ const styles = StyleSheet.create({
     color: colors.black,
     fontFamily: 'Quicksand-Bold',
     fontSize: 26,
-    //fontWeight: "bold",
     marginTop: 15,
     marginBottom: 5,
-    //marginLeft: 10,
+
   },
   categoryGrid:  {
 
@@ -345,7 +353,6 @@ const styles = StyleSheet.create({
   seasonalText: {
     color: colors.black,
     fontSize: 20,
-    //fontWeight: "bold",
     textAlign: "center",
     paddingLeft: 40,
     fontFamily: 'Quicksand-Bold',
@@ -364,46 +371,32 @@ const styles = StyleSheet.create({
     color: colors.black,
     fontFamily: 'Quicksand-Bold',
     fontSize: 26,
-    //fontWeight: "bold",
     marginTop: 10,
-    //marginLeft: 10,
-    //marginBottom: 5,
   },
-
   baseSpiritImageContainer: {
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'rgba(255,255,255,0.25)',
     width: '100%',
     height: '100%',
-
   },
-
   baseSpiritImage: {
     width: (WIDTH - 40) / 2,
     height: (WIDTH - 40) / 2,
     margin: 5,
     justifyContent: "center",
     alignItems: "center",
-    //opacity: 0.8,
   },
   baseSpiritTextContainer: {
-    // position: "absolute",
-    // top: 0,
-    // left: 0,
-    // right: 0,
-    // bottom: 0,
     width: '90%',
     justifyContent: "center",
     alignItems: "center",
-    //opacity: 1,
   },
   baseSpiritsText: {
     textAlign: 'center',
     width: '90%',
     fontSize: 24,
     fontFamily: 'Quicksand-Bold',
-    //fontWeight: "bold",
     color: colors.white,
     opacity: 1
   }

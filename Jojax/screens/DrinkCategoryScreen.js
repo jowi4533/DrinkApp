@@ -25,7 +25,7 @@ class DrinkCategoryscreen extends Component {
 
     this.state = {
       drinks: props.screenProps.drinks,
-      title: this.props.navigation.state.params.title.toLowerCase(),
+      title: this.props.navigation.state.params.title,
       drinksDisplayed: []
     }
 
@@ -34,28 +34,54 @@ class DrinkCategoryscreen extends Component {
    title: `${navigation.state.params.title}`,
     headerTitleStyle: {
       width: '100%',
-      fontWeight: 'bold',
+      fontFamily: "Quicksand-Medium",
       fontSize: 25,
+      color: colors.black
     },
   });
+  categoryIsSpirit(spirit){
+    var spiritArr = ["Gin","Rum","Tequila","Vodka"];
+  return spiritArr.includes(spirit);
+}
 
   componentWillMount(){
+    console.log(this.state.title);
     let drinksToRender = []
-
+    if(this.categoryIsSpirit(this.state.title)==true){
+      if(this.state.title == "Rum"){
+        for(let i = 0; i < this.state.drinks.length; i++){
+          if (this.state.drinks[i].spirits.hasOwnProperty("White Rum")){
+            drinksToRender.push(this.state.drinks[i])
+          }
+          if (this.state.drinks[i].spirits.hasOwnProperty("Dark Rum")){
+            drinksToRender.push(this.state.drinks[i])
+          }
+      }
+      this.setState({drinksDisplayed: drinksToRender})
+      }
+      else{
+      for(let i = 0; i < this.state.drinks.length; i++){
+        if (this.state.drinks[i].spirits.hasOwnProperty(this.state.title)){
+          drinksToRender.push(this.state.drinks[i])
+        }
+    }
+    this.setState({drinksDisplayed: drinksToRender})
+  }
+  }
+    else{
     for(let i = 0; i < this.state.drinks.length; i++){
       if(this.state.drinks[i].categories.hasOwnProperty(this.state.title)){
         drinksToRender.push(this.state.drinks[i])
       }
     }
     this.setState({drinksDisplayed: drinksToRender})
-
-
+  }
   }
 
   renderItem1 = ({ item, index }) => {
     return (
       <TouchableOpacity style={styles.seasonalBox}
-        onPress={() => this.props.navigation.navigate("")}
+        onPress={() => this.props.navigation.navigate("SpecDrinks", { drink: item })}
         >
         <Image style={styles.seasonalImage} source={{uri : item.url}} />
         <View style={styles.drinkNameTextContainer}>
@@ -69,7 +95,7 @@ class DrinkCategoryscreen extends Component {
 
   render() {
     return (
-      <View style={{paddingBottom:40}}>
+      <View>
           <FlatList
             data={this.state.drinksDisplayed}
             renderItem={this.renderItem1}
@@ -103,13 +129,7 @@ const styles = StyleSheet.create({
  scrollview: {
    backgroundColor: 'transparent'
  },
- // seasonalDrinksText: {
- //   fontSize: 25,
- //   fontWeight: "bold",
- //   marginTop: 10,
- //   marginLeft: 10,
- //   marginBottom: 10
- // },
+
  seasonalImage: {
    width: (WIDTH - 40) / 2,
    height: (WIDTH - 40) / 2,
@@ -118,7 +138,7 @@ const styles = StyleSheet.create({
  seasonalText: {
    textAlign: 'center',
    fontSize: 18,
-   fontWeight: "bold",
+   fontFamily: "Quicksand-Bold",
    marginLeft:10,
    color: colors.black,
  },
@@ -128,12 +148,8 @@ const styles = StyleSheet.create({
    margin: 5
  },
  drinkNameTextContainer:{
-   //backgroundColor:'blue',
    marginLeft:5,
    marginBottom:5,
    width: (WIDTH - 40) / 2,
-   //paddingRight: 5,
  },
-
-
 });

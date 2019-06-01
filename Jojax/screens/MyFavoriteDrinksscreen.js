@@ -47,8 +47,9 @@ class MyFavoriteDrinkscreen extends Component {
     title: 'My Favorites',
     headerTitleStyle: {
       width: '100%',
-      fontWeight: 'bold',
-      fontSize: 25
+      fontFamily: "Quicksand-Medium",
+      fontSize: 25,
+      color:colors.black
     },
   };
 
@@ -157,7 +158,31 @@ setUpDatabaseListeners(){
       </View>
     );
   };
+  updateFavourites = (drinkData, favourited) => {
+    this.state.allFavourites[drinkData.name] = drinkData
+    if(this.state.loggedIn){
+    if(favourited){
+      this.state.usersDB.orderByChild("email").equalTo(this.state.userAuth.currentUser.email).on("child_added",
+        (loggedInUser) =>{
 
+        let currentUser = loggedInUser.val()
+        let myFavouritesRef = this.state.usersDB.child(loggedInUser.key).child("myFavourites")
+
+        myFavouritesRef.set(this.state.allFavourites)
+        })
+    }
+      else{
+        this.state.usersDB.orderByChild("email").equalTo(this.state.userAuth.currentUser.email).on("child_added",
+          (loggedInUser) =>{
+
+          let currentUser = loggedInUser.val()
+          let removeFavouriteRef = this.state.usersDB.child(loggedInUser.key).child("myFavourites").child(drinkData.name)
+          removeFavouriteRef.remove()
+          delete this.state.allFavourites[drinkData.name]
+          })
+    }
+    }
+  }
 
   render() {
     return (
@@ -217,6 +242,7 @@ const styles = StyleSheet.create({
     textTransform: 'capitalize',
     fontSize: 14,
     color: colors.darkgray,
+    fontFamily: "Quicksand-Regular"
   },
 
 

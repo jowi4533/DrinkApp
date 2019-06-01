@@ -44,8 +44,9 @@ class MyPagescreen extends Component {
     title: "My Page",
     headerTitleStyle: {
       width: "100%",
-      fontWeight: "bold",
-      fontSize: 25
+      fontFamily: "Quicksand-Medium",
+      fontSize: 25,
+      color: colors.black
     }
   };
 
@@ -85,13 +86,7 @@ class MyPagescreen extends Component {
     this.setState({ loggedIn: false });
   }
 
-  // loadUserFramework() {
-  //     return (
-  //
-  //
-  //     );
-  //
-  // }
+
 
   render() {
 
@@ -228,15 +223,6 @@ class MyPagescreen extends Component {
 export default MyPagescreen;
 
 const styles = StyleSheet.create({
-  //
-  // backgroundContainer: {
-  //   flex: 1,
-  //   width: null,
-  //   height: null,
-  //   justifyContent: "center",
-  //   alignItems: "center"
-  // },
-
   loginButtonContainer: {
     width: WIDTH,
     backgroundColor: colors.darkgreen,
@@ -244,13 +230,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingVertical: 15
   },
-
   loginButton: {
     elevation: 10,
     width: WIDTH / 1.1,
     height: 45,
     borderRadius: 10,
-    //marginTop:  35,
     justifyContent: "center",
     backgroundColor: colors.white
   },
@@ -289,7 +273,7 @@ const styles = StyleSheet.create({
 
   information: {
     fontSize: 18,
-    fontFamily: 'Barlow-Regular',
+    fontFamily: 'Quicksand-Regular',
     textAlign: 'center',
     borderBottomWidth: 1,
     borderBottomColor: colors.black
@@ -325,17 +309,15 @@ const styles = StyleSheet.create({
   },
 
   myBarButtonTextHeading: {
-    //fontWeight: "bold",
-    fontFamily: 'Muli-Bold',
+    fontFamily: 'Quicksand-Bold',
     fontSize: 18,
     marginLeft: 15,
-    //marginTop:  12,
     marginRight: 10,
     color: colors.black
   },
 
   myBarButtonTextBody: {
-    fontFamily: 'Muli-Regular',
+    fontFamily: 'Quicksand-Regular',
     fontSize: 14,
     marginLeft: 15,
     //marginTop:  8,
@@ -387,7 +369,7 @@ const styles = StyleSheet.create({
 
   myFavoritesButtonTextHeading: {
     //fontWeight: "bold",
-    fontFamily: 'Krub-Bold',
+    fontFamily: 'Quicksand-Bold',
     fontSize: 18,
     marginLeft: 15,
     //marginTop:  12,
@@ -395,7 +377,7 @@ const styles = StyleSheet.create({
     color: colors.black
   },
   myFavoritesButtonTextBody: {
-    fontFamily: 'Krub-Regular',
+    fontFamily: 'Quicksand-Regular',
     fontSize: 14,
     marginLeft: 15,
     //marginTop:  8,
