@@ -63,35 +63,36 @@ class Explorescreen extends Component {
       seasonalDrinks: [],
       classicDrinks: [],
       baseSpirits: [],
+      editorsChoice: [],
       spiritCategory : props.screenProps.spirits,
       seasonCategory: props.screenProps.seasons,
       tasteCategory: props.screenProps.tastes
     }
 
   }
-
-  loopSeasonalDrinks(){
-    let drinksToDisplay = []
-    for(let i = 0; i < this.state.drinks.length; i++){
-      if(this.state.drinks[i].Seasonal_Drink === "spring"){
-        this.seasonalDrinks[0]
-      }
-      if(this.state.drinks[i].Seasonal_Drink === "summer"){
-
-      }
-      if(this.state.drinks[i].Seasonal_Drink === "fall"){
-
-      }
-      if(this.state.drinks[i].Seasonal_Drink === "winter"){
-
-      }
-    }
-  }
+  //
+  // loopSeasonalDrinks(){
+  //   let drinksToDisplay = []
+  //   for(let i = 0; i < this.state.drinks.length; i++){
+  //     if(this.state.drinks[i].categories.Spring == true){
+  //       this.seasonalDrinks[0]
+  //     }
+  //     if(this.state.drinks[i].Seasonal_Drink === "Summer"){
+  //
+  //     }
+  //     if(this.state.drinks[i].Seasonal_Drink === "Fall"){
+  //
+  //     }
+  //     if(this.state.drinks[i].Seasonal_Drink === "Winter"){
+  //
+  //     }
+  //   }
+  // }
 
   loopClassicDrinks(){
     let classicDrinks = []
     for(let i = 0; i < this.state.drinks.length; i++){
-      if(this.state.drinks[i].categories.classic === true){
+      if(this.state.drinks[i].categories.Classic === true){
         classicDrinks.push(this.state.drinks[i])
       }
     }
@@ -107,10 +108,21 @@ class Explorescreen extends Component {
     }
     this.setState({discoverWeekly: weeklyDrinks})
   }
+  loopEditorsChoice(){
+    let editorsDrinks = []
+    for(let i = 0; i < this.state.drinks.length; i++){
+      if(this.state.drinks[i].categories.Editors_Choice === true){
+        editorsDrinks.push(this.state.drinks[i])
+      }
+    }
+    this.setState({editorsChoice: editorsDrinks})
+  }
+
 
   componentWillMount(){
     this.loopDiscoverWeekly()
     this.loopClassicDrinks()
+    this.loopEditorsChoice()
   }
 
   static navigationOptions = {
@@ -249,7 +261,7 @@ class Explorescreen extends Component {
             <ScrollView horizontal={true} showsVerticalScrollIndicator={false}>
               <View style={styles.scrollviewContainer}>
                 <FlatList
-                  data={this.state.discoverWeekly}
+                  data={this.state.editorsChoice}
                   renderItem={this.renderItem1}
                   keyExtractor={item => item.id}
                   horizontal={true}

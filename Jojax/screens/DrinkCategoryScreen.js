@@ -25,7 +25,7 @@ class DrinkCategoryscreen extends Component {
 
     this.state = {
       drinks: props.screenProps.drinks,
-      title: this.props.navigation.state.params.title.toLowerCase(),
+      title: this.props.navigation.state.params.title,
       drinksDisplayed: []
     }
 
@@ -40,19 +40,33 @@ class DrinkCategoryscreen extends Component {
     },
   });
   categoryIsSpirit(spirit){
-    var spiritArr = ["gin","rum","tequila","vodka"];
+    var spiritArr = ["Gin","Rum","Tequila","Vodka"];
   return spiritArr.includes(spirit);
 }
 
   componentWillMount(){
+    console.log(this.state.title);
     let drinksToRender = []
     if(this.categoryIsSpirit(this.state.title)==true){
+      if(this.state.title == "Rum"){
+        for(let i = 0; i < this.state.drinks.length; i++){
+          if (this.state.drinks[i].spirits.hasOwnProperty("White Rum")){
+            drinksToRender.push(this.state.drinks[i])
+          }
+          if (this.state.drinks[i].spirits.hasOwnProperty("Dark Rum")){
+            drinksToRender.push(this.state.drinks[i])
+          }
+      }
+      this.setState({drinksDisplayed: drinksToRender})
+      }
+      else{
       for(let i = 0; i < this.state.drinks.length; i++){
         if (this.state.drinks[i].spirits.hasOwnProperty(this.state.title)){
           drinksToRender.push(this.state.drinks[i])
         }
     }
     this.setState({drinksDisplayed: drinksToRender})
+  }
   }
     else{
     for(let i = 0; i < this.state.drinks.length; i++){
@@ -81,7 +95,7 @@ class DrinkCategoryscreen extends Component {
 
   render() {
     return (
-      <View style={{paddingBottom:40}}>
+      <View>
           <FlatList
             data={this.state.drinksDisplayed}
             renderItem={this.renderItem1}

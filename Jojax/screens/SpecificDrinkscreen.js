@@ -106,7 +106,7 @@ componentWillMount(){
     ingredientAmount = Object.values(item)
     ingredientName = Object.keys(item)
 
-    return <Text style={styles.eachIngredientText}>{ingredientAmount}cl of {ingredientName}</Text>;
+    return <Text style={styles.eachIngredientText}>{ingredientAmount}{ingredientName}</Text>;
   };
 
   //renders preparationinstructions
