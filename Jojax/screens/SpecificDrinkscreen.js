@@ -171,6 +171,7 @@ componentWillMount(){
                 contentContainerStyle={styles.prepBox}
                 data={Object.values(this.state.specificDrink.instructions)}
                 renderItem={this.renderItem3}
+                keyExtractor={item => item}
               />
             </View>
           </ImageBackground>
