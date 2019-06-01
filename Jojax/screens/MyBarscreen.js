@@ -51,15 +51,28 @@ class MyBarscreen extends Component {
       userAuth: props.screenProps.userAuth,
       usersDB: props.screenProps.usersDB,
       users: props.screenProps.users,
-
       barSpirits: props.screenProps.allBarSpirits,
-
+      userBar: [],
+      currentUser: null,
       loggedIn: null
     };
-
+    this.setUpDatabaseListeners();
     this.setUpNavigationListener();
     this.initiateListener();
-    console.log(this.state.usersDB);
+
+  }
+  removeSpiritFromBar(id){
+        this.setState(state => {
+          const isHighlighted = state.isHighlighted.filter(item => item.id !== id);
+          return {
+            isHighlighted
+          };
+        });
+  }
+  addSpiritToBar(item){
+    isHighlightedArr = this.state.isHighlighted;
+    isHighlightedArr.push(item);
+    this.setState({isHighlighted: isHighlightedArr});
   }
 
   static navigationOptions = {
@@ -72,6 +85,26 @@ class MyBarscreen extends Component {
       color: colors.black
     }
   };
+  setUpDatabaseListeners(){
+      this.state.usersDB.orderByChild("email").equalTo(this.state.userAuth.currentUser.email).on("child_added",
+        (loggedInUser) =>{
+        let currentUser = loggedInUser.val()
+        this.state.currentUser = currentUser;
+        this.state.isHighlighted = [this.state.currentUser.myBar];
+
+
+        let myBarRef = this.state.usersDB.child(loggedInUser.key).child("myBar")
+
+      })
+  }
+updatemybar(item){
+  this.state.usersDB.orderByChild("email").equalTo(this.state.userAuth.currentUser.email).on("child_added",
+    (loggedInUser) =>{
+    let currentUser = loggedInUser.val()
+    let myBarRef = this.state.usersDB.child(loggedInUser.key).child("myBar")
+    })
+      myBarRef.set(item)
+}
 
   setUpNavigationListener() {
     this.props.navigation.addListener("didFocus", () => {
@@ -104,20 +137,31 @@ class MyBarscreen extends Component {
     });
   }
 
+
   _onButtonPress = item => {
-    if (item.selected !== true) {
-      this._addToArray(item);
-      this.setState(state => {
-        item.selected = true;
-        return { item };
-      });
-    } else {
-      this._removeFromArray(item);
-      this.setState(state => {
-        item.selected = false;
-        return { item };
-      });
-    }
+    var isHighlighted1 = this.state.isHighlighted;
+    console.log(isHighlighted1)
+    //if ((this.state.isHighlighted.includes(item)) ==true ){
+  //    removeSpiritFromBar(item.id);
+//}
+  //  else{
+    //  addSpiritToBar(item);
+    //}
+    // if (item.selected !== true) {
+    //   this._addToArray(item);
+    //   this.updatemybar();
+    //   this.setState(state => {
+    //     item.selected = true;
+    //     return { item };
+    //   });
+    // } else {
+    //   this._removeFromArray(item);
+    //   this.updatemybar();
+    //   this.setState(state => {
+    //     item.selected = false;
+    //     return { item };
+    //   });
+    // }
   };
 
   _addToArray(item) {
@@ -156,6 +200,7 @@ class MyBarscreen extends Component {
 }
 
   findBarDrinks(){
+    // Hur hämtar jag en användares bar??!?!?
     var myBarArr = ["aperol","spritz","gin"];
     var myPossibleDrinksArr = [];
     for (let i = 0; i < this.state.drinks.length; i++){

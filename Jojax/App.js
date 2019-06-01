@@ -103,6 +103,7 @@ const TabNavigator = createBottomTabNavigator(
       }
     },
     Drinks: {
+
       screen: DrinkStack,
       navigationOptions: {
         tabBarLabel: "DRINKS",
@@ -185,7 +186,6 @@ class App extends Component {
     this.loadResources();
   }
 
-  //"https://firebasestorage.googleapis.com/v0/b/drinknic-e6779.appspot.com/o/Drinkpictures%2Fsweet_cocktail.png?alt=media&token=4deaf5f3-b803-4f8b-b9dc-32604bb4c585"
 
   async componentDidMount() {
     await Font.loadAsync({
@@ -260,7 +260,8 @@ class App extends Component {
 
       let user = {
         email: this.state.allUsers[k].email,
-        myFavourites: this.state.allUsers[k].myFavourites
+        myFavourites: this.state.allUsers[k].myFavourites,
+        myBar: this.state.allUsers[k].myBar
       };
       allUsers.push(user);
     }
