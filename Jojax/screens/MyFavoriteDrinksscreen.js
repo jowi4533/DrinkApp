@@ -29,17 +29,20 @@ class MyFavoriteDrinkscreen extends Component {
       userFavorites: [1,2,3,4,5],
       drinks: props.screenProps.drinks,
       userAuth : props.screenProps.userAuth,
-      loggedIn : null,
+      usersDB: props.screenProps.usersDB,
+      loggedIn : true,
       favoriteDrinkArray: [],
     };
+    this.loadResources()
+  }
 
+  loadResources() {
+    this.setUpDatabaseListeners()
     this.setUpNavigationListener()
     this.initiateListener()
+
   }
-  componentWillMount(){
-    var favoriteDrinks = this.matchFavoriteDrinks();
-      this.setState({ favoriteDrinkArray: favoriteDrinks });
-  }
+
   static navigationOptions = {
     title: 'My Favorites',
     headerTitleStyle: {
@@ -48,41 +51,49 @@ class MyFavoriteDrinkscreen extends Component {
       fontSize: 25
     },
   };
-  matchFavoriteDrinks(){
-    var favoriteDrinkArray = [];
-    for (var i = 0; i < this.state.userFavorites.length; i++){
 
-      var test = this.state.drinks.find(item => item.id === this.state.userFavorites[i]);
-      favoriteDrinkArray.push(test);
-      test = null;
-    }
-    return favoriteDrinkArray;
-  }
+setUpDatabaseListeners(){
+  this.state.usersDB.orderByChild("email").equalTo(this.state.userAuth.currentUser.email).on("child_added",
+    (loggedInUser) =>{
+
+    let allDrinks = []
+    let currentUser = loggedInUser.val()
+    let myFavouritesRef = this.state.usersDB.child(loggedInUser.key).child("myFavourites")
+    myFavouritesRef.on("child_added", (aDrink, prevChildKey) =>{
+      let drink = aDrink.val()
+      allDrinks.push(drink)
+      this.state.favoriteDrinkArray = allDrinks
+      this.setState(this.state)
+    })
+
+    myFavouritesRef.on("child_removed", (aDrink, prevChildKey) =>{
+      let drink = aDrink.val()
+      for(let i = 0; i < allDrinks.length; i++){
+        if(allDrinks[i].name === drink.name){
+          console.log("getting spliced")
+          allDrinks.splice(i, 1)
+          this.state.favoriteDrinkArray = allDrinks
+        }
+      }
+      this.setState(this.state)
+    })
+  })
+}
+
   setUpNavigationListener() {
     this.props.navigation.addListener('didFocus', () => {
-      this.checkUserLoggedIn()
       // get your new data here and then set state it will rerender
       console.log("In navigationlistener (MyFavoritesScreen)")
+      this.setState(this.state)
     });
-  }
-
-  checkUserLoggedIn(){
-    if(this.state.userAuth.currentUser === null){
-      //this.state.loggedIn = false
-      this.setState({loggedIn: false})
-    } else{
-      //this.state.loggedIn = true
-      this.setState({loggedIn: true})
-    }
   }
 
   initiateListener(){
     this.state.userAuth.onAuthStateChanged(function(user) {
       if (user) {
         console.log("In listener, user online (MyFavoritesScreen)")
-        // User is signed in.
-        var displayName = user.displayName;
-        var email = user.email;
+
+        this.setUpDatabaseListeners()
       } else {
         console.log("In listener, user offline (MyFavoritesScreen)")
       }
@@ -93,6 +104,22 @@ class MyFavoriteDrinkscreen extends Component {
     string = string.replace(/,/g, ", ");
     return (string)
   };
+
+  updateFavourites = (drinkData, favourited) => {
+
+    this.state.favoriteDrinkArray[drinkData.name] = drinkData
+    if(!favourited){
+      this.state.usersDB.orderByChild("email").equalTo(this.state.userAuth.currentUser.email).on("child_added",
+        (loggedInUser) =>{
+
+        let currentUser = loggedInUser.val()
+        let removeFavouriteRef = this.state.usersDB.child(loggedInUser.key).child("myFavourites").child(drinkData.name)
+        removeFavouriteRef.remove()
+        delete this.state.favoriteDrinkArray[drinkData.name]
+        this.setState({loggedIn: true})
+        })
+    }
+  }
 
   renderItem1 = ({item, index}) => {
     return (
@@ -111,7 +138,11 @@ class MyFavoriteDrinkscreen extends Component {
             <View style={styles.textHeadingContainer}>
               <Text style={styles.textDrinkName}>{item.name}</Text>
               <View style={styles.SmallFavoriteButtonContainer}>
-                <SmallFavoriteButton>
+                <SmallFavoriteButton
+                drink = {item}
+                myFavourites = {this.state.favoriteDrinkArray}
+                loggedIn = {this.state.loggedIn}
+                updateFavourites = {this.updateFavourites}>
                 </SmallFavoriteButton>
               </View>
             </View>

@@ -264,7 +264,6 @@ class App extends Component {
 
       let user = {
         email: this.state.allUsers[k].email,
-        password: this.state.allUsers[k].password,
         myFavourites: this.state.allUsers[k].myFavourites
       };
       allUsers.push(user);
