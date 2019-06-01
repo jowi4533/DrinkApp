@@ -205,6 +205,7 @@ updateFavourites = (drinkData, favourited) => {
       <View style={styles.itemContainer}>
         <TouchableOpacity
           style={styles.item}
+          activeOpacity={0.98}
           onPress={() => {
             this._onButtonPress(item);
           }}
@@ -285,8 +286,8 @@ updateFavourites = (drinkData, favourited) => {
             onPress={() => this.handleGoToBar()}
           >
             <Text style={styles.tabText}>Bar</Text>
-            <View style = {styles.barCounterBox}>
-               <Text style= {{fontSize:16}}> {this.state.isHighlighted.length}
+            <View style = {styles.barCounterTextContainer}>
+               <Text style= {styles.barCounterText}>{this.state.isHighlighted.length}
                </Text>
             </View>
           </TouchableOpacity>
@@ -355,7 +356,7 @@ const styles = StyleSheet.create({
     color: colors.darkgray,
     fontSize: 18,
     fontFamily: "Quicksand-Regular",
-    paddingVertical: 20,
+    paddingVertical: 10,
     paddingHorizontal: 20
   },
 
@@ -441,6 +442,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     height: 50,
+    borderBottomWidth: 2,
+    borderBottomColor: 'transparent',
     backgroundColor: colors.white,
     flexDirection: 'row'
   },
@@ -449,16 +452,25 @@ const styles = StyleSheet.create({
     fontFamily: "Quicksand-Medium",
     fontSize: 18,
   },
-  barCounterBox:{
-    color:colors.black,
-    fontFamily: "Quicksand-Medium",
-    marginLeft:5,
-    height: 18,
-    width: 25,
-    backgroundColor:colors.lightred,
-    borderRadius: 5,
+  barCounterTextContainer:{
+    marginLeft: 5,
+    //height: 20,
+    width: 37,
+    backgroundColor: colors.lightgreen,
+    borderRadius: 10,
+    textAlign: 'center',
     alignItems:'center',
-    justifyContent: 'flex-end'
+    justifyContent: 'center',
+    paddingBottom: 2,
+  },
+  barCounterText: {
+    paddingHorizontal: 10,
+    alignItems: 'center',
+    textAlign: 'center',
+    justifyContent: 'center',
+    color: colors.black,
+    fontSize: 14,
+    fontFamily: 'Quicksand-Regular',
   },
   drinkContainer: {
     height: 105.8,

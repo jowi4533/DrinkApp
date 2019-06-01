@@ -183,7 +183,6 @@ class App extends Component {
       fontLoaded: false
     };
     this.loadResources();
-    console.log(this.state.allBarSpirits)
   }
 
   async componentDidMount() {
@@ -217,8 +216,7 @@ class App extends Component {
   retrieveBarSpirits(data) {
     this.setState({ barSpirits: data.val() });
     this.setState({ barSpiritsKeys: Object.keys(data.val()) });
-    //console.log('inuti retrieve, här är this.state.barSpirits: ')
-    //console.log(this.state.barSpirits)
+
     this.loadBarSpirits();
   }
 
@@ -232,11 +230,10 @@ class App extends Component {
     this.setState({ spiritCategories: data.val().Spirits });
     this.setState({ tasteCategories: data.val().Tastes });
     this.setState({ seasonCategories: data.val().Seasons });
-    //console.log(this.state.allExploreCategories)
     this.setState({ spiritCategoriesKeys: Object.keys(data.val().Spirits) });
     this.setState({ tasteCategoriesKeys: Object.keys(data.val().Tastes) });
     this.setState({ seasonCategoriesKeys: Object.keys(data.val().Seasons) });
-    //console.log(this.state.allExploreCategorieskeys)
+
     this.loadCategories("Spirits");
     this.loadCategories("Tastes");
     this.loadCategories("Seasons");
@@ -298,15 +295,11 @@ class App extends Component {
     let allBarSpirits = [];
     for (let i = 0; i < this.state.barSpiritsKeys.length; i++) {
       let k = this.state.barSpiritsKeys[i];
-      console.log('barspiritskeys är : ')
-      console.log(k)
-      console.log('inuti for-loop i loadBarSpirits()')
       let barSpirit = {
         name: this.state.barSpirits[k].name,
         img: this.state.barSpirits[k].img,
         id: this.state.barSpirits[k].id
       };
-      console.log('precis före jag pushar saker till allbarspirits, här är barSpirit: ' + barSpirit)
       allBarSpirits.push(barSpirit);
     }
     this.state.allBarSpirits = allBarSpirits;
