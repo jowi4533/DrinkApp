@@ -15,6 +15,7 @@ import {
 import drImage from "../pictures/long_isle.png";
 import bgImage from "../pictures/236.jpg";
 import aperol from "../pictures/aperol_spritz.png";
+import winter from "../pictures/asd.png";
 import {colors} from "../assets/colors.js";
 
 const { width: WIDTH, height: HEIGHT } = Dimensions.get("window");
@@ -25,25 +26,25 @@ const data2 = [
     id: 1,
     name: "Cranberry Sangria",
     category: "Fall",
-    image: require("../pictures/cranberry_sangria.png")
+    img: require("../pictures/cranberry_sangria.png")
   },
   {
     id: 2,
     name: "Lavender Lemonade Mojito",
     category: "Spring",
-    image: require("../pictures/lavendel.png")
+    img: require("../pictures/lavendel.png")
   },
   {
     id: 3,
     name: "Pear Mojito",
     category: "Summer",
-    image: require("../pictures/pear_mojito.png")
+    img: require("../pictures/pear_mojito.png")
   },
   {
     id: 4,
     name: "Very Merry Bourbon Alexander",
     category: "Winter",
-    image: require("../pictures/very_merry_bourbon_alexander.png")
+    image: require("../pictures/asd.png")
   }
 ];
 
@@ -61,33 +62,37 @@ class Explorescreen extends Component {
       discoverWeekly: [],
       seasonalDrinks: [],
       classicDrinks: [],
-      baseSpirits: []
+      baseSpirits: [],
+      editorsChoice: [],
+      spiritCategory : props.screenProps.spirits,
+      seasonCategory: props.screenProps.seasons,
+      tasteCategory: props.screenProps.tastes
     }
-    //console.log(this.state.drinks[0])
+
   }
-
-  loopSeasonalDrinks(){
-    let drinksToDisplay = []
-    for(let i = 0; i < this.state.drinks.length; i++){
-      if(this.state.drinks[i].Seasonal_Drink === "spring"){
-        this.seasonalDrinks[0]
-      }
-      if(this.state.drinks[i].Seasonal_Drink === "summer"){
-
-      }
-      if(this.state.drinks[i].Seasonal_Drink === "fall"){
-
-      }
-      if(this.state.drinks[i].Seasonal_Drink === "winter"){
-
-      }
-    }
-  }
+  //
+  // loopSeasonalDrinks(){
+  //   let drinksToDisplay = []
+  //   for(let i = 0; i < this.state.drinks.length; i++){
+  //     if(this.state.drinks[i].categories.Spring == true){
+  //       this.seasonalDrinks[0]
+  //     }
+  //     if(this.state.drinks[i].Seasonal_Drink === "Summer"){
+  //
+  //     }
+  //     if(this.state.drinks[i].Seasonal_Drink === "Fall"){
+  //
+  //     }
+  //     if(this.state.drinks[i].Seasonal_Drink === "Winter"){
+  //
+  //     }
+  //   }
+  // }
 
   loopClassicDrinks(){
     let classicDrinks = []
     for(let i = 0; i < this.state.drinks.length; i++){
-      if(this.state.drinks[i].categories.classic === true){
+      if(this.state.drinks[i].categories.Classic === true){
         classicDrinks.push(this.state.drinks[i])
       }
     }
@@ -103,28 +108,41 @@ class Explorescreen extends Component {
     }
     this.setState({discoverWeekly: weeklyDrinks})
   }
+  loopEditorsChoice(){
+    let editorsDrinks = []
+    for(let i = 0; i < this.state.drinks.length; i++){
+      if(this.state.drinks[i].categories.Editors_Choice === true){
+        editorsDrinks.push(this.state.drinks[i])
+      }
+    }
+    this.setState({editorsChoice: editorsDrinks})
+  }
+
 
   componentWillMount(){
     this.loopDiscoverWeekly()
     this.loopClassicDrinks()
+    this.loopEditorsChoice()
   }
-  //componentDidMount(){
-    //this.setState({ loaded: true });
-
-  //}
 
   static navigationOptions = {
     title: 'Explore',
     headerTitleStyle: {
       width: '100%',
-      fontWeight: 'bold',
-      fontSize: 25
+      fontFamily: "Quicksand-Medium",
+      fontSize: 25,
+      color: colors.black
     },
   };
   //Discoverweekly + classic drinks atm
   renderItem1 = ({ item, index }) => {
     return (
       <View style={styles.discoverWeeklyBox}>
+        <TouchableOpacity
+          onPress={() =>
+            this.props.navigation.navigate("SpecDrinks", { drink: item })
+          }
+        >
         <Image
           source={{ uri: item.url }}
           style={styles.drinkImage}
@@ -132,6 +150,7 @@ class Explorescreen extends Component {
         <View style={styles.drinkNameTextContainer}>
           <Text style={styles.drinkNameText}>{item.name}</Text>
         </View>
+      </TouchableOpacity>
       </View>
     );
   };
@@ -140,13 +159,18 @@ class Explorescreen extends Component {
     return (
       <TouchableOpacity
         style={styles.seasonalBox}
-        onPress={() => this.props.navigation.navigate('DrinkCategory', {title: item.category})
-      }
+        onPress={() =>
+          this.props.navigation.navigate("DrinkCategory", {title: item.category})
+        }
       >
-        <Image style={styles.seasonalImage} source={item.image} />
-        <View style={styles.drinkNameTextContainer}>
-          <Text style={styles.seasonalText}>{item.category}</Text>
+        <ImageBackground style={styles.baseSpiritImage} source={item.img }>
+          <View style={styles.baseSpiritImageContainer}>
+        <View style={styles.baseSpiritTextContainer}>
+          <Text style={styles.baseSpiritsText}>{item.category}</Text>
         </View>
+        </View>
+      </ImageBackground>
+
       </TouchableOpacity>
     );
   };
@@ -156,14 +180,13 @@ class Explorescreen extends Component {
       <TouchableOpacity
         style={styles.seasonalBox}
         onPress={() =>
-          this.props.navigation.navigate("DrinkCategory", {title: item.category})
+          this.props.navigation.navigate("DrinkCategory", {title: item.name})
         }
       >
-
-        <ImageBackground style={styles.baseSpiritImage} source={item.image}>
+        <ImageBackground style={styles.baseSpiritImage} source={{ uri: item.img }}>
           <View style={styles.baseSpiritImageContainer}>
         <View style={styles.baseSpiritTextContainer}>
-          <Text style={styles.baseSpiritsText}>{item.category}</Text>
+          <Text style={styles.baseSpiritsText}>{item.name}</Text>
         </View>
         </View>
       </ImageBackground>
@@ -177,9 +200,9 @@ class Explorescreen extends Component {
     return (
       <ImageBackground source={bgImage} style={styles.backgroundContainer}>
         <ScrollView contentContainerStyle={styles.contentContainer}>
-          <View style={styles.discoverWeeklyContainer}>
+          <View style={styles.horizontalCategoryContainer}>
             <View>
-              <Text style={styles.discoverWeeklyText}>Discover Weekly</Text>
+              <Text style={styles.categoryHeadingText}>Discover Weekly</Text>
             </View>
             <ScrollView horizontal={true} showsVerticalScrollIndicator={false}>
               <View style={styles.scrollviewContainer}>
@@ -193,19 +216,18 @@ class Explorescreen extends Component {
               </View>
             </ScrollView>
           </View>
-          <View style={styles.seasonalDrinksContainer}>
-            <Text style={styles.seasonalDrinksText}>Seasonal Drinks</Text>
-
-            <View style={styles.seasonalDrinksGrid}>
+          <View style={styles.gridItemContainer}>
+            <Text style={styles.gridHeadingText}>Seasonal Drinks</Text>
+            <View style={styles.categoryGrid}>
               <FlatList
-                data={data2}
+                data={this.state.seasonCategory}
                 renderItem={this.renderItem3}
                 keyExtractor={item => item.id}
                 numColumns= {2}
               />
             </View>
           </View>
-          <View style={styles.classicDrinksContainer}>
+          <View style={styles.horizontalCategoryContainer}>
             <View>
               <Text style={styles.classicDrinksText}>Classic Drinks</Text>
             </View>
@@ -221,18 +243,45 @@ class Explorescreen extends Component {
               </View>
             </ScrollView>
           </View>
-          <View style={styles.seasonalDrinksContainer}>
-            <Text style={styles.seasonalDrinksText}>Base Spirits</Text>
-
-            <View style={styles.seasonalDrinksGrid}>
+          <View style={styles.gridItemContainer}>
+            <Text style={styles.gridHeadingText}>Base Spirits</Text>
+            <View style={styles.categoryGrid}>
               <FlatList
-                data={data2}
+                data={this.state.spiritCategory}
                 renderItem={this.renderItem3}
                 keyExtractor={item => item.id}
                 numColumns={2}
               />
             </View>
           </View>
+          <View style={styles.horizontalCategoryContainer}>
+            <View>
+              <Text style={styles.categoryHeadingText}>Editors Choice</Text>
+            </View>
+            <ScrollView horizontal={true} showsVerticalScrollIndicator={false}>
+              <View style={styles.scrollviewContainer}>
+                <FlatList
+                  data={this.state.editorsChoice}
+                  renderItem={this.renderItem1}
+                  keyExtractor={item => item.id}
+                  horizontal={true}
+                  showsVerticalScrollIndicator={false}
+                />
+              </View>
+            </ScrollView>
+          </View>
+          <View style={styles.gridItemContainer}>
+            <Text style={styles.gridHeadingText}>Tastes</Text>
+            <View style={styles.categoryGrid}>
+              <FlatList
+                data={this.state.tasteCategory}
+                renderItem={this.renderItem3}
+                keyExtractor={item => item.id}
+                numColumns= {2}
+              />
+            </View>
+          </View>
+
         </ScrollView>
       </ImageBackground>
     );
@@ -241,23 +290,19 @@ class Explorescreen extends Component {
 export default Explorescreen;
 
 const styles = StyleSheet.create({
-  discoverWeeklyContainer: {
+  horizontalCategoryContainer: {
   },
   discoverWeeklyBox: {
     backgroundColor: colors.white,
     marginHorizontal: 5,
     borderRadius: 5,
   },
-  discoverWeeklyText: {
+  categoryHeadingText: {
     textAlign: 'center',
     color: colors.black,
     fontFamily: 'Quicksand-Bold',
     fontSize: 26,
-    //fontWeight: "bold",
     marginTop: 15,
-    //marginBottom: 5,
-    //marginLeft: 10,
-
   },
   drinkImage: {
     height: WIDTH / 2.6,
@@ -268,11 +313,9 @@ const styles = StyleSheet.create({
     color: colors.black,
     textAlign:'center',
     fontSize: 16,
-    //fontWeight: "bold",
     fontFamily: 'Quicksand-Bold'
   },
   drinkNameTextContainer: {
-    //backgroundColor: 'blue',
     width: WIDTH / 2.6,
     marginLeft:5,
     paddingLeft:5,
@@ -287,20 +330,19 @@ const styles = StyleSheet.create({
     height: null,
     alignItems: "center"
   },
-  seasonalDrinksContainer: {
+  gridItemContainer: {
 
   },
-  seasonalDrinksText: {
+  gridHeadingText: {
     textAlign: 'center',
     color: colors.black,
     fontFamily: 'Quicksand-Bold',
     fontSize: 26,
-    //fontWeight: "bold",
     marginTop: 15,
     marginBottom: 5,
-    //marginLeft: 10,
+
   },
-  seasonalDrinksGrid:  {
+  categoryGrid:  {
 
   },
   seasonalImage: {
@@ -311,7 +353,6 @@ const styles = StyleSheet.create({
   seasonalText: {
     color: colors.black,
     fontSize: 20,
-    //fontWeight: "bold",
     textAlign: "center",
     paddingLeft: 40,
     fontFamily: 'Quicksand-Bold',
@@ -330,46 +371,32 @@ const styles = StyleSheet.create({
     color: colors.black,
     fontFamily: 'Quicksand-Bold',
     fontSize: 26,
-    //fontWeight: "bold",
     marginTop: 10,
-    //marginLeft: 10,
-    //marginBottom: 5,
   },
-
   baseSpiritImageContainer: {
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'rgba(255,255,255,0.25)',
     width: '100%',
     height: '100%',
-
   },
-
   baseSpiritImage: {
     width: (WIDTH - 40) / 2,
     height: (WIDTH - 40) / 2,
     margin: 5,
     justifyContent: "center",
     alignItems: "center",
-    //opacity: 0.8,
   },
   baseSpiritTextContainer: {
-    // position: "absolute",
-    // top: 0,
-    // left: 0,
-    // right: 0,
-    // bottom: 0,
     width: '90%',
     justifyContent: "center",
     alignItems: "center",
-    //opacity: 1,
   },
   baseSpiritsText: {
     textAlign: 'center',
     width: '90%',
     fontSize: 24,
     fontFamily: 'Quicksand-Bold',
-    //fontWeight: "bold",
     color: colors.white,
     opacity: 1
   }

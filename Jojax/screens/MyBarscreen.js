@@ -18,11 +18,10 @@ import {
 } from "react-native";
 const { width: WIDTH, height: HEIGHT } = Dimensions.get("window");
 
-
 import bgImage from "../pictures/236.jpg";
 import ginBottle from "../pictures/ginBottle.jpg";
-import {colors} from "../assets/colors.js";
-
+import { colors } from "../assets/colors.js";
+import SmallFavoriteButton from "../components/SmallFavoriteButton.js";
 
 // const formatData = (data, numColumns) => {
 //   const numberOfFullRows = Math.floor(data.length / numColumns);
@@ -36,145 +35,286 @@ import {colors} from "../assets/colors.js";
 //   return data;
 // };
 
-
 const numColumns = 2;
 
 class MyBarscreen extends Component {
   constructor(props) {
-    super(props)
+    super(props);
 
     this.state = {
-      data: [{name:"Amaretto",selected: false, img:require("../pictures/systembolagetPics/1.png")},
-      {name:"Blue Curacau",selected: false, img:require("../pictures/systembolagetPics/2.jpg")},
-      {name:"Brandy",selected: false, img:require("../pictures/systembolagetPics/3.jpg")},
-      {name:"Champange",selected: false, img:require("../pictures/systembolagetPics/4.jpg")},
-      {name:"Coconut Liqueur",selected: false, img:require("../pictures/systembolagetPics/5.jpg")},
-      {name:"Coffe Liqueur",selected: false, img:require("../pictures/systembolagetPics/6.jpg")},
-      {name:"Cointreau",selected: false, img:require("../pictures/systembolagetPics/7.jpg")},
-      {name:"Dark Rum",selected: false, img:require("../pictures/systembolagetPics/8.jpg")},
-      {name:"White Rum",selected: false, img:require("../pictures/systembolagetPics/9.jpg")},
-      {name:"Golden Rum",selected: false, img:require("../pictures/systembolagetPics/10.jpg")},
-      {name:"Ginger Beer",selected: false, img:require("../pictures/systembolagetPics/11.jpg")},
-      {name:"Grand Marnier",selected: false, img:require("../pictures/systembolagetPics/12.jpg")},
-      {name:"Melon Liqueur",selected: false, img:require("../pictures/systembolagetPics/13.jpg")},
-      {name:"Red Vermouth",selected: false, img:require("../pictures/systembolagetPics/14.jpg")},
-      {name:"White Vemouth",selected: false, img:require("../pictures/systembolagetPics/15.jpg")},
-      {name:"Red Wine",selected: false, img:require("../pictures/systembolagetPics/16.jpg")},
-      {name:"White Wine",selected: false, img:require("../pictures/systembolagetPics/17.jpg")},
-      {name:"Sparkling Wine",selected: false, img:require("../pictures/systembolagetPics/18.jpg")},
-      {name:"Tequila",selected: false, img:require("../pictures/systembolagetPics/19.jpg")},
-      {name:"Triple Sec",selected: false, img:require("../pictures/systembolagetPics/20.jpg")},
-      {name:"Vodka",selected: false, img:require("../pictures/systembolagetPics/21.jpg")},
-      {name:"Whiskey",selected: false, img:require("../pictures/systembolagetPics/22.jpg")},
-      {name:"Gin",selected: false, img:require("../pictures/systembolagetPics/23.jpg")},
-      {name:"Kiss",selected: false, img:require("../pictures/systembolagetPics/23.jpg")}],
 
-      isHighlighted:[],
-      userAuth : props.screenProps.userAuth,
-      loggedIn : null
+      isHighlighted: [],
+      activeIndex: 0,
+      drinks: props.screenProps.drinks,
+      allFavourites: {},
+
+      userAuth: props.screenProps.userAuth,
+      usersDB: props.screenProps.usersDB,
+      users: props.screenProps.users,
+      barSpirits: props.screenProps.allBarSpirits,
+      userBar: [],
+      currentUser: null,
+      loggedIn: null,
+      possibleDrinksCount: null,
+    };
+    this.setUpDatabaseListeners();
+    this.setUpNavigationListener();
+    this.initiateListener();
+
+  }
+    removeSpiritFromBar(id) {
+      this.setState(state => {
+        const isHighlighted = state.isHighlighted.filter(item => item.id !== id);
+        return {
+          isHighlighted
+        };
+      });
     }
 
-    this.setUpNavigationListener()
-    this.initiateListener()
+  addSpiritToBar(item){
+    isHighlightedArr = this.state.isHighlighted;
+    isHighlightedArr.push(item);
+    this.setState({isHighlighted: isHighlightedArr});
   }
 
   static navigationOptions = {
-    title: 'My Bar',
-    headerLayoutPreset: 'center',
+    title: "My Bar",
+    headerLayoutPreset: "center",
     headerTitleStyle: {
-      width: '100%',
-      fontWeight: 'bold',
-      fontSize: 25
-    },
+      width: "100%",
+      fontFamily: "Quicksand-Medium",
+      fontSize: 25,
+      color: colors.black
+    }
   };
+  setUpDatabaseListeners(){
+      this.state.usersDB.orderByChild("email").equalTo(this.state.userAuth.currentUser.email).on("child_added",
+        (loggedInUser) =>{
+        let currentUser = loggedInUser.val()
+        this.state.currentUser = currentUser;
+        let myBarRef = this.state.usersDB.child(loggedInUser.key).child("myBar")
+        let value = this.state.currentUser.myBar;
+          if (typeof(value) !== 'undefined' || value != null) {
+         this.state.isHighlighted = [this.state.currentUser.myBar];
+       } else {
+         console.log('Undefined or Null')
+       }
+      })
+     }
+updatemybar(item){
+  this.state.usersDB.orderByChild("email").equalTo(this.state.userAuth.currentUser.email).on("child_added",
+    (loggedInUser) =>{
+    let currentUser = loggedInUser.val()
+    let myBarRef = this.state.usersDB.child(loggedInUser.key).child("myBar")
+    })
+      myBarRef.set(item)
+}
 
   setUpNavigationListener() {
-    this.props.navigation.addListener('didFocus', () => {
-      this.checkUserLoggedIn()
+    this.props.navigation.addListener("didFocus", () => {
+      this.checkUserLoggedIn();
       // get your new data here and then set state it will rerender
-      console.log("In navigationlistener (MYBARSCREEN)")
+      console.log("In navigationlistener (MYBARSCREEN)");
     });
   }
 
-  checkUserLoggedIn(){
-    if(this.state.userAuth.currentUser === null){
+  checkUserLoggedIn() {
+    if (this.state.userAuth.currentUser === null) {
       //this.state.loggedIn = false
-      this.setState({loggedIn: false})
-    } else{
+      this.setState({ loggedIn: false });
+    } else {
       //this.state.loggedIn = true
-      this.setState({loggedIn: true})
+      this.setState({ loggedIn: true });
     }
   }
 
-  initiateListener(){
+  initiateListener() {
     this.state.userAuth.onAuthStateChanged(function(user) {
       if (user) {
-        console.log("In listener, user online (MYBARSCREEN)")
+        console.log("In listener, user online (MYBARSCREEN)");
         // User is signed in.
         var displayName = user.displayName;
         var email = user.email;
       } else {
-        console.log("In listener, user offline (MYBARSCREEN)")
+        console.log("In listener, user offline (MYBARSCREEN)");
       }
     });
   }
 
+
   _onButtonPress = item => {
-      if (item.selected !== true) {
-        this._addToArray(item);
-        this.setState(state => {
-        item.selected = true;
-        return {item}
-        })
-      }
-      else {
-        this._removeFromArray(item);
-        this.setState(state => {
-        item.selected = false;
-        return {item}
-      })
-      }
+    var isHighlighted1 = this.state.isHighlighted;
+    if (this.state.isHighlighted.includes(item) == true ){
+
+      this.removeSpiritFromBar(item.id);
+    }
+   else {
+       this.addSpiritToBar(item);
+   }
+    // if (item.selected !== true) {
+    //   this._addToArray(item);
+    //   this.updatemybar();
+    //   this.setState(state => {
+    //     item.selected = true;
+    //     return { item };
+    //   });
+    // } else {
+    //   this._removeFromArray(item);
+    //   this.updatemybar();
+    //   this.setState(state => {
+    //     item.selected = false;
+    //     return { item };
+    //   });
+    // }
+  };
+
+  _addToArray(item) {
+    var array = this.state.isHighlighted;
+    array.push(item.name);
+    this.setState(state => {
+      state.isHighlighted = array;
+    });
   }
 
-_addToArray(item) {
-  var array = this.state.isHighlighted;
-  array.push(item.name);
-  this.setState(state => {
-  state.isHighlighted = array;
-  })
+  _removeFromArray(item) {
+    var array = this.state.isHighlighted;
+    var search_term = item.name;
+
+    for (var i = array.length - 1; i >= 0; i--) {
+      if (array[i] === search_term) {
+        array.splice(i, 1);
+      }
+    }
+
+    this.setState(state => {
+      state.isHighlighted = array;
+    });
+  }
+  handleGoToBar() {
+    this.setState({ activeIndex: 0 });
+  }
+  handleGoTodrinks() {
+    this.setState({ activeIndex: 1 });
+  }
+
+  _keyExtractor = (item, index) => item.name;
+
+  hasAllIngredients(drinkIngredientsArr, myBarArr){
+  return drinkIngredientsArr.every(i => myBarArr.includes(i));
 }
 
-_removeFromArray(item) {
-  var array = this.state.isHighlighted;
-  var search_term = item.name;
+  findBarDrinks(){
+    var myBarArr = this.state.isHighlighted.map(a => a.name);
+    var myPossibleDrinksArr = [];
+    for (let i = 0; i < this.state.drinks.length; i++){
+      // alla drinkens spritingredienser
+      var drinkIngredientsArr = Object.keys(this.state.drinks[i].spirits);
+      var hasIngredient = this.hasAllIngredients(drinkIngredientsArr,myBarArr);
+      if (hasIngredient==true){
+        myPossibleDrinksArr.push(this.state.drinks[i]);
+      }
+    }
+    this.state.possibleDrinksCount = myPossibleDrinksArr.length;
+    return myPossibleDrinksArr
+  }
+  getIngredients = data => {
+    var string = data.toString();
+    string = string.replace(/,/g, ", ");
+    return string;
+  };
 
-  for (var i = array.length-1; i >= 0; i--) {
-    if (array[i] === search_term) {
-      array.splice(i, 1);
+updateFavourites = (drinkData, favourited) => {
+    this.state.allFavourites[drinkData.name] = drinkData
+    if(this.state.loggedIn){
+    if(favourited){
+      this.state.usersDB.orderByChild("email").equalTo(this.state.userAuth.currentUser.email).on("child_added",
+        (loggedInUser) =>{
+
+        let currentUser = loggedInUser.val()
+        let myFavouritesRef = this.state.usersDB.child(loggedInUser.key).child("myFavourites")
+
+        myFavouritesRef.set(this.state.allFavourites)
+        })
+    }
+      else{
+        this.state.usersDB.orderByChild("email").equalTo(this.state.userAuth.currentUser.email).on("child_added",
+          (loggedInUser) =>{
+
+          let currentUser = loggedInUser.val()
+          let removeFavouriteRef = this.state.usersDB.child(loggedInUser.key).child("myFavourites").child(drinkData.name)
+          removeFavouriteRef.remove()
+          delete this.state.allFavourites[drinkData.name]
+          })
+    }
     }
   }
-
-  this.setState(state => {
-  state.isHighlighted = array;
-  })
-
-}
-
-
-
-_keyExtractor = (item, index) => item.name;
 
   renderItem = ({ item, index }) => {
     return (
       <View style={styles.itemContainer}>
-        <TouchableOpacity style={styles.item} onPress={ () => { this._onButtonPress(item) } }>
-          <View style={[item.selected ? styles.borderViewSelected : styles.borderView]}>
+        <TouchableOpacity
+          style={styles.item}
+          activeOpacity={0.98}
+          onPress={() => {
+            this._onButtonPress(item);
+          }}
+        >
+          <View
+            style={[
+              this.state.isHighlighted.includes(item) ? styles.borderViewSelected : styles.borderView
+            ]}
+          >
             <View style={styles.itemPictureContainer}>
-            <ImageBackground resizeMode='contain' source={item.img} style={styles.itemPicture}>
-            </ImageBackground>
+              <ImageBackground
+                resizeMode="contain"
+                source={{ uri: item.img }}
+                style={styles.itemPicture}
+              />
             </View>
             <View style={styles.itemTextContainer}>
               <Text style={styles.itemText}> {item.name} </Text>
+            </View>
+          </View>
+        </TouchableOpacity>
+      </View>
+    );
+  };
+  // --- this is all the drinks the user can make with their ingredients-- //
+  renderItem1 = ({ item, index }) => {
+    return (
+      <View style={styles.drinkContainer}>
+        <TouchableOpacity
+          style={styles.buttonDrink}
+          onPress={() =>
+            this.props.navigation.navigate("SpecDrinks", { drink: item })
+          }
+        >
+          <View>
+            <Image source={{ uri: item.url }} style={styles.imageDrink} />
+          </View>
+          <View style = {{backgroundColor: 'white'}}>
+            <View style={styles.textHeadingContainer}>
+              <Text style={styles.textDrinkName}>{item.name}</Text>
+              <View style={styles.SmallFavoriteButtonContainer}>
+                {this.state.loggedIn ? (
+                <SmallFavoriteButton
+                drink = {item}
+                myFavourites = {this.state.allFavourites}
+                loggedIn = {this.state.loggedIn}
+                updateFavourites = {this.updateFavourites}
+                >
+                </SmallFavoriteButton>
+              ):(
+                <View>
+                </View>
+              )
+            }
+              </View>
+            </View>
+            <View style={styles.ingredientsTextContainer}>
+              <Text style={styles.ingredientsText}>
+                {this.getIngredients(Object.keys(item.allIngredients))}
+              </Text>
             </View>
           </View>
         </TouchableOpacity>
@@ -185,20 +325,63 @@ _keyExtractor = (item, index) => item.name;
   render() {
     return (
       <ImageBackground source={bgImage} style={styles.backgroundContainer}>
-        <View style={styles.informationTextContainer}>
-          <Text style={styles.informationText}>Select the ingredients you have at home to see what drinks you can make</Text>
-        </View>
-
-          <FlatList
-            data={this.state.data}
-            extraData={this.state}
-            style={styles.container}
-            renderItem={this.renderItem}
-            keyExtractor={this._keyExtractor}
-            numColumns={numColumns}
+        <View style={styles.tabContainer}>
+          <TouchableOpacity
+            style={[
+              this.state.activeIndex == 0
+                ? styles.tabButtonActivated
+                : styles.tabButtonInactive
+            ]}
+            onPress={() => this.handleGoToBar()}
           >
-        </FlatList>
-
+            <Text style={styles.tabText}>Bar</Text>
+            <View style = {styles.barCounterTextContainer}>
+               <Text style= {styles.barCounterText}>{this.state.isHighlighted.length}
+               </Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[
+              this.state.activeIndex == 1
+                ? styles.tabButtonActivated
+                : styles.tabButtonInactive
+            ]}
+            onPress={() => this.handleGoTodrinks()}
+          >
+            <Text style={styles.tabText}>Drinks</Text>
+              <View style = {styles.barCounterTextContainer}>
+                 <Text style= {styles.barCounterText}>{this.state.possibleDrinksCount}
+                 </Text>
+              </View>
+          </TouchableOpacity>
+        </View>
+        {this.state.activeIndex == 0 ? (
+          <View style = {{flex:1}}>
+            <View style={styles.informationTextContainer}>
+              <Text style={styles.informationText}>
+                Select the ingredients you have at home to see what drinks you
+                can make
+              </Text>
+            </View>
+            <FlatList
+              data={this.state.barSpirits}
+              extraData={this.state}
+              style={styles.container}
+              renderItem={this.renderItem}
+              keyExtractor={this._keyExtractor}
+              numColumns={numColumns}
+            />
+        </View>
+        ):(
+          <View style= {{flex:1,backgroundColor: 'white'}}>
+            <FlatList
+              data={this.findBarDrinks()}
+              renderItem={this.renderItem1}
+              keyExtractor={item => item.id}
+              extraData={this.state}
+            />
+          </View>
+        )}
       </ImageBackground>
     );
   }
@@ -208,95 +391,177 @@ export default MyBarscreen;
 
 const styles = StyleSheet.create({
   backgroundContainer: {
-    flex: 1,
+    flex: 1
   },
   container: {
     flex: 1,
-    marginVertical: 1,
+    marginVertical: 1
   },
 
   informationTextContainer: {
     width: WIDTH,
-    backgroundColor: 'white',
-    justifyContent: 'center',
-    alignItems: 'center',
-    },
+    backgroundColor: "white",
+    justifyContent: "center",
+    alignItems: "center"
+  },
 
   informationText: {
-    color: "rgba(108, 122, 137, 1)",
+    color: colors.darkgray,
     fontSize: 18,
-    //fontWeight: 'bold',
-    paddingVertical: 20,
-    paddingHorizontal: 20,
+    fontFamily: "Quicksand-Regular",
+    paddingVertical: 10,
+    paddingHorizontal: 20
   },
 
   itemContainer: {
     flex: 1,
-    elevation: 20,
+    elevation: 20
   },
 
   item: {
     elevation: 20,
     borderRadius: 10,
-    backgroundColor: 'white',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "white",
+    alignItems: "center",
+    justifyContent: "center",
     flex: 1,
     margin: 15,
     //height: HEIGHT/3,
-    height: Dimensions.get('window').width / numColumns, //.width can be changed to .height
+    height: Dimensions.get("window").width / numColumns //.width can be changed to .height
   },
 
   borderView: {
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     borderRadius: 10,
-    height: '100%',
-    width: '100%',
+    height: "100%",
+    width: "100%",
     borderWidth: 2,
-    borderColor: 'transparent',
-    flex: 1,
+    borderColor: "transparent",
+    flex: 1
   },
 
   borderViewSelected: {
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     borderRadius: 10,
-    height:'100%',
-    width: '100%',
+    height: "100%",
+    width: "100%",
     borderWidth: 2,
-    borderColor: 'rgba(240, 52, 52, 1)',
-    flex: 1,
+    borderColor: "rgba(240, 52, 52, 1)",
+    flex: 1
   },
 
   itemPictureContainer: {
     flex: 1,
-    width: '100%',
+    width: "100%"
   },
 
   itemPicture: {
     paddingTop: 2,
-    justifyContent: 'flex-end',
-    //borderRadius: 10,
-    alignItems: 'center',
+    justifyContent: "flex-end",
+    alignItems: "center",
     flex: 1,
-    // width: '100%',
-    // height: '100%',
-    resizeMode: 'stretch',
+    resizeMode: "stretch"
   },
-
   itemTextContainer: {
-    alignItems: 'center',
-    backgroundColor: 'dimgray',
+    alignItems: "center",
+    backgroundColor: "dimgray",
     opacity: 1,
-    width: '100%',
-    borderRadius: 8,
+    width: "100%",
+    borderRadius: 8
   },
-
   itemText: {
-    textAlign: 'center',
+    fontFamily: "Quicksand-Regular",
+    textAlign: "center",
     fontSize: 18,
-    color: 'white',
+    color: "white"
+  },
+  tabContainer: {
+    flexDirection: "row"
+  },
+  tabButtonActivated: {
+    width: WIDTH / 2,
+    justifyContent: "center",
+    alignItems: "center",
+    height: 50,
+    backgroundColor: "white",
+    borderBottomColor: colors.midblue ,
+    borderBottomWidth: 2,
+    flexDirection: 'row'
+  },
+  tabButtonInactive: {
+    width: WIDTH / 2,
+    justifyContent: "center",
+    alignItems: "center",
+    height: 50,
+    borderBottomWidth: 2,
+    borderBottomColor: 'transparent',
+    backgroundColor: colors.white,
+    flexDirection: 'row'
+  },
+  tabText: {
+      color:colors.black,
+    fontFamily: "Quicksand-Medium",
+    fontSize: 18,
+  },
+  barCounterTextContainer:{
+    marginLeft: 5,
+    //height: 20,
+    width: 37,
+    backgroundColor: colors.lightgreen,
+    borderRadius: 10,
+    textAlign: 'center',
+    alignItems:'center',
+    justifyContent: 'center',
+    paddingBottom: 2,
+  },
+  barCounterText: {
+    paddingHorizontal: 10,
+    alignItems: 'center',
+    textAlign: 'center',
+    justifyContent: 'center',
+    color: colors.black,
+    fontSize: 14,
+    fontFamily: 'Quicksand-Regular',
+  },
+  drinkContainer: {
+    height: 105.8,
+    width: WIDTH,
+    borderBottomWidth: 0.8,
+    borderBottomColor: colors.midgray,
+    flexDirection: "row"
+  },
+  buttonDrink: {
+    flex: 1,
+    flexDirection: "row"
+  },
+  imageDrink: {
+    height: 105,
+    width: 105
+  },
+  textDrinkName: {
+    width: "78%",
+    fontSize: 18,
+    fontFamily: "Quicksand-Medium",
+    marginLeft: 15,
+    marginTop: 15,
+    color: colors.black
+  },
+  textHeadingContainer: {
+    width: WIDTH - 105,
+    flexDirection: "row",
+    justifyContent: "space-between"
   },
 
+  ingredientsTextContainer: {
+    marginLeft: 15,
+    width: "80%"
+  },
+
+  ingredientsText: {
+    textTransform: "capitalize",
+    fontSize: 14,
+    color: colors.darkgray
+  },
 });
