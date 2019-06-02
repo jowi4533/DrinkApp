@@ -11,15 +11,37 @@ import {colors} from "../assets/colors.js";
 export default class FavoriteButton extends Component {
   constructor(props) {
     super(props);
-    this.state = {addedToFavorite: false};
-    this.addToFavorite = this.addToFavorite.bind(this);
-  }
-addToFavorite(){
-  this.setState({
-    addedToFavorite: !this.state.addedToFavorite
-  });
+    this.state = {
+      addedToFavorite: false,
+      myFavourites: props.myFavourites,
+      drink: props.drink,
+      loggedIn: props.loggedIn,
+    };
 
-}
+    this.addToFavorite = this.addToFavorite.bind(this);
+
+    this.userFavorited()
+  }
+
+  componentWillReceiveProps(nextProps){
+  this.userFavorited()
+  }
+
+  addToFavorite(){
+  this.setState({addedToFavorite: !this.state.addedToFavorite});
+  this.props.updateFavourites(this.state.drink, !this.state.addedToFavorite)
+  }
+
+  userFavorited(){
+    this.state.addedToFavorite = false
+    for(let drinkKey in this.state.myFavourites){
+      let aDrink = this.state.myFavourites[drinkKey]
+      if(aDrink.name === this.state.drink.name){
+        console.log("Drink is preFavorited:  " + aDrink.name)
+        this.state.addedToFavorite = true
+      }
+    }
+  }
 render(){
   const {addedToFavorite} = this.state
   return(
