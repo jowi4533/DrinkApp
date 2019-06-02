@@ -29,8 +29,6 @@ addToFavorite(){
 }
 
 userFavorited(){
-  if(this.state.loggedIn){
-    console.log("Checking if pre-Favorited")
     for(let drinkKey in this.state.myFavourites){
       let aDrink = this.state.myFavourites[drinkKey]
       if(aDrink.name === this.state.drink.name){
@@ -38,8 +36,6 @@ userFavorited(){
         this.state.addedToFavorite = true
       }
     }
-  }
-
 }
 
 render(){

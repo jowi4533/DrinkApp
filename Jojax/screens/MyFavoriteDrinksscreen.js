@@ -25,21 +25,18 @@ class MyFavoriteDrinkscreen extends Component {
     super(props);
     this.state = {
       dataSource: [],
-      vodkaIMG: "",
-      userFavorites: [1,2,3,4,5],
+
+
       drinks: props.screenProps.drinks,
       userAuth : props.screenProps.userAuth,
-      loggedIn : null,
+      loggedIn : true,
       favoriteDrinkArray: [],
     };
 
     this.setUpNavigationListener()
     this.initiateListener()
   }
-  componentWillMount(){
-    var favoriteDrinks = this.matchFavoriteDrinks();
-      this.setState({ favoriteDrinkArray: favoriteDrinks });
-  }
+
   static navigationOptions = {
     title: 'My Favorites',
     headerTitleStyle: {
@@ -48,32 +45,13 @@ class MyFavoriteDrinkscreen extends Component {
       fontSize: 25
     },
   };
-  matchFavoriteDrinks(){
-    var favoriteDrinkArray = [];
-    for (var i = 0; i < this.state.userFavorites.length; i++){
 
-      var test = this.state.drinks.find(item => item.id === this.state.userFavorites[i]);
-      favoriteDrinkArray.push(test);
-      test = null;
-    }
-    return favoriteDrinkArray;
-  }
   setUpNavigationListener() {
     this.props.navigation.addListener('didFocus', () => {
       this.checkUserLoggedIn()
       // get your new data here and then set state it will rerender
       console.log("In navigationlistener (MyFavoritesScreen)")
     });
-  }
-
-  checkUserLoggedIn(){
-    if(this.state.userAuth.currentUser === null){
-      //this.state.loggedIn = false
-      this.setState({loggedIn: false})
-    } else{
-      //this.state.loggedIn = true
-      this.setState({loggedIn: true})
-    }
   }
 
   initiateListener(){

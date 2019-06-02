@@ -57,30 +57,21 @@ class Drinkscreen extends Component {
       loggedIn : null,
 
     };
-
+    this.state.drinksDisplayed = this.state.drinks
+    this.state.filteredDrinks = this.state.drinks
     this.loadResources()
   }
 
   loadResources(){
-    this.checkUserLoggedIn2()
+    this.checkUserLoggedIn()
     this.setUpNavigationListener()
     this.setUpDatabaseListeners()
     this.initiateListener()
   }
 
-  checkUserLoggedIn2(){
-    if(this.state.userAuth.currentUser === null){
-      //this.state.loggedIn = false
-      this.state.loggedIn = false
-    } else{
-      //this.state.loggedIn = true
-      this.state.loggedIn = true
-    }
-  }
-
   setUpDatabaseListeners(){
-    if(this.state.loggedIn){
-      this.state.usersDB.orderByChild("email").equalTo(this.state.userAuth.currentUser.email).on("child_added",
+    if(this.state.userAuth.currentUser !== null){
+      this.state.usersDB.orderByChild("email").equalTo(this.state.userAuth.currentUser.email).on("value",
         (loggedInUser) =>{
 
         let currentUser = loggedInUser.val()
@@ -92,10 +83,12 @@ class Drinkscreen extends Component {
 
           this.state.allFavourites[drink.name] = drink
         })
-        // myFavouritesRef.on("child_removed", (aDrink) => {
-        //   console.log("child removed!!!!!")
-        //   let drink = aDrink.val()
-        // })
+        myFavouritesRef.on("child_removed", (aDrink) => {
+          console.log("child removed!!!!!")
+          let drink = aDrink.val()
+          delete this.state.allFavourites[drink.name]
+          this.setState(this.state)
+        })
       })
     }
 
@@ -103,19 +96,17 @@ class Drinkscreen extends Component {
 
   setUpNavigationListener() {
     this.props.navigation.addListener('didFocus', () => {
-      this.checkUserLoggedIn()
-      // get your new data here and then set state it will rerender
+
+      this.setState(this.state)
       console.log("In navigationlistener (DRINKSCREEN)")
     });
   }
 
   checkUserLoggedIn(){
     if(this.state.userAuth.currentUser === null){
-      //this.state.loggedIn = false
-      this.setState({loggedIn: false})
+      this.state.loggedIn = false
     } else{
-      //this.state.loggedIn = true
-      this.setState({loggedIn: true})
+      this.state.loggedIn = true
     }
   }
 
@@ -123,13 +114,12 @@ class Drinkscreen extends Component {
     this.state.userAuth.onAuthStateChanged((user) => {
       if (user) {
         console.log("In listener, user online (DRINKSCREEN)")
-        // User is signed in.
-        this.state.loggedIn = true
+
         this.setUpDatabaseListeners()
+        this.setState({loggedIn : true})
 
       } else {
-        this.state.loggedIn = false
-        this.state.allFavourites = {}
+        this.setState({loggedIn: false})
         console.log("In listener, user offline (DRINKSCREEN)")
       }
     });
@@ -175,8 +165,6 @@ resetSelected = (selected) => {
 _keyExtractor = (item, index) => item.name;
 
   componentDidMount() {
-    this.setState({drinksDisplayed: this.state.drinks})
-    this.setState({filteredDrinks: this.state.drinks})
     const url = "";
     fetch(url)
       .then(response => response.json())
@@ -189,7 +177,6 @@ _keyExtractor = (item, index) => item.name;
         //console.log(error);
       });
 
-      this.checkUserLoggedIn()
   }
   _onButtonPress = item => {
     if (item.selected !== true) {
@@ -297,13 +284,11 @@ _keyExtractor = (item, index) => item.name;
 
   updateFavourites = (drinkData, favourited) => {
 
-    let drinkName = drinkData.name;
-    this.state.allFavourites[drinkData.name] = drinkData
-    if(this.state.loggedIn){
     if(favourited){
       this.state.usersDB.orderByChild("email").equalTo(this.state.userAuth.currentUser.email).on("child_added",
         (loggedInUser) =>{
 
+        this.state.allFavourites[drinkData.name] = drinkData
         let currentUser = loggedInUser.val()
         let myFavouritesRef = this.state.usersDB.child(loggedInUser.key).child("myFavourites")
 
@@ -317,9 +302,7 @@ _keyExtractor = (item, index) => item.name;
           let currentUser = loggedInUser.val()
           let removeFavouriteRef = this.state.usersDB.child(loggedInUser.key).child("myFavourites").child(drinkData.name)
           removeFavouriteRef.remove()
-          delete this.state.allFavourites[drinkData.name]
           })
-    }
     }
   }
 
