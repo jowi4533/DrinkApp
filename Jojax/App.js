@@ -103,7 +103,7 @@ const TabNavigator = createBottomTabNavigator(
       }
     },
     Drinks: {
-      
+
       screen: DrinkStack,
       navigationOptions: {
         tabBarLabel: "DRINKS",
@@ -186,6 +186,7 @@ class App extends Component {
     this.loadResources();
   }
 
+
   async componentDidMount() {
     await Font.loadAsync({
       "Quicksand-Bold": require("./fonts/Quicksand-Bold.ttf"),
@@ -259,7 +260,6 @@ class App extends Component {
 
       let user = {
         email: this.state.allUsers[k].email,
-        password: this.state.allUsers[k].password,
         myFavourites: this.state.allUsers[k].myFavourites,
         myBar: this.state.allUsers[k].myBar
       };

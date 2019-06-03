@@ -15,7 +15,6 @@ export default class SmallFavoriteButton extends Component {
       addedToFavorite: false,
       myFavourites: props.myFavourites,
       drink: props.drink,
-      loggedIn: props.loggedIn,
     };
 
     this.addToFavorite = this.addToFavorite.bind(this);
@@ -37,7 +36,6 @@ userFavorited(){
     for(let drinkKey in this.state.myFavourites){
       let aDrink = this.state.myFavourites[drinkKey]
       if(aDrink.name === this.state.drink.name){
-        console.log("Drink is preFavorited:  " + aDrink.name)
         this.state.addedToFavorite = true
       }
     }

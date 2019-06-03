@@ -31,6 +31,7 @@ class MyFavoriteDrinkscreen extends Component {
 
       loggedIn : true,
 
+      favoriteDrinkArray: [],
       drinks: props.screenProps.drinks,
       favoriteDrinksArray: []
 
@@ -91,6 +92,7 @@ class MyFavoriteDrinkscreen extends Component {
       this.setState(this.state)
       // get your new data here and then set state it will rerender
       console.log("In navigationlistener (MyFavoritesScreen)")
+      this.setState(this.state)
     });
   }
   // setUpDatabaseListeners(){
@@ -144,6 +146,24 @@ class MyFavoriteDrinkscreen extends Component {
     string = string.replace(/,/g, ", ");
     return (string)
   };
+
+  updateFavourites = (drinkData, favourited) => {
+    if(!favourited){
+      this.state.usersDB.orderByChild("email").equalTo(this.state.userAuth.currentUser.email).on("child_added",
+        (loggedInUser) =>{
+
+        for(let i = 0; i < this.state.favoriteDrinkArray.length; i++){
+          if(this.state.favoriteDrinkArray[i].name === drinkData.name ){
+            this.state.favoriteDrinkArray.splice(i, 1)
+          }
+        }
+        let currentUser = loggedInUser.val()
+        let removeFavouriteRef = this.state.usersDB.child(loggedInUser.key).child("myFavourites").child(drinkData.name)
+        removeFavouriteRef.remove()
+        this.setState(this.state)
+        })
+    }
+  }
 
   renderItem1 = ({item, index}) => {
     return (

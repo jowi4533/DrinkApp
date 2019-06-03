@@ -373,7 +373,6 @@ class Drinkscreen extends Component {
                 <SmallFavoriteButton
                 drink = {item}
                 myFavourites = {this.state.allFavourites}
-                loggedIn = {this.state.loggedIn}
                 updateFavourites = {this.updateFavourites}
                 >
                 </SmallFavoriteButton>
