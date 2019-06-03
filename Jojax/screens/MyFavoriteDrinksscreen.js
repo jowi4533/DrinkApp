@@ -93,25 +93,25 @@ class MyFavoriteDrinkscreen extends Component {
       console.log("In navigationlistener (MyFavoritesScreen)")
     });
   }
-  setUpDatabaseListeners(){
-      this.state.usersDB.orderByChild("email").equalTo(this.state.userAuth.currentUser.email).on("child_added",
-        (loggedInUser) =>{
-        let currentUser = loggedInUser.val()
-        this.state.currentUser = currentUser;
-        let myFavouritesRef = this.state.usersDB.child(loggedInUser.key).child("myFavourites")
-        let value = this.state.currentUser.myFavourites;
-        myFavouritesRef.on("child_added", (aDrink, prevChildKey) =>{
-          let drink = aDrink.val()
-
-          this.state.allFavourites[drink.name] = drink
-        })
-          if (typeof(value) !== 'undefined' || value != null) {
-         this.state.favoriteDrinkArray = Object.values(this.state.currentUser.myFavourites);
-       } else {
-         console.log('Undefined or Null')
-       }
-      })
-     }
+  // setUpDatabaseListeners(){
+  //     this.state.usersDB.orderByChild("email").equalTo(this.state.userAuth.currentUser.email).on("child_added",
+  //       (loggedInUser) =>{
+  //       let currentUser = loggedInUser.val()
+  //       this.state.currentUser = currentUser;
+  //       let myFavouritesRef = this.state.usersDB.child(loggedInUser.key).child("myFavourites")
+  //       let value = this.state.currentUser.myFavourites;
+  //       myFavouritesRef.on("child_added", (aDrink, prevChildKey) =>{
+  //         let drink = aDrink.val()
+  //
+  //         this.state.allFavourites[drink.name] = drink
+  //       })
+  //         if (typeof(value) !== 'undefined' || value != null) {
+  //        this.state.favoriteDrinkArray = Object.values(this.state.currentUser.myFavourites);
+  //      } else {
+  //        console.log('Undefined or Null')
+  //      }
+  //     })
+  //    }
 
   initiateListener(){
     this.state.userAuth.onAuthStateChanged(function(user) {

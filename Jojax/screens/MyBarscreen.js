@@ -42,6 +42,7 @@ class MyBarscreen extends Component {
       users: props.screenProps.users,
       barSpirits: props.screenProps.allBarSpirits,
       userBar: {},
+      
       currentUser: null,
       loggedIn: null,
       possibleDrinksCount: null,
@@ -49,7 +50,7 @@ class MyBarscreen extends Component {
     this.setUpDatabaseListeners();
     this.setUpNavigationListener();
     this.initiateListener();
-    console.log(this.state.isHighlighted)
+
 
   }
     removeSpiritFromBar(itemxD) {
@@ -145,9 +146,9 @@ updatemybar(){
        this.addSpiritToBar(item);
        this.updatemybar();
    }
-      console.log(this.state.isHighlighted)
-      console.log(this.state.isHighlighted.length)
-      console.log('------------------------------')
+      //console.log(this.state.isHighlighted)
+      //console.log(this.state.isHighlighted.length)
+      //console.log('------------------------------')
   };
 
   _addToArray(item) {
@@ -187,6 +188,7 @@ updatemybar(){
 
   findBarDrinks(){
     var myBarArr = this.state.isHighlighted.map(a => a.name);
+    console.log(myBarArr);
     var myPossibleDrinksArr = [];
     for (let i = 0; i < this.state.drinks.length; i++){
       // alla drinkens spritingredienser
@@ -199,6 +201,7 @@ updatemybar(){
     this.state.possibleDrinksCount = myPossibleDrinksArr.length;
     return myPossibleDrinksArr
   }
+
   getIngredients = data => {
     var string = data.toString();
     string = string.replace(/,/g, ", ");

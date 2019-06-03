@@ -66,7 +66,12 @@ class Explorescreen extends Component {
       editorsChoice: [],
       spiritCategory : props.screenProps.spirits,
       seasonCategory: props.screenProps.seasons,
-      tasteCategory: props.screenProps.tastes
+      tasteCategory: props.screenProps.tastes,
+      //user stuff
+      userAuth: props.screenProps.userAuth,
+      usersDB: props.screenProps.usersDB,
+      users: props.screenProps.users,
+      loggedIn: null
     }
 
   }
@@ -140,7 +145,7 @@ class Explorescreen extends Component {
       <View style={styles.discoverWeeklyBox}>
         <TouchableOpacity
           onPress={() =>
-            this.props.navigation.navigate("SpecDrinks", { drink: item })
+            this.props.navigation.navigate("SpecDrinks",{drink: item})
           }
         >
         <Image
@@ -160,7 +165,7 @@ class Explorescreen extends Component {
       <TouchableOpacity
         style={styles.seasonalBox}
         onPress={() =>
-          this.props.navigation.navigate("DrinkCategory", {title: item.category})
+          this.props.navigation.navigate("DrinkCategory", {title: item.category} )
         }
       >
         <ImageBackground style={styles.baseSpiritImage} source={item.img }>

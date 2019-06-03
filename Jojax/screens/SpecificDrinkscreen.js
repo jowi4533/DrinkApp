@@ -175,7 +175,7 @@ checkUserLoggedIn(){
                     contentContainerStyle={styles.ingredientBox}
                     data={Object.keys(this.state.specificDrink.allIngredients)}
                     renderItem={this.renderItem1}
-                    keyExtractor={item => item.eachItem}
+                    keyExtractor={item => item.eachitem}
                   />
                 </View>
                 <View style={styles.servingsContainer}>
@@ -185,7 +185,7 @@ checkUserLoggedIn(){
                     <FlatList
                       data={this.state.ingredients}
                       renderItem={this.renderItem2}
-                      keyExtractor={item => item.eachItem}
+                      keyExtractor={item => item}
                     />
 
                   </View>
