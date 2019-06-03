@@ -26,25 +26,26 @@ class MyFavoriteDrinkscreen extends Component {
     this.state = {
       dataSource: [],
       vodkaIMG: "",
-      userFavorites: [1,2,3,4,5],
+      userFavorites:[],
       drinks: props.screenProps.drinks,
       userAuth : props.screenProps.userAuth,
       loggedIn : null,
       favoriteDrinkArray: [],
-
+      currentUser: null,
       drinks: props.screenProps.drinks,
       allFavourites: {},
 
       usersDB: props.screenProps.usersDB,
       users: props.screenProps.users,
     };
-    console.log(this.state.usersDB)
     this.setUpNavigationListener()
     this.initiateListener()
+    this.setUpDatabaseListeners()
+    console.log(this.state.favoriteDrinkArray)
   }
   componentWillMount(){
-    var favoriteDrinks = this.matchFavoriteDrinks();
-      this.setState({ favoriteDrinkArray: favoriteDrinks });
+    //var favoriteDrinks = this.matchFavoriteDrinks();
+    //  this.setState({ favoriteDrinkArray: favoriteDrinks });
   }
   static navigationOptions = {
     title: 'My Favorites',
@@ -55,16 +56,16 @@ class MyFavoriteDrinkscreen extends Component {
       color:colors.black
     },
   };
-  matchFavoriteDrinks(){
-    var favoriteDrinkArray = [];
-    for (var i = 0; i < this.state.userFavorites.length; i++){
-
-      var test = this.state.drinks.find(item => item.id === this.state.userFavorites[i]);
-      favoriteDrinkArray.push(test);
-      test = null;
-    }
-    return favoriteDrinkArray;
-  }
+  // matchFavoriteDrinks(){
+  //   var favoriteDrinkArray = [];
+  //   for (var i = 0; i < this.state.userFavorites.length; i++){
+  //
+  //     var test = this.state.drinks.find(item => item.id === this.state.userFavorites[i]);
+  //     favoriteDrinkArray.push(test);
+  //     test = null;
+  //   }
+  //   return favoriteDrinkArray;
+  // }
   setUpNavigationListener() {
     this.props.navigation.addListener('didFocus', () => {
       this.checkUserLoggedIn()
@@ -72,6 +73,25 @@ class MyFavoriteDrinkscreen extends Component {
       console.log("In navigationlistener (MyFavoritesScreen)")
     });
   }
+  setUpDatabaseListeners(){
+      this.state.usersDB.orderByChild("email").equalTo(this.state.userAuth.currentUser.email).on("child_added",
+        (loggedInUser) =>{
+        let currentUser = loggedInUser.val()
+        this.state.currentUser = currentUser;
+        let myFavouritesRef = this.state.usersDB.child(loggedInUser.key).child("myFavourites")
+        let value = this.state.currentUser.myFavourites;
+        myFavouritesRef.on("child_added", (aDrink, prevChildKey) =>{
+          let drink = aDrink.val()
+
+          this.state.allFavourites[drink.name] = drink
+        })
+          if (typeof(value) !== 'undefined' || value != null) {
+         this.state.favoriteDrinkArray = Object.values(this.state.currentUser.myFavourites);
+       } else {
+         console.log('Undefined or Null')
+       }
+      })
+     }
 
   checkUserLoggedIn(){
     if(this.state.userAuth.currentUser === null){
@@ -126,7 +146,6 @@ class MyFavoriteDrinkscreen extends Component {
                 />
               </View>
             </View>
-
             <View style={styles.ingredientsTextContainer}>
               <Text style={styles.ingredientsText}>
                 {this.getIngredients(Object.keys(item.allIngredients))}

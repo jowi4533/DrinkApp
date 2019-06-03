@@ -23,17 +23,6 @@ import ginBottle from "../pictures/ginBottle.jpg";
 import { colors } from "../assets/colors.js";
 import SmallFavoriteButton from "../components/SmallFavoriteButton.js";
 
-// const formatData = (data, numColumns) => {
-//   const numberOfFullRows = Math.floor(data.length / numColumns);
-//
-//   let numberOfElementsLastRow = data.length - (numberOfFullRows * numColumns);
-//   while (numberOfElementsLastRow !== numColumns &&  numberOfElementsLastRow !== 0) {
-//     data.push({ key: `blank-${numberOfElementsLastRow}`, empty: true });
-//     numberOfElementsLastRow = numberOfElementsLastRow + 1;
-//   }
-//
-//   return data;
-// };
 
 const numColumns = 2;
 
@@ -43,7 +32,7 @@ class MyBarscreen extends Component {
 
     this.state = {
 
-      isHighlighted: [],
+      isHighlighted:[],
       activeIndex: 0,
       drinks: props.screenProps.drinks,
       allFavourites: {},
@@ -52,7 +41,7 @@ class MyBarscreen extends Component {
       usersDB: props.screenProps.usersDB,
       users: props.screenProps.users,
       barSpirits: props.screenProps.allBarSpirits,
-      userBar: [],
+      userBar: {},
       currentUser: null,
       loggedIn: null,
       possibleDrinksCount: null,
@@ -60,13 +49,15 @@ class MyBarscreen extends Component {
     this.setUpDatabaseListeners();
     this.setUpNavigationListener();
     this.initiateListener();
+    console.log(this.state.isHighlighted)
 
   }
-    removeSpiritFromBar(id) {
+    removeSpiritFromBar(itemxD) {
       this.setState(state => {
-        const isHighlighted = state.isHighlighted.filter(item => item.id !== id);
+        const isHighlighted = state.isHighlighted.filter(item => item !== itemxD);
         return {
           isHighlighted
+
         };
       });
     }
@@ -95,19 +86,20 @@ class MyBarscreen extends Component {
         let myBarRef = this.state.usersDB.child(loggedInUser.key).child("myBar")
         let value = this.state.currentUser.myBar;
           if (typeof(value) !== 'undefined' || value != null) {
-         this.state.isHighlighted = [this.state.currentUser.myBar];
+         this.state.isHighlighted = this.state.currentUser.myBar;
        } else {
          console.log('Undefined or Null')
        }
       })
      }
-updatemybar(item){
+updatemybar(){
   this.state.usersDB.orderByChild("email").equalTo(this.state.userAuth.currentUser.email).on("child_added",
     (loggedInUser) =>{
     let currentUser = loggedInUser.val()
     let myBarRef = this.state.usersDB.child(loggedInUser.key).child("myBar")
+      myBarRef.set(this.state.isHighlighted)
     })
-      myBarRef.set(item)
+
 }
 
   setUpNavigationListener() {
@@ -142,30 +134,20 @@ updatemybar(item){
   }
 
 
-  _onButtonPress = item => {
-    var isHighlighted1 = this.state.isHighlighted;
+  _onButtonPress(item) {
+
     if (this.state.isHighlighted.includes(item) == true ){
 
-      this.removeSpiritFromBar(item.id);
+      this.removeSpiritFromBar(item);
+      this.updatemybar();
     }
    else {
        this.addSpiritToBar(item);
+       this.updatemybar();
    }
-    // if (item.selected !== true) {
-    //   this._addToArray(item);
-    //   this.updatemybar();
-    //   this.setState(state => {
-    //     item.selected = true;
-    //     return { item };
-    //   });
-    // } else {
-    //   this._removeFromArray(item);
-    //   this.updatemybar();
-    //   this.setState(state => {
-    //     item.selected = false;
-    //     return { item };
-    //   });
-    // }
+      console.log(this.state.isHighlighted)
+      console.log(this.state.isHighlighted.length)
+      console.log('------------------------------')
   };
 
   _addToArray(item) {
