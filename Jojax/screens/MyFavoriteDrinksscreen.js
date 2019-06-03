@@ -25,13 +25,15 @@ class MyFavoriteDrinkscreen extends Component {
     super(props);
     this.state = {
       dataSource: [],
-      vodkaIMG: "",
-      userFavorites: [1,2,3,4,5],
-      drinks: props.screenProps.drinks,
+
       userAuth : props.screenProps.userAuth,
       usersDB: props.screenProps.usersDB,
+
       loggedIn : true,
+
       favoriteDrinkArray: [],
+      drinks: props.screenProps.drinks,
+
     };
     this.loadResources()
   }
@@ -60,6 +62,7 @@ setUpDatabaseListeners(){
     let allDrinks = []
     let currentUser = loggedInUser.val()
     let myFavouritesRef = this.state.usersDB.child(loggedInUser.key).child("myFavourites")
+    
     myFavouritesRef.on("child_added", (aDrink, prevChildKey) =>{
       let drink = aDrink.val()
       allDrinks.push(drink)
@@ -107,17 +110,19 @@ setUpDatabaseListeners(){
   };
 
   updateFavourites = (drinkData, favourited) => {
-
-    this.state.favoriteDrinkArray[drinkData.name] = drinkData
     if(!favourited){
       this.state.usersDB.orderByChild("email").equalTo(this.state.userAuth.currentUser.email).on("child_added",
         (loggedInUser) =>{
 
+        for(let i = 0; i < this.state.favoriteDrinkArray.length; i++){
+          if(this.state.favoriteDrinkArray[i].name === drinkData.name ){
+            this.state.favoriteDrinkArray.splice(i, 1)
+          }
+        }
         let currentUser = loggedInUser.val()
         let removeFavouriteRef = this.state.usersDB.child(loggedInUser.key).child("myFavourites").child(drinkData.name)
         removeFavouriteRef.remove()
-        delete this.state.favoriteDrinkArray[drinkData.name]
-        this.setState({loggedIn: true})
+        this.setState(this.state)
         })
     }
   }
@@ -158,31 +163,6 @@ setUpDatabaseListeners(){
       </View>
     );
   };
-  updateFavourites = (drinkData, favourited) => {
-    this.state.allFavourites[drinkData.name] = drinkData
-    if(this.state.loggedIn){
-    if(favourited){
-      this.state.usersDB.orderByChild("email").equalTo(this.state.userAuth.currentUser.email).on("child_added",
-        (loggedInUser) =>{
-
-        let currentUser = loggedInUser.val()
-        let myFavouritesRef = this.state.usersDB.child(loggedInUser.key).child("myFavourites")
-
-        myFavouritesRef.set(this.state.allFavourites)
-        })
-    }
-      else{
-        this.state.usersDB.orderByChild("email").equalTo(this.state.userAuth.currentUser.email).on("child_added",
-          (loggedInUser) =>{
-
-          let currentUser = loggedInUser.val()
-          let removeFavouriteRef = this.state.usersDB.child(loggedInUser.key).child("myFavourites").child(drinkData.name)
-          removeFavouriteRef.remove()
-          delete this.state.allFavourites[drinkData.name]
-          })
-    }
-    }
-  }
 
   render() {
     return (

@@ -98,7 +98,6 @@ class Drinkscreen extends Component {
           let drink = aDrink.val()
 
           delete this.state.allFavourites[drink.name]
-          console.log(this.state.allFavourites)
           this.setState(this.state)
         })
       })
@@ -115,10 +114,8 @@ class Drinkscreen extends Component {
 
   checkUserLoggedIn(){
     if(this.state.userAuth.currentUser === null){
-      //this.state.loggedIn = false
       this.state.loggedIn = false
     } else{
-      //this.state.loggedIn = true
       this.state.loggedIn = true
     }
   }
@@ -296,12 +293,11 @@ class Drinkscreen extends Component {
   }
 
   updateFavourites = (drinkData, favourited) => {
-
-    this.state.allFavourites[drinkData.name] = drinkData
     if(favourited){
       this.state.usersDB.orderByChild("email").equalTo(this.state.userAuth.currentUser.email).on("child_added",
         (loggedInUser) =>{
 
+        this.state.allFavourites[drinkdata.name] = drinkData
         let currentUser = loggedInUser.val()
         let myFavouritesRef = this.state.usersDB.child(loggedInUser.key).child("myFavourites")
 
@@ -375,7 +371,6 @@ class Drinkscreen extends Component {
                 <SmallFavoriteButton
                 drink = {item}
                 myFavourites = {this.state.allFavourites}
-                loggedIn = {this.state.loggedIn}
                 updateFavourites = {this.updateFavourites}
                 >
                 </SmallFavoriteButton>
