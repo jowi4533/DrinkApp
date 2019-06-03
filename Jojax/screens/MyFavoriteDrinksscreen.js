@@ -33,16 +33,11 @@ class MyFavoriteDrinkscreen extends Component {
 
       favoriteDrinkArray: [],
       drinks: props.screenProps.drinks,
+      favoriteDrinksArray: []
 
     };
+
     this.loadResources()
-  }
-
-  loadResources() {
-    this.setUpDatabaseListeners()
-    this.setUpNavigationListener()
-    this.initiateListener()
-
   }
 
   static navigationOptions = {
@@ -55,37 +50,46 @@ class MyFavoriteDrinkscreen extends Component {
     },
   };
 
-setUpDatabaseListeners(){
-  this.state.usersDB.orderByChild("email").equalTo(this.state.userAuth.currentUser.email).on("child_added",
-    (loggedInUser) =>{
+  loadResources(){
+    this.setUpDatabaseListeners()
+    this.setUpNavigationListener()
+    this.initiateListener()
+  }
 
-    let allDrinks = []
-    let currentUser = loggedInUser.val()
-    let myFavouritesRef = this.state.usersDB.child(loggedInUser.key).child("myFavourites")
-    
-    myFavouritesRef.on("child_added", (aDrink, prevChildKey) =>{
-      let drink = aDrink.val()
-      allDrinks.push(drink)
-      this.state.favoriteDrinkArray = allDrinks
-      this.setState(this.state)
-    })
 
-    myFavouritesRef.on("child_removed", (aDrink, prevChildKey) =>{
-      let drink = aDrink.val()
-      for(let i = 0; i < allDrinks.length; i++){
-        if(allDrinks[i].name === drink.name){
-          console.log("getting spliced")
-          allDrinks.splice(i, 1)
-          this.state.favoriteDrinkArray = allDrinks
-        }
-      }
-      this.setState(this.state)
-    })
-  })
-}
+  setUpDatabaseListeners(){
+      this.state.usersDB.orderByChild("email").equalTo(this.state.userAuth.currentUser.email).on("child_added",
+        (loggedInUser) =>{
+
+        let allDrinks = []
+        let currentUser = loggedInUser.val()
+        let myFavouritesRef = this.state.usersDB.child(loggedInUser.key).child("myFavourites")
+
+        myFavouritesRef.on("child_added", (aDrink, prevChildKey) =>{
+          let drink = aDrink.val()
+          allDrinks.push(drink)
+
+          this.state.favoriteDrinksArray = allDrinks
+          this.setState(this.state)
+        })
+
+        myFavouritesRef.on("child_removed", (aDrink) => {
+          let drink = aDrink.val()
+
+          for(let i = 0; i < allDrinks.length; i++){
+            if(allDrinks[i].name === drink.name){
+              console.log("getting spliced  " + drink.name)
+              allDrinks.splice(i, 1)
+              this.setState({favoriteDrinksArray: allDrinks})
+            }
+          }
+        })
+      })
+  }
 
   setUpNavigationListener() {
     this.props.navigation.addListener('didFocus', () => {
+      this.setState(this.state)
       // get your new data here and then set state it will rerender
       console.log("In navigationlistener (MyFavoritesScreen)")
       this.setState(this.state)
@@ -103,6 +107,21 @@ setUpDatabaseListeners(){
       }
     });
   }
+
+  updateFavourites = (drinkData, favourited) => {
+
+    if(!favourited){
+      this.state.usersDB.orderByChild("email").equalTo(this.state.userAuth.currentUser.email).on("child_added",
+        (loggedInUser) =>{
+
+
+        let currentUser = loggedInUser.val()
+        let removeFavouriteRef = this.state.usersDB.child(loggedInUser.key).child("myFavourites").child(drinkData.name)
+        removeFavouriteRef.remove()
+        })
+    }
+  }
+
   getIngredients = (data) => {
     var string = data.toString();
     string = string.replace(/,/g, ", ");
@@ -145,11 +164,11 @@ setUpDatabaseListeners(){
               <Text style={styles.textDrinkName}>{item.name}</Text>
               <View style={styles.SmallFavoriteButtonContainer}>
                 <SmallFavoriteButton
-                drink = {item}
-                myFavourites = {this.state.favoriteDrinkArray}
-                loggedIn = {this.state.loggedIn}
-                updateFavourites = {this.updateFavourites}>
-                </SmallFavoriteButton>
+                  drink = {item}
+                  myFavourites = {this.state.favoriteDrinksArray}
+                  loggedIn = {this.state.loggedIn}
+                  updateFavourites = {this.updateFavourites}
+                />
               </View>
             </View>
 
@@ -169,7 +188,7 @@ setUpDatabaseListeners(){
           <View>
           <ScrollView>
             <FlatList
-            data={this.state.favoriteDrinkArray}
+            data={this.state.favoriteDrinksArray}
             renderItem={this.renderItem1}
             keyExtractor={item => item.id}
             extraData={this.state}

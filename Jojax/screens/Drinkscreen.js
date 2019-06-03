@@ -66,14 +66,13 @@ class Drinkscreen extends Component {
       users: props.screenProps.users,
       loggedIn: null
     };
-
     this.state.drinksDisplayed = this.state.drinks
     this.state.filteredDrinks = this.state.drinks
     this.loadResources()
   }
 
   loadResources(){
-    this.checkUserLoggedIn();
+    this.checkUserLoggedIn()
     this.setUpDatabaseListeners()
     this.userListener()
     this.setUpNavigationListener()
@@ -81,7 +80,6 @@ class Drinkscreen extends Component {
 
   setUpDatabaseListeners(){
     if(this.state.userAuth.currentUser !== null){
-
       this.state.usersDB.orderByChild("email").equalTo(this.state.userAuth.currentUser.email).on("child_added",
         (loggedInUser) =>{
 
@@ -93,22 +91,20 @@ class Drinkscreen extends Component {
 
           this.state.allFavourites[drink.name] = drink
         })
-
-        myFavouritesRef.on("child_removed", (aDrink, prevChildKey) =>{
+        myFavouritesRef.on("child_removed", (aDrink) => {
+          console.log("child removed!!!!!")
           let drink = aDrink.val()
-
           delete this.state.allFavourites[drink.name]
-          this.setState(this.state)
         })
       })
-      }
+    }
   }
 
   setUpNavigationListener() {
-    this.props.navigation.addListener("didFocus", () => {
-      // get your new data here and then set state it will rerender
+    this.props.navigation.addListener('didFocus', () => {
+
       this.setState(this.state)
-      console.log("In navigationlistener (DRINKSCREEN)");
+      console.log("In navigationlistener (DRINKSCREEN)")
     });
   }
 
@@ -124,12 +120,11 @@ class Drinkscreen extends Component {
     this.state.userAuth.onAuthStateChanged((user) => {
       if (user) {
         console.log("In listener, user online (DRINKSCREEN)")
-        // User is signed in.
+
         this.setUpDatabaseListeners()
         this.setState({loggedIn : true})
 
       } else {
-        this.state.allFavourites = {}
         this.setState({loggedIn: false})
         console.log("In listener, user offline (DRINKSCREEN)")
       }
@@ -187,8 +182,9 @@ class Drinkscreen extends Component {
         });
       })
       .catch(error => {
-        //console.log(error);
+
       });
+
   }
   _onButtonPress = item => {
     if (item.selected !== true) {
@@ -293,11 +289,12 @@ class Drinkscreen extends Component {
   }
 
   updateFavourites = (drinkData, favourited) => {
+
     if(favourited){
       this.state.usersDB.orderByChild("email").equalTo(this.state.userAuth.currentUser.email).on("child_added",
         (loggedInUser) =>{
 
-        this.state.allFavourites[drinkdata.name] = drinkData
+        this.state.allFavourites[drinkData.name] = drinkData
         let currentUser = loggedInUser.val()
         let myFavouritesRef = this.state.usersDB.child(loggedInUser.key).child("myFavourites")
 
@@ -357,7 +354,12 @@ class Drinkscreen extends Component {
         <TouchableOpacity
           style={styles.buttonDrink}
           onPress={() =>
-            this.props.navigation.navigate("SpecDrinks", { drink: item })
+            this.props.navigation.navigate("SpecDrinks",
+            { drink: item,
+              myFavourites: this.state.allFavourites,
+              loggedIn: this.state.loggedIn,
+              usersDB: this.state.usersDB,
+            })
           }
         >
           <View>

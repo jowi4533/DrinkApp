@@ -54,21 +54,23 @@ class MyBarscreen extends Component {
       barSpirits: props.screenProps.allBarSpirits,
       userBar: [],
       currentUser: null,
-      loggedIn: null
+      loggedIn: null,
+      possibleDrinksCount: null,
     };
     this.setUpDatabaseListeners();
     this.setUpNavigationListener();
     this.initiateListener();
 
   }
-  removeSpiritFromBar(id){
-        this.setState(state => {
-          const isHighlighted = state.isHighlighted.filter(item => item.id !== id);
-          return {
-            isHighlighted
-          };
-        });
-  }
+    removeSpiritFromBar(id) {
+      this.setState(state => {
+        const isHighlighted = state.isHighlighted.filter(item => item.id !== id);
+        return {
+          isHighlighted
+        };
+      });
+    }
+
   addSpiritToBar(item){
     isHighlightedArr = this.state.isHighlighted;
     isHighlightedArr.push(item);
@@ -90,13 +92,15 @@ class MyBarscreen extends Component {
         (loggedInUser) =>{
         let currentUser = loggedInUser.val()
         this.state.currentUser = currentUser;
-        this.state.isHighlighted = [this.state.currentUser.myBar];
-
-
         let myBarRef = this.state.usersDB.child(loggedInUser.key).child("myBar")
-
+        let value = this.state.currentUser.myBar;
+          if (typeof(value) !== 'undefined' || value != null) {
+         this.state.isHighlighted = [this.state.currentUser.myBar];
+       } else {
+         console.log('Undefined or Null')
+       }
       })
-  }
+     }
 updatemybar(item){
   this.state.usersDB.orderByChild("email").equalTo(this.state.userAuth.currentUser.email).on("child_added",
     (loggedInUser) =>{
@@ -140,13 +144,13 @@ updatemybar(item){
 
   _onButtonPress = item => {
     var isHighlighted1 = this.state.isHighlighted;
-    console.log(isHighlighted1)
-    //if ((this.state.isHighlighted.includes(item)) ==true ){
-  //    removeSpiritFromBar(item.id);
-//}
-  //  else{
-    //  addSpiritToBar(item);
-    //}
+    if (this.state.isHighlighted.includes(item) == true ){
+
+      this.removeSpiritFromBar(item.id);
+    }
+   else {
+       this.addSpiritToBar(item);
+   }
     // if (item.selected !== true) {
     //   this._addToArray(item);
     //   this.updatemybar();
@@ -200,17 +204,17 @@ updatemybar(item){
 }
 
   findBarDrinks(){
-    // Hur hämtar jag en användares bar??!?!?
-    var myBarArr = ["aperol","spritz","gin"];
+    var myBarArr = this.state.isHighlighted.map(a => a.name);
     var myPossibleDrinksArr = [];
     for (let i = 0; i < this.state.drinks.length; i++){
+      // alla drinkens spritingredienser
       var drinkIngredientsArr = Object.keys(this.state.drinks[i].spirits);
       var hasIngredient = this.hasAllIngredients(drinkIngredientsArr,myBarArr);
       if (hasIngredient==true){
         myPossibleDrinksArr.push(this.state.drinks[i]);
       }
-
     }
+    this.state.possibleDrinksCount = myPossibleDrinksArr.length;
     return myPossibleDrinksArr
   }
   getIngredients = data => {
@@ -257,7 +261,7 @@ updateFavourites = (drinkData, favourited) => {
         >
           <View
             style={[
-              item.selected ? styles.borderViewSelected : styles.borderView
+              this.state.isHighlighted.includes(item) ? styles.borderViewSelected : styles.borderView
             ]}
           >
             <View style={styles.itemPictureContainer}>
@@ -345,6 +349,10 @@ updateFavourites = (drinkData, favourited) => {
             onPress={() => this.handleGoTodrinks()}
           >
             <Text style={styles.tabText}>Drinks</Text>
+              <View style = {styles.barCounterTextContainer}>
+                 <Text style= {styles.barCounterText}>{this.state.possibleDrinksCount}
+                 </Text>
+              </View>
           </TouchableOpacity>
         </View>
         {this.state.activeIndex == 0 ? (

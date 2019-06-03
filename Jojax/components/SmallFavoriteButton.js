@@ -21,27 +21,23 @@ export default class SmallFavoriteButton extends Component {
 
     this.userFavorited()
   }
-addToFavorite(){
 
+componentWillReceiveProps(nextProps){
+  this.userFavorited()
+}
+
+addToFavorite(){
   this.setState({addedToFavorite: !this.state.addedToFavorite});
   this.props.updateFavourites(this.state.drink, !this.state.addedToFavorite)
 }
 
 userFavorited(){
-    if(Array.isArray(this.state.myFavourites)){
-      console.log("working on an array!")
-      for(let i = 0; i < this.state.myFavourites.length; i++){
-        if(this.state.myFavourites[i].name === this.state.drink.name){
-          this.state.addedToFavorite = true
-        }
-      }
-    } else{
-      console.log("working on an object")
-      for(let drinkKey in this.state.myFavourites){
-        let aDrink = this.state.myFavourites[drinkKey]
-        if(aDrink.name === this.state.drink.name){
-          this.state.addedToFavorite = true
-        }
+    this.state.addedToFavorite = false
+    for(let drinkKey in this.state.myFavourites){
+      let aDrink = this.state.myFavourites[drinkKey]
+      if(aDrink.name === this.state.drink.name){
+        console.log("Drink is preFavorited:  " + aDrink.name)
+        this.state.addedToFavorite = true
       }
     }
 }

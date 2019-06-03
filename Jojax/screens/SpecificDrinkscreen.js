@@ -28,12 +28,15 @@ class SpecificDrinkscreen extends Component {
   super(props);
 
   this.state = {
-    specificDrink : this.props.navigation.state.params.drink,
     instructions: [],
     ingredients: [],
-    ImageURL: [],
+
     userAuth : props.screenProps.userAuth,
-    loggedIn : null,
+
+    usersDB: this.props.navigation.state.params.usersDB,
+    specificDrink : this.props.navigation.state.params.drink,
+    myFavourites: this.props.navigation.state.params.myFavourites,
+    loggedIn: this.props.navigation.state.params.loggedIn,
 
   }
   this.setUpNavigationListener()
@@ -47,6 +50,7 @@ setUpNavigationListener() {
     console.log("In navigationlistener (DRINKSCREEN)")
   });
 }
+
 initiateListener(){
   this.state.userAuth.onAuthStateChanged(function(user) {
     if (user) {
@@ -69,13 +73,6 @@ checkUserLoggedIn(){
   }
 }
 
-componentWillMount(){
-
-}
-  loadServings(){
-    //console.log(Object.keys(this.state.specificDrink.ingredients))
-  }
-
   loadIngredients(){
     allIngredientItems = Object.values(this.state.specificDrink.allIngredients)
     allIngredientKeys = Object.keys(this.state.specificDrink.allIngredients)
@@ -89,6 +86,30 @@ componentWillMount(){
     }
     this.state.ingredients = ingredients
     //console.log(this.state.ingredients)
+  }
+
+  updateFavourites = (drinkData, favourited) => {
+
+    if(favourited){
+      this.state.usersDB.orderByChild("email").equalTo(this.state.userAuth.currentUser.email).on("child_added",
+        (loggedInUser) =>{
+
+        this.state.myFavourites[drinkData.name] = drinkData
+        let currentUser = loggedInUser.val()
+        let myFavouritesRef = this.state.usersDB.child(loggedInUser.key).child("myFavourites")
+
+        myFavouritesRef.set(this.state.myFavourites)
+        })
+    }
+      else{
+        this.state.usersDB.orderByChild("email").equalTo(this.state.userAuth.currentUser.email).on("child_added",
+          (loggedInUser) =>{
+
+          let currentUser = loggedInUser.val()
+          let removeFavouriteRef = this.state.usersDB.child(loggedInUser.key).child("myFavourites").child(drinkData.name)
+          removeFavouriteRef.remove()
+          })
+    }
   }
 
   //renders ingredients
@@ -125,7 +146,13 @@ componentWillMount(){
           <View style={styles.drinkImageContainer}>
             <View style={styles.addToFavoriteButton}>
                 {this.state.loggedIn ? (
-              <FavoriteButton /> ) :
+              <FavoriteButton
+                drink = {this.state.specificDrink}
+                myFavourites = {this.state.myFavourites}
+                loggedIn = {this.state.loggedIn}
+                updateFavourites = {this.updateFavourites}
+              >
+              </FavoriteButton> ) :
                 ( <View>
                 </View>) }
             </View>
