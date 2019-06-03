@@ -25,28 +25,20 @@ class MyFavoriteDrinkscreen extends Component {
     super(props);
     this.state = {
       dataSource: [],
-      vodkaIMG: "",
-      userFavorites:[],
-      drinks: props.screenProps.drinks,
-      userAuth : props.screenProps.userAuth,
-      loggedIn : null,
-      favoriteDrinkArray: [],
-      currentUser: null,
-      drinks: props.screenProps.drinks,
-      allFavourites: {},
 
+      userAuth : props.screenProps.userAuth,
       usersDB: props.screenProps.usersDB,
-      users: props.screenProps.users,
+
+      loggedIn : true,
+
+      drinks: props.screenProps.drinks,
+      favoriteDrinksArray: []
+
     };
-    this.setUpNavigationListener()
-    this.initiateListener()
-    this.setUpDatabaseListeners()
-    console.log(this.state.favoriteDrinkArray)
+
+    this.loadResources()
   }
-  componentWillMount(){
-    //var favoriteDrinks = this.matchFavoriteDrinks();
-    //  this.setState({ favoriteDrinkArray: favoriteDrinks });
-  }
+
   static navigationOptions = {
     title: 'My Favorites',
     headerTitleStyle: {
@@ -56,19 +48,47 @@ class MyFavoriteDrinkscreen extends Component {
       color:colors.black
     },
   };
-  // matchFavoriteDrinks(){
-  //   var favoriteDrinkArray = [];
-  //   for (var i = 0; i < this.state.userFavorites.length; i++){
-  //
-  //     var test = this.state.drinks.find(item => item.id === this.state.userFavorites[i]);
-  //     favoriteDrinkArray.push(test);
-  //     test = null;
-  //   }
-  //   return favoriteDrinkArray;
-  // }
+
+  loadResources(){
+    this.setUpDatabaseListeners()
+    this.setUpNavigationListener()
+    this.initiateListener()
+  }
+
+
+  setUpDatabaseListeners(){
+      this.state.usersDB.orderByChild("email").equalTo(this.state.userAuth.currentUser.email).on("child_added",
+        (loggedInUser) =>{
+
+        let allDrinks = []
+        let currentUser = loggedInUser.val()
+        let myFavouritesRef = this.state.usersDB.child(loggedInUser.key).child("myFavourites")
+
+        myFavouritesRef.on("child_added", (aDrink, prevChildKey) =>{
+          let drink = aDrink.val()
+          allDrinks.push(drink)
+
+          this.state.favoriteDrinksArray = allDrinks
+          this.setState(this.state)
+        })
+
+        myFavouritesRef.on("child_removed", (aDrink) => {
+          let drink = aDrink.val()
+
+          for(let i = 0; i < allDrinks.length; i++){
+            if(allDrinks[i].name === drink.name){
+              console.log("getting spliced  " + drink.name)
+              allDrinks.splice(i, 1)
+              this.setState({favoriteDrinksArray: allDrinks})
+            }
+          }
+        })
+      })
+  }
+
   setUpNavigationListener() {
     this.props.navigation.addListener('didFocus', () => {
-      this.checkUserLoggedIn()
+      this.setState(this.state)
       // get your new data here and then set state it will rerender
       console.log("In navigationlistener (MyFavoritesScreen)")
     });
@@ -93,28 +113,32 @@ class MyFavoriteDrinkscreen extends Component {
       })
      }
 
-  checkUserLoggedIn(){
-    if(this.state.userAuth.currentUser === null){
-      //this.state.loggedIn = false
-      this.setState({loggedIn: false})
-    } else{
-      //this.state.loggedIn = true
-      this.setState({loggedIn: true})
-    }
-  }
-
   initiateListener(){
     this.state.userAuth.onAuthStateChanged(function(user) {
       if (user) {
         console.log("In listener, user online (MyFavoritesScreen)")
-        // User is signed in.
-        var displayName = user.displayName;
-        var email = user.email;
+
+        this.setUpDatabaseListeners()
       } else {
         console.log("In listener, user offline (MyFavoritesScreen)")
       }
     });
   }
+
+  updateFavourites = (drinkData, favourited) => {
+
+    if(!favourited){
+      this.state.usersDB.orderByChild("email").equalTo(this.state.userAuth.currentUser.email).on("child_added",
+        (loggedInUser) =>{
+
+
+        let currentUser = loggedInUser.val()
+        let removeFavouriteRef = this.state.usersDB.child(loggedInUser.key).child("myFavourites").child(drinkData.name)
+        removeFavouriteRef.remove()
+        })
+    }
+  }
+
   getIngredients = (data) => {
     var string = data.toString();
     string = string.replace(/,/g, ", ");
@@ -140,7 +164,7 @@ class MyFavoriteDrinkscreen extends Component {
               <View style={styles.SmallFavoriteButtonContainer}>
                 <SmallFavoriteButton
                   drink = {item}
-                  myFavourites = {this.state.allFavourites}
+                  myFavourites = {this.state.favoriteDrinksArray}
                   loggedIn = {this.state.loggedIn}
                   updateFavourites = {this.updateFavourites}
                 />
@@ -156,38 +180,13 @@ class MyFavoriteDrinkscreen extends Component {
       </View>
     );
   };
-  updateFavourites = (drinkData, favourited) => {
-    this.state.allFavourites[drinkData.name] = drinkData
-    if(this.state.loggedIn){
-    if(favourited){
-      this.state.usersDB.orderByChild("email").equalTo(this.state.userAuth.currentUser.email).on("child_added",
-        (loggedInUser) =>{
-
-        let currentUser = loggedInUser.val()
-        let myFavouritesRef = this.state.usersDB.child(loggedInUser.key).child("myFavourites")
-
-        myFavouritesRef.set(this.state.allFavourites)
-        })
-    }
-      else{
-        this.state.usersDB.orderByChild("email").equalTo(this.state.userAuth.currentUser.email).on("child_added",
-          (loggedInUser) =>{
-
-          let currentUser = loggedInUser.val()
-          let removeFavouriteRef = this.state.usersDB.child(loggedInUser.key).child("myFavourites").child(drinkData.name)
-          removeFavouriteRef.remove()
-          delete this.state.allFavourites[drinkData.name]
-          })
-    }
-    }
-  }
 
   render() {
     return (
           <View>
           <ScrollView>
             <FlatList
-            data={this.state.favoriteDrinkArray}
+            data={this.state.favoriteDrinksArray}
             renderItem={this.renderItem1}
             keyExtractor={item => item.id}
             extraData={this.state}

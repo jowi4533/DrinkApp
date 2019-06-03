@@ -66,20 +66,20 @@ class Drinkscreen extends Component {
       users: props.screenProps.users,
       loggedIn: null
     };
-
     this.state.drinksDisplayed = this.state.drinks
     this.state.filteredDrinks = this.state.drinks
     this.loadResources()
   }
 
   loadResources(){
-    this.checkUserLoggedIn();
+    this.checkUserLoggedIn()
     this.setUpDatabaseListeners()
     this.userListener()
     this.setUpNavigationListener()
   }
 
   setUpDatabaseListeners(){
+    if(this.state.userAuth.currentUser !== null){
       this.state.usersDB.orderByChild("email").equalTo(this.state.userAuth.currentUser.email).on("child_added",
         (loggedInUser) =>{
 
@@ -91,22 +91,27 @@ class Drinkscreen extends Component {
 
           this.state.allFavourites[drink.name] = drink
         })
+        myFavouritesRef.on("child_removed", (aDrink) => {
+          console.log("child removed!!!!!")
+          let drink = aDrink.val()
+          delete this.state.allFavourites[drink.name]
+        })
       })
+    }
   }
 
   setUpNavigationListener() {
-    this.props.navigation.addListener("didFocus", () => {
-      // get your new data here and then set state it will rerender
-      console.log("In navigationlistener (DRINKSCREEN)");
+    this.props.navigation.addListener('didFocus', () => {
+
+      this.setState(this.state)
+      console.log("In navigationlistener (DRINKSCREEN)")
     });
   }
 
   checkUserLoggedIn(){
     if(this.state.userAuth.currentUser === null){
-      //this.state.loggedIn = false
       this.state.loggedIn = false
     } else{
-      //this.state.loggedIn = true
       this.state.loggedIn = true
     }
   }
@@ -115,12 +120,11 @@ class Drinkscreen extends Component {
     this.state.userAuth.onAuthStateChanged((user) => {
       if (user) {
         console.log("In listener, user online (DRINKSCREEN)")
-        // User is signed in.
+
         this.setUpDatabaseListeners()
         this.setState({loggedIn : true})
 
       } else {
-        this.state.allFavourites = {}
         this.setState({loggedIn: false})
         console.log("In listener, user offline (DRINKSCREEN)")
       }
@@ -178,8 +182,9 @@ class Drinkscreen extends Component {
         });
       })
       .catch(error => {
-        //console.log(error);
+
       });
+
   }
   _onButtonPress = item => {
     if (item.selected !== true) {
@@ -285,12 +290,11 @@ class Drinkscreen extends Component {
 
   updateFavourites = (drinkData, favourited) => {
 
-    this.state.allFavourites[drinkData.name] = drinkData
-    if(this.state.loggedIn){
     if(favourited){
       this.state.usersDB.orderByChild("email").equalTo(this.state.userAuth.currentUser.email).on("child_added",
         (loggedInUser) =>{
 
+        this.state.allFavourites[drinkData.name] = drinkData
         let currentUser = loggedInUser.val()
         let myFavouritesRef = this.state.usersDB.child(loggedInUser.key).child("myFavourites")
 
@@ -304,9 +308,7 @@ class Drinkscreen extends Component {
           let currentUser = loggedInUser.val()
           let removeFavouriteRef = this.state.usersDB.child(loggedInUser.key).child("myFavourites").child(drinkData.name)
           removeFavouriteRef.remove()
-          delete this.state.allFavourites[drinkData.name]
           })
-    }
     }
   }
 
@@ -352,7 +354,12 @@ class Drinkscreen extends Component {
         <TouchableOpacity
           style={styles.buttonDrink}
           onPress={() =>
-            this.props.navigation.navigate("SpecDrinks", { drink: item })
+            this.props.navigation.navigate("SpecDrinks",
+            { drink: item,
+              myFavourites: this.state.allFavourites,
+              loggedIn: this.state.loggedIn,
+              usersDB: this.state.usersDB,
+            })
           }
         >
           <View>
