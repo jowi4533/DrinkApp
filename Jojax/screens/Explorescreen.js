@@ -12,43 +12,10 @@ import {
   TouchableOpacity
 } from "react-native";
 
-import drImage from "../pictures/long_isle.png";
 import bgImage from "../pictures/236.jpg";
-import aperol from "../pictures/aperol_spritz.png";
-import winter from "../pictures/asd.png";
 import {colors} from "../assets/colors.js";
 
 const { width: WIDTH, height: HEIGHT } = Dimensions.get("window");
-
-
-const data2 = [
-  {
-    id: 1,
-    name: "Cranberry Sangria",
-    category: "Fall",
-    img: require("../pictures/cranberry_sangria.png")
-  },
-  {
-    id: 2,
-    name: "Lavender Lemonade Mojito",
-    category: "Spring",
-    img: require("../pictures/lavendel.png")
-  },
-  {
-    id: 3,
-    name: "Pear Mojito",
-    category: "Summer",
-    img: require("../pictures/pear_mojito.png")
-  },
-  {
-    id: 4,
-    name: "Very Merry Bourbon Alexander",
-    category: "Winter",
-    image: require("../pictures/asd.png")
-  }
-];
-
-
 
 class Explorescreen extends Component {
   constructor(props) {
@@ -56,43 +23,45 @@ class Explorescreen extends Component {
 
     this.state = {
       drinks: props.screenProps.drinks,
+      loggedIn: null,
+      usersDB: props.screenProps.usersDB,
+      userAuth: props.screenProps.userAuth,
 
       //All the categories in which drinks are placed
-      drinksDisplayed: [],
+      allFavourites: {},
       discoverWeekly: [],
-      seasonalDrinks: [],
       classicDrinks: [],
-      baseSpirits: [],
       editorsChoice: [],
       spiritCategory : props.screenProps.spirits,
       seasonCategory: props.screenProps.seasons,
       tasteCategory: props.screenProps.tastes,
-      //user stuff
-      userAuth: props.screenProps.userAuth,
-      usersDB: props.screenProps.usersDB,
-      users: props.screenProps.users,
-      loggedIn: null
     }
-
+      this.checkUserLoggedIn()
+      this.userListener()
+      this.setUpMyFavourites()
   }
-  //
-  // loopSeasonalDrinks(){
-  //   let drinksToDisplay = []
-  //   for(let i = 0; i < this.state.drinks.length; i++){
-  //     if(this.state.drinks[i].categories.Spring == true){
-  //       this.seasonalDrinks[0]
-  //     }
-  //     if(this.state.drinks[i].Seasonal_Drink === "Summer"){
-  //
-  //     }
-  //     if(this.state.drinks[i].Seasonal_Drink === "Fall"){
-  //
-  //     }
-  //     if(this.state.drinks[i].Seasonal_Drink === "Winter"){
-  //
-  //     }
-  //   }
-  // }
+
+  checkUserLoggedIn(){
+    if(this.state.userAuth.currentUser === null){
+      this.state.loggedIn = false
+    } else{
+      this.state.loggedIn = true
+    }
+  }
+  userListener(){
+    this.state.userAuth.onAuthStateChanged((user) => {
+      if (user) {
+        console.log("In listener, user online (DRINKSCREEN)")
+
+        this.setUpDatabaseListeners()
+        this.setState({loggedIn : true})
+
+      } else {
+        this.setState({loggedIn: false})
+        console.log("In listener, user offline (DRINKSCREEN)")
+      }
+    });
+  }
 
   loopClassicDrinks(){
     let classicDrinks = []
@@ -123,6 +92,31 @@ class Explorescreen extends Component {
     this.setState({editorsChoice: editorsDrinks})
   }
 
+  setUpMyFavourites(loggedInUser){
+    if(this.state.userAuth.currentUser !== null){
+    this.state.usersDB.orderByChild("email").equalTo(this.state.userAuth.currentUser.email).on("child_added",
+      (loggedInUser) =>{
+        let myFavouritesRef = this.state.usersDB.child(loggedInUser.key).child("myFavourites")
+        let myFavouriteObject = this.state.allFavourites
+
+        myFavouritesRef.on("child_added", (aDrink) =>{
+          let drink = aDrink.val()
+
+          this.state.allFavourites[drink.name] = drink
+          this.setState(this.state)
+        })
+
+        myFavouritesRef.on("child_removed", (aDrink) => {
+          let drink = aDrink.val()
+
+          delete this.state.allFavourites[drink.name]
+        })
+
+        this.setState(this.state)
+    })
+  }
+  }
+
 
   componentWillMount(){
     this.loopDiscoverWeekly()
@@ -145,7 +139,13 @@ class Explorescreen extends Component {
       <View style={styles.discoverWeeklyBox}>
         <TouchableOpacity
           onPress={() =>
-            this.props.navigation.navigate("SpecDrinks",{drink: item})
+            this.props.navigation.navigate("SpecDrinks",
+            {
+              drink: item,
+              myFavourites: this.state.allFavourites,
+              loggedIn: this.state.loggedIn,
+              usersDB: this.state.usersDB,
+            })
           }
         >
         <Image
@@ -165,7 +165,14 @@ class Explorescreen extends Component {
       <TouchableOpacity
         style={styles.seasonalBox}
         onPress={() =>
-          this.props.navigation.navigate("DrinkCategory", {title: item.category} )
+          this.props.navigation.navigate("DrinkCategory",
+          {
+            title: item.category,
+            drink : item,
+            myFavourites : this.state.allFavourites,
+            loggedIn : this.state.loggedIn,
+            usersDB: this.state.usersDB
+          })
         }
       >
         <ImageBackground style={styles.baseSpiritImage} source={item.img }>
@@ -185,7 +192,13 @@ class Explorescreen extends Component {
       <TouchableOpacity
         style={styles.seasonalBox}
         onPress={() =>
-          this.props.navigation.navigate("DrinkCategory", {title: item.name})
+          this.props.navigation.navigate("DrinkCategory",
+          {
+            title: item.name,
+            drink : item,
+            myFavourites : this.state.allFavourites,
+            loggedIn : this.state.loggedIn
+          })
         }
       >
         <ImageBackground style={styles.baseSpiritImage} source={{ uri: item.img }}>

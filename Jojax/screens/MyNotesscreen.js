@@ -238,11 +238,23 @@ class MyNotesscreen extends Component {
   }
 
   updateNote = (id, text) => {
-    console.log("inside update note mynotescreen")
     let personalNotesarr = this.state.personalNotes;
-    personalNotesarr.find(note => note.id === id).text = text;
-    this.setState({ personalNotes: personalNotesarr });
-  };
+    let userNote = personalNotesarr.find(function(note) {
+      return note.id === id
+    })
+
+
+    this.state.usersDB.orderByChild("email").equalTo(this.state.userAuth.currentUser.email).on("child_added",
+      (loggedInUser) =>{
+
+        let currentUser = loggedInUser.val()
+        let myNotesRefText = this.state.usersDB.child(loggedInUser.key).child("myNotes").child("Note " + id).child("text")
+        myNotesRefText.set(text)
+        this.setState(this.state)
+      })
+}
+
+
   changeNoteStatus(id){
 
     this.state.usersDB.orderByChild("email").equalTo(this.state.userAuth.currentUser.email).on("child_added",

@@ -24,9 +24,14 @@ class DrinkCategoryscreen extends Component {
     super(props);
 
     this.state = {
+
       drinks: props.screenProps.drinks,
-      title: this.props.navigation.state.params.title,
-      drinksDisplayed: []
+      loggedIn: props.navigation.state.params.loggedIn,
+      myFavourites: props.navigation.state.params.myFavourites,
+      title: props.navigation.state.params.title,
+      usersDB: props.screenProps.usersDB,
+
+      drinksDisplayed: [],
     }
 
   }
@@ -81,7 +86,15 @@ class DrinkCategoryscreen extends Component {
   renderItem1 = ({ item, index }) => {
     return (
       <TouchableOpacity style={styles.seasonalBox}
-        onPress={() => this.props.navigation.navigate("SpecDrinks", { drink: item })}
+        onPress={() =>
+        this.props.navigation.navigate("SpecDrinks",
+        {
+          drink: item,
+          myFavourites: this.state.myFavourites,
+          loggedIn: this.state.loggedIn,
+          usersDB: this.state.usersDB,
+        })
+      }
         >
         <Image style={styles.seasonalImage} source={{uri : item.url}} />
         <View style={styles.drinkNameTextContainer}>

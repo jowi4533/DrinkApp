@@ -103,8 +103,29 @@ class MyBarscreen extends Component {
         this.createMyBarDrinks()
 
        })
+
+       this.setUpMyFavourites(loggedInUser)
+
        this.setState(this.state)
       })
+  }
+
+  setUpMyFavourites(loggedInUser){
+    let myFavouritesRef = this.state.usersDB.child(loggedInUser.key).child("myFavourites")
+    let myFavouriteObject = this.state.allFavourites
+
+    myFavouritesRef.on("child_added", (aDrink) =>{
+      let drink = aDrink.val()
+
+      this.state.allFavourites[drink.name] = drink
+      this.setState(this.state)
+    })
+
+    myFavouritesRef.on("child_removed", (aDrink) => {
+      let drink = aDrink.val()
+
+      delete this.state.allFavourites[drink.name]
+    })
   }
 
   setUpNavigationListener() {
@@ -187,7 +208,6 @@ class MyBarscreen extends Component {
           let currentUser = loggedInUser.val()
           let removeFavouriteRef = this.state.usersDB.child(loggedInUser.key).child("myFavourites").child(drinkData.name)
           removeFavouriteRef.remove()
-          delete this.state.allFavourites[drinkData.name]
           })
     }
     }
@@ -250,7 +270,13 @@ class MyBarscreen extends Component {
         <TouchableOpacity
           style={styles.buttonDrink}
           onPress={() =>
-            this.props.navigation.navigate("SpecDrinks", { drink: item })
+            this.props.navigation.navigate("SpecDrinks",
+            {
+              drink: item,
+              myFavourites: this.state.allFavourites,
+              loggedIn: this.state.loggedIn,
+              usersDB: this.state.usersDB,
+            })
           }
         >
           <View>
