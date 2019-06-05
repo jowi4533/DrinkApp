@@ -50,7 +50,6 @@ class DrinkCategoryscreen extends Component {
 }
 
   componentWillMount(){
-    console.log(this.state.title);
     let drinksToRender = []
     if(this.categoryIsSpirit(this.state.title)==true){
       if(this.state.title == "Rum"){

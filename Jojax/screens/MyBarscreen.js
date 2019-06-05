@@ -35,7 +35,6 @@ class MyBarscreen extends Component {
 
       userAuth: props.screenProps.userAuth,
       usersDB: props.screenProps.usersDB,
-      users: props.screenProps.users,
       barSpirits: props.screenProps.allBarSpirits,
       userBar: [],
       myBarDrinks: [],

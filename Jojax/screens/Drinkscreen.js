@@ -91,7 +91,6 @@ class Drinkscreen extends Component {
           this.state.allFavourites[drink.name] = drink
         })
         myFavouritesRef.on("child_removed", (aDrink) => {
-          console.log("child removed!!!!!")
           let drink = aDrink.val()
           delete this.state.allFavourites[drink.name]
         })

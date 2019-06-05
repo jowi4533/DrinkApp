@@ -80,7 +80,6 @@ class MyFavoriteDrinkscreen extends Component {
 
           for(let i = 0; i < allDrinks.length; i++){
             if(allDrinks[i].name === drink.name){
-              console.log("getting spliced  " + drink.name)
               allDrinks.splice(i, 1)
               this.setState({favoriteDrinksArray: allDrinks})
             }

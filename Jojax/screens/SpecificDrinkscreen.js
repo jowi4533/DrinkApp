@@ -37,9 +37,7 @@ class SpecificDrinkscreen extends Component {
     loggedIn: this.props.navigation.state.params.loggedIn,
 
   }
-  console.log(this.state.usersDB)
   this.setUpNavigationListener()
-  //console.log(this.state.specificDrink.url)
   this.loadIngredients()
 }
 setUpNavigationListener() {
@@ -84,7 +82,6 @@ checkUserLoggedIn(){
       ingredients.push(ingredient)
     }
     this.state.ingredients = ingredients
-    //console.log(this.state.ingredients)
   }
 
   updateFavourites = (drinkData, favourited) => {
@@ -122,7 +119,6 @@ checkUserLoggedIn(){
 
   //Renders servings together with 4
   renderItem2 = ({ item, index }) => {
-    //console.log(item)
     ingredientAmount = Object.values(item)
     ingredientName = Object.keys(item)
 
@@ -136,7 +132,6 @@ checkUserLoggedIn(){
 
 
   render() {
-    //console.log(this.state.specificDrink.ingredients)
     return (
 
       <ScrollView>
