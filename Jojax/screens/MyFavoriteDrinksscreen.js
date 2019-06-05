@@ -92,7 +92,6 @@ class MyFavoriteDrinkscreen extends Component {
       this.setState(this.state)
       // get your new data here and then set state it will rerender
       console.log("In navigationlistener (MyFavoritesScreen)")
-      this.setState(this.state)
     });
   }
   // setUpDatabaseListeners(){

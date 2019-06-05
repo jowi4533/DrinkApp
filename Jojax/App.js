@@ -218,7 +218,6 @@ class App extends Component {
   retrieveBarSpirits(data) {
     this.setState({ barSpirits: data.val() });
     this.setState({ barSpiritsKeys: Object.keys(data.val()) });
-
     this.loadBarSpirits();
   }
 

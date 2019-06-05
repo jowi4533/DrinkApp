@@ -32,7 +32,6 @@ class SpecificDrinkscreen extends Component {
     ingredients: [],
 
     userAuth : props.screenProps.userAuth,
-
     usersDB: this.props.navigation.state.params.usersDB,
     specificDrink : this.props.navigation.state.params.drink,
     myFavourites: this.props.navigation.state.params.myFavourites,

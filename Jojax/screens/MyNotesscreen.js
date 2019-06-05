@@ -25,17 +25,24 @@ class MyNotesscreen extends Component {
 
     this.state = {
       userAuth : props.screenProps.userAuth,
-      loggedIn : null,
+      usersDB: props.screenProps.usersDB,
+      loggedIn : true,
 
-      personalNotes: [
-        { id: 1, text: "Buy Sparkling Wine for the Aperol Spritz",noteStatus:"orange" }
-      ],
+      personalNotes : [],
     }
 
     this.props.navigation.setParams({
       handleNewNotepress: this.handleNewNotepress
     });
 
+    this.loadResources()
+  }
+
+  // personalNotes: [
+  //   { id: 1, text: "Buy Sparkling Wine for the Aperol Spritz",noteStatus:"orange" }
+  // ],
+  loadResources(){
+    this.setUpDatabaseListeners()
     this.setUpNavigationListener()
     this.initiateListener()
   }
@@ -59,31 +66,56 @@ class MyNotesscreen extends Component {
     };
   };
 
-  setUpNavigationListener() {
-    this.props.navigation.addListener('didFocus', () => {
-      this.checkUserLoggedIn()
-      // get your new data here and then set state it will rerender
-      console.log("In navigationlistener (MyNotesScreen)")
-    });
+  setUpDatabaseListeners(){
+      this.state.usersDB.orderByChild("email").equalTo(this.state.userAuth.currentUser.email).on("child_added",
+        (loggedInUser) =>{
+
+        let myNotes = []
+        let currentUser = loggedInUser.val()
+        let myNotesRef = this.state.usersDB.child(loggedInUser.key).child("myNotes")
+
+        myNotesRef.on("child_added", (newNote) =>{
+          let note = newNote.val()
+          myNotes.push(note)
+          this.state.personalNotes = myNotes
+          this.setState(this.state)
+        })
+
+        myNotesRef.on("child_removed", (newNote) => {
+          let note = newNote.val()
+          for(let i = 0; i < myNotes.length; i++){
+            if(myNotes[i].id === note.id){
+              myNotes.splice(i, 1)
+            }
+          }
+          this.state.personalNotes = myNotes
+        })
+        myNotesRef.on("child_changed", (changedValue) => {
+          newValue = changedValue.val()
+
+          for(let i = 0; i < this.state.personalNotes.length; i++){
+            if(this.state.personalNotes[i].id === newValue.id){
+              this.state.personalNotes[i] = newValue
+            }
+          }
+        })
+      })
+
   }
 
-  checkUserLoggedIn(){
-    if(this.state.userAuth.currentUser === null){
-      //this.state.loggedIn = false
-      this.setState({loggedIn: false})
-    } else{
-      //this.state.loggedIn = true
-      this.setState({loggedIn: true})
-    }
+  setUpNavigationListener() {
+    this.props.navigation.addListener('didFocus', () => {
+      // get your new data here and then set state it will rerender
+      console.log("In navigationlistener (MyNotesScreen)")
+      this.setState(this.state)
+    });
   }
 
   initiateListener(){
     this.state.userAuth.onAuthStateChanged(function(user) {
       if (user) {
         console.log("In listener, user online (MyNotesScreen)")
-        // User is signed in.
-        var displayName = user.displayName;
-        var email = user.email;
+
       } else {
         console.log("In listener, user offline (MyNotesScreen)")
       }
@@ -146,9 +178,16 @@ class MyNotesscreen extends Component {
     return array[index].text;
   }
   lastObjectID(array) {
+
     var index = array.length - 1;
-    var id = array[index].id;
-    return id;
+
+    if(index < 0){
+      return id = 0
+    }else{
+      var id = array[index].id;
+      return id;
+    }
+
   }
   handleNewNotepress = () => {
     this.props.navigation.navigate("NewNote", {
@@ -157,41 +196,96 @@ class MyNotesscreen extends Component {
     });
   };
   returnNote(id, text, noteStatus) {
-    this.setState(prevState => ({
-      personalNotes: [...prevState.personalNotes, { id: id, text: text, noteStatus:noteStatus }]
-    }));
+    //Hit man kommer när man skapar en ny note va :)?
+    let newNote = {
+      id : id,
+      text: text,
+      noteStatus: noteStatus,
+    }
+
+    this.state.usersDB.orderByChild("email").equalTo(this.state.userAuth.currentUser.email).on("child_added",
+      (loggedInUser) =>{
+
+      let currentUser = loggedInUser.val()
+      let myNotesRef = this.state.usersDB.child(loggedInUser.key).child("myNotes")
+      var allMyNotes = (() => {
+        let allNotes = {}
+        for(i = 0; i < this.state.personalNotes.length; i++){
+          allNotes["Note " + this.state.personalNotes[i].id] = this.state.personalNotes[i]
+        }
+        return allNotes;
+      })();
+
+      allMyNotes["Note " + newNote.id] = newNote
+      myNotesRef.set(allMyNotes)
+      })
+
+    // this.setState(prevState => ({
+    //   personalNotes: [...prevState.personalNotes, { id: id, text: text, noteStatus:noteStatus }]
+    // }));
   }
+
   removeNote(id) {
-    this.setState(state => {
-      const personalNotes = state.personalNotes.filter(item => item.id !== id);
-      return {
-        personalNotes
-      };
-    });
+
+    this.state.usersDB.orderByChild("email").equalTo(this.state.userAuth.currentUser.email).on("child_added",
+      (loggedInUser) =>{
+
+      let currentUser = loggedInUser.val()
+      let myNotesRef = this.state.usersDB.child(loggedInUser.key).child("myNotes").child("Note " + id)
+
+      myNotesRef.remove()
+      })
   }
+
   updateNote = (id, text) => {
+    console.log("inside update note mynotescreen")
     let personalNotesarr = this.state.personalNotes;
     personalNotesarr.find(note => note.id === id).text = text;
     this.setState({ personalNotes: personalNotesarr });
   };
   changeNoteStatus(id){
-    let personalNotesarr = this.state.personalNotes;
-    const noteStatus = personalNotesarr.find(note=> note.id ===id).noteStatus;
-    if (noteStatus === "green" ){
-      personalNotesarr.find(note => note.id === id).noteStatus = "orange";
-      this.setState({ personalNotes: personalNotesarr });
-      return
-    }
-    else if (noteStatus === "orange") {
-      personalNotesarr.find(note => note.id === id).noteStatus = "red";
-      this.setState({ personalNotes: personalNotesarr });
-      return
-    }
-    else{
-      personalNotesarr.find(note => note.id === id).noteStatus = "green";
-      this.setState({ personalNotes: personalNotesarr });
-      return
-    }
+
+    this.state.usersDB.orderByChild("email").equalTo(this.state.userAuth.currentUser.email).on("child_added",
+      (loggedInUser) =>{
+
+      let currentUser = loggedInUser.val()
+      let myNotesRefStatus = this.state.usersDB.child(loggedInUser.key).child("myNotes").child("Note " + id).child("noteStatus")
+
+      let value = ""
+      myNotesRefStatus.once("value", function(snap) {
+          value = snap.val()
+        })
+
+        if (value === "green" ){
+          myNotesRefStatus.set("orange")
+          this.setState(this.state)
+        }
+        else if (value === "orange") {
+          myNotesRefStatus.set("red")
+          this.setState(this.state)
+        }
+        else{
+          myNotesRefStatus.set("green")
+          this.setState(this.state)
+        }
+      })
+
+    // const noteStatus = personalNotesarr.find(note=> note.id ===id).noteStatus;
+    // if (noteStatus === "green" ){
+    //   personalNotesarr.find(note => note.id === id).noteStatus = "orange";
+    //   this.setState({ personalNotes: personalNotesarr });
+    //   return
+    // }
+    // else if (noteStatus === "orange") {
+    //   personalNotesarr.find(note => note.id === id).noteStatus = "red";
+    //   this.setState({ personalNotes: personalNotesarr });
+    //   return
+    // }
+    // else{
+    //   personalNotesarr.find(note => note.id === id).noteStatus = "green";
+    //   this.setState({ personalNotes: personalNotesarr });
+    //   return
+    // }
   }
 
   renderItem = ({ item, index }) => {

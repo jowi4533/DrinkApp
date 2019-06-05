@@ -62,6 +62,7 @@ handleSaveNotepress = () =>{
   }
 }
 handleUpdateNotepress = () =>{
+  console.log("inside handlenotepress edintscreen")
   if (/\S/.test(this.state.text)){
     this.props.navigation.state.params.updateNote(this.state.id, this.state.text);
     this.props.navigation.goBack();
