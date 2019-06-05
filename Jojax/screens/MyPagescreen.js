@@ -21,8 +21,7 @@ import bgImage from "../pictures/236.jpg";
 import barIcon from "../pictures/barIcon.png";
 import heartIcon from "../pictures/heartIcon.png";
 import notesIcon from "../pictures/notesIcon.png";
-import lock2 from "../pictures/lock2.png";
-import lock3 from "../pictures/lock3.png";
+
 import { colors } from "../assets/colors.js";
 
 const { width: WIDTH, height: HEIGHT } = Dimensions.get("window");
