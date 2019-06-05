@@ -39,6 +39,7 @@ class SpecificDrinkscreen extends Component {
     loggedIn: this.props.navigation.state.params.loggedIn,
 
   }
+  console.log(this.state.usersDB)
   this.setUpNavigationListener()
   //console.log(this.state.specificDrink.url)
   this.loadIngredients()

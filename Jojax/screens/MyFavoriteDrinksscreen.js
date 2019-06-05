@@ -30,6 +30,7 @@ class MyFavoriteDrinkscreen extends Component {
       usersDB: props.screenProps.usersDB,
 
       loggedIn : true,
+      allFavourites: {},
 
       favoriteDrinkArray: [],
       drinks: props.screenProps.drinks,
@@ -69,6 +70,7 @@ class MyFavoriteDrinkscreen extends Component {
           let drink = aDrink.val()
           allDrinks.push(drink)
 
+          this.state.allFavourites[drink.name] = drink
           this.state.favoriteDrinksArray = allDrinks
           this.setState(this.state)
         })
@@ -83,6 +85,7 @@ class MyFavoriteDrinkscreen extends Component {
               this.setState({favoriteDrinksArray: allDrinks})
             }
           }
+          delete this.state.allFavourites[drink.name]
         })
       })
   }
@@ -150,7 +153,15 @@ class MyFavoriteDrinkscreen extends Component {
       <View style={styles.drinkContainer}>
         <TouchableOpacity
           style={styles.buttonDrink}
-          onPress={() => this.props.navigation.navigate("SpecDrinks", {drink:item})}
+          onPress={() =>
+            this.props.navigation.navigate("SpecDrinks",
+            {
+              drink: item,
+              myFavourites: this.state.allFavourites,
+              loggedIn: this.state.loggedIn,
+              usersDB: this.state.usersDB,
+            })
+          }
         >
           <View>
             <Image

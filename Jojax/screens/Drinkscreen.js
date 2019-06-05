@@ -63,7 +63,6 @@ class Drinkscreen extends Component {
 
       userAuth: props.screenProps.userAuth,
       usersDB: props.screenProps.usersDB,
-      users: props.screenProps.users,
       loggedIn: null
     };
     this.state.drinksDisplayed = this.state.drinks
