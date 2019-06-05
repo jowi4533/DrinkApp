@@ -58,7 +58,6 @@ class Registerscreen extends Component {
   initiateListener(){
     this.state.userAuth.onAuthStateChanged((user) => {
       if (user) {
-        console.log(user.displayName)
         // User is signed in.
         var displayName = user.displayName;
         var email = user.email;
@@ -87,7 +86,7 @@ class Registerscreen extends Component {
     });
 
     data.email = this.state.email.toLowerCase()
-    this.state.usersDB.push(data)
+    this.state.usersDB.push(data.email)
 
     this.props.navigation.navigate("AllDrinks")
     this.setState({loggedIn: true})

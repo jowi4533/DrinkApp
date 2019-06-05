@@ -154,8 +154,6 @@ class App extends Component {
       userAuth: userAuth,
       usersDB: usersDB,
 
-      allUsers: null,
-      allUserKeys: null,
       allDrinkItems: null,
       allDrinkKeys: null,
       allExploreCategories: null,
@@ -178,7 +176,6 @@ class App extends Component {
       seasons: [],
       tastes: [],
       drinks: [],
-      users: [],
       loaded: false,
 
       fontLoaded: false
@@ -205,7 +202,6 @@ class App extends Component {
   }
 
   initailizeListener() {
-    usersDB.on("value", this.retrieveUsers.bind(this), this.errData);
     categoriesDB.once(
       "value",
       this.retrieveExploreCategories.bind(this),
@@ -241,32 +237,10 @@ class App extends Component {
     this.loadCategories("Seasons");
   }
 
-  retrieveUsers(data) {
-    this.state.allUsers = data.val();
-    this.state.allUserKeys = Object.keys(data.val());
-    this.loadUsers();
-  }
-
   errData = err => {
     console.log("Error!");
     console.log(err);
   };
-
-  loadUsers() {
-    let allUsers = [];
-
-    for (let i = 0; i < this.state.allUserKeys.length; i++) {
-      let k = this.state.allUserKeys[i];
-
-      let user = {
-        email: this.state.allUsers[k].email,
-        myFavourites: this.state.allUsers[k].myFavourites,
-        myBar: this.state.allUsers[k].myBar
-      };
-      allUsers.push(user);
-    }
-    this.state.users = allUsers;
-  }
 
   loadDrinks() {
     let allDrinks = [];

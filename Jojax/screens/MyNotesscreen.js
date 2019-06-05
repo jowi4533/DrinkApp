@@ -240,7 +240,6 @@ class MyNotesscreen extends Component {
   }
 
   updateNote = (id, text) => {
-    console.log("hej")
     let personalNotesarr = this.state.personalNotes;
     let userNote = personalNotesarr.find(function(note) {
       return note.id === id
