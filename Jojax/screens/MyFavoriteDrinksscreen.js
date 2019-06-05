@@ -120,7 +120,7 @@ class MyFavoriteDrinkscreen extends Component {
       if (user) {
         console.log("In listener, user online (MyFavoritesScreen)")
 
-        this.setUpDatabaseListeners()
+          this.setUpDatabaseListeners()
       } else {
         console.log("In listener, user offline (MyFavoritesScreen)")
       }
